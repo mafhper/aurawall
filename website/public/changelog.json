@@ -1,0 +1,28 @@
+[
+    {
+        "version": "0.1.0",
+        "date": "2024-12-09",
+        "title": "Lançamento Inicial",
+        "description": "Primeira versão pública do AuraWall com suporte a dois modos de criação (Boreal e Chroma), sistema de animação CSS, exportação em múltiplos formatos e internacionalização.",
+        "type": "feature",
+        "commits": [
+            "Initial release",
+            "Implement Boreal engine",
+            "Implement Chroma engine",
+            "Add export to PNG/JPG/SVG",
+            "Add i18n support"
+        ]
+    },
+    {
+        "version": "0.0.5",
+        "date": "2024-12-08",
+        "title": "Melhorias de Performance",
+        "description": "Otimizações no renderizador SVG e redução do bundle size.",
+        "type": "refactor",
+        "commits": [
+            "Optimize SVG filters",
+            "Reduce bundle size by 20%",
+            "Add lazy loading for modals"
+        ]
+    }
+]

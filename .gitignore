@@ -1,0 +1,83 @@
+# ============================
+# Desenvolvimento Interno
+# ============================
+_desenvolvimento/
+
+# ============================
+# Dependências
+# ============================
+node_modules/
+
+# ============================
+# Build / Produção
+# ============================
+dist/
+dist-ssr/
+*.local
+.output/
+.cache/
+
+# ============================
+# Logs
+# ============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ============================
+# Editor / IDE
+# ============================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ============================
+# Sistema Operacional
+# ============================
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.lnk
+
+# ============================
+# Variáveis de Ambiente
+# ============================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# ============================
+# TypeScript
+# ============================
+*.tsbuildinfo
+
+# ============================
+# Vite
+# ============================
+vite.config.ts.timestamp-*
+
+# ============================
+# Testes
+# ============================
+coverage/
+.nyc_output/
+
+# ============================
+# Diversos
+# ============================
+*.bak
+*.tmp
+*.temp
+*.orig

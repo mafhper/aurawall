@@ -1,0 +1,83 @@
+# Guia Técnico - AuraWall
+
+Este documento detalha a arquitetura, as decisões de design e os algoritmos que impulsionam o AuraWall.
+
+## 1. Visão Geral da Arquitetura
+
+O AuraWall segue uma arquitetura **reativa unidirecional**. O estado da aplicação (`config`) é a única fonte de verdade.
+
+```mermaid
+graph TD
+    A[Estado Global (App.tsx)] -->|Props| B(Controls.tsx)
+    A -->|Props| C(WallpaperRenderer.tsx)
+    B -->|Eventos| A
+    D[VariationService] -->|Geração Procedural| A
+```
+
+### Stack Tecnológico Atualizado
+- **React 19:** Uso de novos hooks e otimizações.
+- **Tailwind CSS v4:** Utiliza a nova engine baseada em Rust (via `@tailwindcss/postcss`) para compilação instantânea e zero-runtime overhead.
+- **Vite 6:** Build tool ultra-rápido.
+
+---
+
+## 2. O Motor de Renderização (`WallpaperRenderer.tsx`)
+
+O coração visual da aplicação. Este componente não desenha em Canvas diretamente; ele constrói uma árvore SVG DOM. Isso garante que a pré-visualização seja nítida em qualquer nível de zoom (graças aos vetores) e extremamente leve.
+
+### Otimizações de Performance
+- **`React.memo`:** O componente é memoizado para evitar re-renderizações quando apenas a UI de controles muda (ex: abrir um menu).
+- **`useMemo`:**
+  - **Cálculo de Shapes:** Paths de blobs complexos são recalculados apenas quando seus parâmetros mudam, não a cada frame.
+  - **Estilos CSS:** Animações (`<style>`) são geradas apenas se a aba "Motion" estiver ativa.
+
+### Filtros SVG
+O visual "Ethereal" é alcançado combinando:
+1.  **`<feTurbulence>`:** Gera ruído Perlin para textura.
+2.  **`<feGaussianBlur>`:** Aplicado individualmente por forma ou globalmente.
+3.  **`<feColorMatrix>`:** Usado para saturação e ajustes de cor no ruído.
+
+---
+
+## 3. Animação e Movimento
+
+O sistema de animação (`AnimationSettings`) não usa JavaScript para interpolar valores (o que seria pesado na CPU). Em vez disso, injetamos regras **CSS Keyframes** dinâmicas diretamente no SVG.
+
+Isso permite que a GPU do navegador gerencie a animação (compositor thread), garantindo 60fps mesmo em dispositivos móveis.
+
+Tipos de Movimento:
+- **Flow:** Translação suave em eixos X/Y.
+- **Pulse:** Escala rítmica.
+- **Rotate:** Rotação lenta em torno do centro da forma.
+- **Noise Anim:** Animação do atributo `seed` do filtro de turbulência para efeito "TV Static".
+
+---
+
+## 4. Exportação e Rasterização
+
+Embora a visualização seja vetorial, a exportação final geralmente precisa ser raster (JPG/PNG).
+
+**Fluxo de Exportação:**
+1.  **Serialização:** O nó SVG DOM é convertido em uma string XML via `XMLSerializer`.
+2.  **Blob:** Criamos um `Blob` do tipo `image/svg+xml`.
+3.  **Image Object:** Carregamos esse blob em um objeto `new Image()`.
+4.  **Canvas Draw:** Desenhamos a imagem em um `<canvas>` HTML5 oculto com as dimensões de saída desejadas (ex: 4K).
+5.  **Data URL:** Convertemos o canvas para DataURL (`canvas.toDataURL`), aplicando a qualidade e formato escolhidos nas Preferências.
+
+---
+
+## 5. Internacionalização (i18n)
+
+Implementado com `i18next` e `react-i18next`.
+- **Detecção:** Automática via navegador ou localStorage.
+- **Estrutura:** Arquivo único `i18n.ts` contendo todos os recursos (para simplicidade deste projeto), mas escalável para arquivos JSON separados.
+
+---
+
+## 6. Estrutura de Pastas
+
+- `components/`: Componentes UI (Botões, Menus) e o Renderizador.
+- `services/`: Lógica de negócios pura (geração de variações, matemática de cores).
+- `utils/`: Funções auxiliares (conversão de cores, paths SVG).
+- `docs/`: Documentação técnica.
+- `public/`: Assets estáticos (ícones, manifest, branding).

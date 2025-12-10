@@ -1,0 +1,206 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ArrowLeft, Play, Waves, Maximize, RotateCw, Tv } from 'lucide-react';
+import CodeWindow from '../components/CodeWindow';
+import { getAppUrl } from '../utils/appUrl';
+
+const motionTypes = [
+  {
+    id: 'flow',
+    icon: Waves,
+    color: 'purple',
+    cssProperty: 'transform: translate()',
+  },
+  {
+    id: 'pulse',
+    icon: Maximize,
+    color: 'blue',
+    cssProperty: 'transform: scale()',
+  },
+  {
+    id: 'rotate',
+    icon: RotateCw,
+    color: 'green',
+    cssProperty: 'transform: rotate()',
+  },
+  {
+    id: 'noise',
+    icon: Tv,
+    color: 'pink',
+    cssProperty: 'seed attribute',
+  },
+];
+
+export default function CreationAnimation() {
+  const { t } = useTranslation();
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      
+      {/* Hero */}
+      <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-black" />
+        
+        {/* Animated circles demo */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-blue-500/30 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-purple-500/30 rounded-full blur-3xl animate-bounce" style={{ animationDuration: '3s' }} />
+          <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-pink-500/30 rounded-full blur-2xl animate-spin" style={{ animationDuration: '10s' }} />
+        </div>
+        
+        <div className="relative text-center px-6">
+          <Link 
+            to="/creation" 
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors"
+          >
+            <ArrowLeft size={16} />
+            {t('nav.creation')}
+          </Link>
+          
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-blue-500/20 backdrop-blur flex items-center justify-center">
+              <Play size={32} className="text-blue-400" />
+            </div>
+          </div>
+          
+          <h1 className="text-6xl md:text-8xl font-bold mb-4">Motion Engine</h1>
+          <p className="text-xl text-zinc-300 max-w-2xl mx-auto">
+            Sistema de animação performático usando CSS Keyframes nativos.
+          </p>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 py-20 max-w-5xl">
+        
+        {/* Why CSS over JS */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold mb-6">Por que CSS ao invés de JavaScript?</h2>
+          <div className="glass-panel rounded-2xl p-8">
+            <p className="text-zinc-400 text-lg leading-relaxed mb-6">
+              Muitas ferramentas de arte generativa usam um loop <code className="bg-zinc-800 px-2 py-1 rounded">requestAnimationFrame</code> em 
+              JavaScript para atualizar posições. Isso consome ciclos de CPU na thread principal.
+            </p>
+            <p className="text-zinc-400 text-lg leading-relaxed">
+              O AuraWall gera um bloco <code className="bg-zinc-800 px-2 py-1 rounded">&lt;style&gt;</code> estático 
+              com <code className="bg-zinc-800 px-2 py-1 rounded">@keyframes</code> únicos para cada forma. 
+              Uma vez injetado, a GPU do navegador assume o controle. Isso garante <strong className="text-white">60fps 
+              mesmo em dispositivos móveis</strong> enquanto mantém a thread JS livre para interações de UI.
+            </p>
+          </div>
+        </section>
+
+        {/* Motion Types */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold mb-8">Tipos de Movimento</h2>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {motionTypes.map((motion) => {
+              const Icon = motion.icon;
+              const colorClasses = {
+                purple: 'border-purple-500/30 text-purple-400',
+                blue: 'border-blue-500/30 text-blue-400',
+                green: 'border-green-500/30 text-green-400',
+                pink: 'border-pink-500/30 text-pink-400',
+              };
+              
+              const titles: Record<string, string> = {
+                flow: 'Drift & Flow',
+                pulse: 'Pulse & Breathe',
+                rotate: 'Slow Rotation',
+                noise: 'Noise Animation',
+              };
+              
+              const descriptions: Record<string, string> = {
+                flow: 'Cada forma recebe um vetor de trajetória aleatório. Usando CSS transform: translate(), elementos flutuam organicamente pelo canvas.',
+                pulse: 'Transformações de escala são aplicadas em ritmo sinusoidal. Deslocando o delay de animação para cada camada, criamos um efeito de "respiração".',
+                rotate: 'Rotação lenta em torno do centro da forma. Cria movimento sutil sem distração do conteúdo principal.',
+                noise: 'Animação do atributo seed do filtro de turbulência para criar um efeito de "TV estática" dinâmica.',
+              };
+              
+              return (
+                <div 
+                  key={motion.id}
+                  className={`glass-panel rounded-2xl p-6 border ${colorClasses[motion.color as keyof typeof colorClasses]}`}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <Icon size={24} className={colorClasses[motion.color as keyof typeof colorClasses]} />
+                    <h3 className="text-xl font-bold">{titles[motion.id]}</h3>
+                  </div>
+                  <p className="text-zinc-400 mb-4">{descriptions[motion.id]}</p>
+                  <code className="text-xs bg-zinc-900 px-2 py-1 rounded text-zinc-500">
+                    {motion.cssProperty}
+                  </code>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Animation Settings Code */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold mb-6">Estrutura AnimationSettings</h2>
+          <CodeWindow filename="AnimationSettings.ts">
+<pre>{`interface AnimationSettings {
+  enabled: boolean;
+  
+  // Velocidade global (0.1 - 2.0)
+  speed: number;
+  
+  // Intensidade de movimento
+  intensity: number;   // 0-100
+  
+  // Tipos de movimento ativos
+  flow: boolean;       // Translação X/Y
+  pulse: boolean;      // Escala
+  rotate: boolean;     // Rotação
+  noiseAnim: boolean;  // Seed do ruído
+}
+
+// Exemplo de keyframes gerados:
+@keyframes shape-0-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(15px, -10px); }
+}
+
+@keyframes shape-0-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}`}</pre>
+          </CodeWindow>
+        </section>
+
+        {/* Performance */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold mb-6">Performance</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6 text-center">
+              <div className="text-4xl font-bold text-blue-400 mb-2">60fps</div>
+              <p className="text-zinc-500 text-sm">Frame rate consistente</p>
+            </div>
+            <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6 text-center">
+              <div className="text-4xl font-bold text-purple-400 mb-2">0%</div>
+              <p className="text-zinc-500 text-sm">CPU na main thread</p>
+            </div>
+            <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6 text-center">
+              <div className="text-4xl font-bold text-green-400 mb-2">GPU</div>
+              <p className="text-zinc-500 text-sm">Compositor thread</p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="text-center">
+          <a 
+            href={getAppUrl()} 
+            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-full font-bold transition-colors"
+          >
+            <Play size={20} />
+            Experimentar Animações
+          </a>
+        </section>
+
+      </div>
+    </div>
+  );
+}

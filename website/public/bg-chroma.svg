@@ -1,0 +1,28 @@
+<svg width="100%" height="100%" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="blur-c1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+    <filter id="blur-c2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="60"/>
+    </filter>
+    <filter id="noise-c" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="4" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer>
+    </filter>
+  </defs>
+  
+  <!-- Dark base -->
+  <rect width="100%" height="100%" fill="#0a0a0a"/>
+  
+  <!-- Chroma style - sharp contrasts, acidic colors -->
+  <circle cx="50%" cy="50%" r="35%" fill="#10b981" filter="url(#blur-c2)" opacity="0.6" style="mix-blend-mode: difference"/>
+  <circle cx="25%" cy="35%" r="30%" fill="#06b6d4" filter="url(#blur-c1)" opacity="0.5" style="mix-blend-mode: exclusion"/>
+  <circle cx="75%" cy="65%" r="32%" fill="#22d3ee" filter="url(#blur-c1)" opacity="0.45" style="mix-blend-mode: difference"/>
+  <circle cx="40%" cy="70%" r="25%" fill="#34d399" filter="url(#blur-c1)" opacity="0.5" style="mix-blend-mode: hard-light"/>
+  <circle cx="60%" cy="25%" r="22%" fill="#a3e635" filter="url(#blur-c1)" opacity="0.4" style="mix-blend-mode: exclusion"/>
+  
+  <!-- Noise overlay -->
+  <rect width="100%" height="100%" filter="url(#noise-c)" opacity="0.5" style="mix-blend-mode: overlay"/>
+</svg>

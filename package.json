@@ -1,0 +1,43 @@
+{
+  "name": "aurawall-v0.1",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "//-- DESENVOLVIMENTO --//": "",
+    "dev": "vite",
+    "dev:site": "vite --config website/vite.config.ts",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:site\"",
+    "//-- BUILD --//": "",
+    "build:app": "vite build",
+    "build:site": "vite build --config website/vite.config.ts",
+    "build:site:full": "node scripts/fetch-changelog.js && npm run build:site",
+    "build:all": "npm run build:site && npm run build:app",
+    "build": "npm run build:all",
+    "//-- UTILITÁRIOS --//": "",
+    "install:all": "npm install",
+    "fetch-changelog": "node scripts/fetch-changelog.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "i18next": "^25.7.2",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "lucide-react": "^0.556.0",
+    "lz-string": "^1.5.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "react-i18next": "^16.4.0",
+    "react-router-dom": "^7.10.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.22",
+    "concurrently": "^9.2.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}
