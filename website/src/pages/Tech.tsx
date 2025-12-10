@@ -82,31 +82,12 @@ export default function Tech() {
         <section className="mb-20">
           <h2 className="text-3xl font-bold mb-6">Arquitetura Reativa</h2>
           <div className="glass-panel rounded-2xl p-8">
-            <div className="bg-zinc-900 rounded-xl p-6 overflow-x-auto">
-              <pre className="text-sm text-zinc-300 font-mono">
-{`┌─────────────────────────────────────────────────────────────┐
-│                      App.tsx (Estado Global)                 │
-│                                                              │
-│  ┌─────────────┐    ┌─────────────────────────────────────┐  │
-│  │   config    │───▶│         WallpaperRenderer.tsx       │  │
-│  │ (Wallpaper  │    │                                     │  │
-│  │   Config)   │    │  ┌─────────────────────────────┐    │  │
-│  └─────────────┘    │  │        SVG DOM              │    │  │
-│        ▲            │  │  ┌──────┐ ┌──────┐ ┌──────┐ │    │  │
-│        │            │  │  │ defs │ │shapes│ │noise │ │    │  │
-│  ┌─────────────┐    │  │  └──────┘ └──────┘ └──────┘ │    │  │
-│  │  Controls   │    │  └─────────────────────────────┘    │  │
-│  │    .tsx     │    └─────────────────────────────────────┘  │
-│  └─────────────┘                                             │
-│  └─────────────┘                                             │
-│        ▲            ┌─────────────────────────────────────┐  │
-│        │            │        variationService.ts          │  │
-│  ┌─────────────┐    │  (Geração Procedural de Variações)  │  │
-│  │    User     │───▶└─────────────────────────────────────┘  │
-│  │  Actions    │                                             │
-│  └─────────────┘                                             │
-└─────────────────────────────────────────────────────────────┘`}
-              </pre>
+            <div className="bg-zinc-900 rounded-xl overflow-hidden">
+              <img 
+                src={`${import.meta.env.BASE_URL}architecture-diagram.jpg`}
+                alt="Diagrama de Arquitetura - App.tsx Estado Global"
+                className="w-full h-auto"
+              />
             </div>
             <p className="text-zinc-500 text-sm mt-4">
               Estado unidirecional: todas as mudanças fluem do estado global para os componentes visuais.

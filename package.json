@@ -17,6 +17,7 @@
     "//-- UTILITÁRIOS --//": "",
     "install:all": "npm install",
     "fetch-changelog": "node scripts/fetch-changelog.js",
+    "distribute-icons": "node scripts/distribute-icons.cjs",
     "preview": "vite preview"
   },
   "dependencies": {

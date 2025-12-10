@@ -60,7 +60,7 @@ const roadmapItems = [
     id: 'desktop',
     title: 'App Desktop',
     description: 'Aplicação nativa para Windows, macOS e Linux com suporte a wallpapers animados no sistema.',
-    status: 'planned' as const,
+    status: 'in-progress' as const,
   },
   {
     id: 'mobile',

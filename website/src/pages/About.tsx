@@ -1,25 +1,40 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Github, ExternalLink, Newspaper, FileText, Server } from 'lucide-react';
+import { Github, ExternalLink, Newspaper, FileText, Server, Rss, PenTool, Database } from 'lucide-react';
 
 const projects = [
   {
     id: 'personal-news',
-    icon: Newspaper,
+    name: 'Personal News',
+    description: 'Agregador de Feeds RSS com interface moderna e suporte offline.',
+    icon: Rss,
     color: 'purple',
     techs: ['React', 'TypeScript', 'Tauri'],
+    status: 'live',
+    demoUrl: 'https://mafhper.github.io/personalnews/',
+    githubUrl: 'https://github.com/mafhper/personalnews',
   },
   {
     id: 'mark-lee',
-    icon: FileText,
+    name: 'Mark-Lee',
+    description: 'Editor de texto focado em escrita sem distrações, performance e design elegante.',
+    icon: PenTool,
     color: 'blue',
     techs: ['React', 'Tauri', 'Markdown'],
+    status: 'dev',
+    demoUrl: null,
+    githubUrl: 'https://github.com/mafhper/mark-lee',
   },
   {
     id: 'lithium-cms',
-    icon: Server,
+    name: 'Lithium CMS',
+    description: 'CMS moderno baseado em arquivos para blogs estáticos com preview ao vivo e suporte a temas.',
+    icon: Database,
     color: 'green',
     techs: ['Node.js', 'Express', 'Nunjucks'],
+    status: 'dev',
+    demoUrl: null,
+    githubUrl: 'https://github.com/mafhper/lithium',
   },
 ];
 
@@ -41,9 +56,11 @@ export default function About() {
         {/* Developer Bio */}
         <div className="glass-panel rounded-3xl p-10 mb-16">
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-4xl font-bold shrink-0">
-              M
-            </div>
+            <img 
+              src="https://github.com/mafhper.png" 
+              alt="@mafhper"
+              className="w-32 h-32 rounded-full border-4 border-purple-500/50 shadow-lg shadow-purple-500/20 shrink-0"
+            />
             <div className="text-center md:text-left">
               <h2 className="text-3xl font-bold mb-2">@mafhper</h2>
               <p className="text-zinc-400 text-lg leading-relaxed mb-4">
@@ -113,25 +130,60 @@ export default function About() {
                 blue: 'text-blue-400',
                 green: 'text-green-400',
               };
+              const statusColors = {
+                live: 'bg-green-500/20 text-green-400 border-green-500/30',
+                dev: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+              };
+              const statusLabels = {
+                live: 'Disponível',
+                dev: 'Em Desenvolvimento',
+              };
               
               return (
                 <div 
                   key={project.id}
-                  className={`bg-gradient-to-b ${colorClasses[project.color as keyof typeof colorClasses]} border rounded-2xl p-6 transition-all duration-300 card-hover card-glow`}
+                  className={`bg-gradient-to-b ${colorClasses[project.color as keyof typeof colorClasses]} border rounded-2xl p-6 transition-all duration-300 card-hover card-glow flex flex-col`}
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-zinc-900 flex items-center justify-center mb-4 ${iconColors[project.color as keyof typeof iconColors]}`}>
-                    <Icon size={24} />
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`w-12 h-12 rounded-xl bg-zinc-900 flex items-center justify-center ${iconColors[project.color as keyof typeof iconColors]}`}>
+                      <Icon size={24} />
+                    </div>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border ${statusColors[project.status as keyof typeof statusColors]}`}>
+                      {statusLabels[project.status as keyof typeof statusLabels]}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{t(`about.project_${project.id}_name`)}</h3>
-                  <p className="text-zinc-400 text-sm mb-4 leading-relaxed">
-                    {t(`about.project_${project.id}_desc`)}
+                  <h3 className="text-xl font-bold mb-2">{project.name}</h3>
+                  <p className="text-zinc-400 text-sm mb-4 leading-relaxed flex-1">
+                    {project.description}
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {project.techs.map((tech) => (
                       <span key={tech} className="text-xs bg-zinc-800 px-2 py-1 rounded-full text-zinc-400">
                         {tech}
                       </span>
                     ))}
+                  </div>
+                  <div className="flex gap-2 mt-auto pt-2 relative z-10">
+                    {project.demoUrl && (
+                      <a 
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 flex items-center justify-center gap-1.5 bg-white text-black hover:bg-zinc-200 py-2 px-3 rounded-lg text-xs font-bold transition-colors"
+                      >
+                        <ExternalLink size={12} />
+                        Demo
+                      </a>
+                    )}
+                    <a 
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center justify-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 py-2 px-3 rounded-lg text-xs font-bold transition-colors ${project.demoUrl ? '' : 'flex-1'}`}
+                    >
+                      <Github size={12} />
+                      GitHub
+                    </a>
                   </div>
                 </div>
               );

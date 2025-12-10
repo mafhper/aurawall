@@ -238,85 +238,208 @@ export default function Creation() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
              {/* Shapes */}
-             <div className="bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-purple-500/30 transition-colors group">
-               <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors">
-                 <Box size={24} />
+             <div className="relative bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-purple-500/30 transition-all group overflow-hidden">
+               {/* Animated Background on Hover */}
+               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                 <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-pink-500/20 to-blue-600/30 animate-[pulse_3s_ease-in-out_infinite]" />
+                 <div className="absolute top-1/4 left-1/4 w-24 h-24 bg-purple-500/40 rounded-full blur-2xl animate-[float_4s_ease-in-out_infinite]" />
+                 <div className="absolute bottom-1/4 right-1/4 w-20 h-20 bg-pink-500/40 rounded-full blur-2xl animate-[float_5s_ease-in-out_infinite_reverse]" />
                </div>
-               <h3 className="font-bold text-xl mb-2">{t('creation.param_shapes')}</h3>
-               <p className="text-zinc-500 text-sm leading-relaxed">{t('creation.param_shapes_desc')}</p>
+               <div className="relative z-10">
+                 <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors">
+                   <Box size={24} />
+                 </div>
+                 <h3 className="font-bold text-xl mb-2">{t('creation.param_shapes')}</h3>
+                 <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors">{t('creation.param_shapes_desc')}</p>
+               </div>
              </div>
              
              {/* Colors */}
-             <div className="bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-pink-500/30 transition-colors group">
-               <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-pink-500/20 group-hover:text-pink-400 transition-colors">
-                 <Palette size={24} />
+             <div className="relative bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-pink-500/30 transition-all group overflow-hidden">
+               {/* Animated Background on Hover */}
+               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                 <div className="absolute inset-0 bg-gradient-to-tr from-pink-600/30 via-orange-500/20 to-yellow-600/30 animate-[pulse_4s_ease-in-out_infinite]" />
+                 <div className="absolute top-1/3 right-1/3 w-28 h-28 bg-pink-500/40 rounded-full blur-2xl animate-[float_3s_ease-in-out_infinite]" />
+                 <div className="absolute bottom-1/3 left-1/4 w-16 h-16 bg-orange-500/40 rounded-full blur-2xl animate-[float_4s_ease-in-out_infinite_reverse]" />
                </div>
-               <h3 className="font-bold text-xl mb-2">{t('creation.param_colors')}</h3>
-               <p className="text-zinc-500 text-sm leading-relaxed">{t('creation.param_colors_desc')}</p>
+               <div className="relative z-10">
+                 <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-pink-500/20 group-hover:text-pink-400 transition-colors">
+                   <Palette size={24} />
+                 </div>
+                 <h3 className="font-bold text-xl mb-2">{t('creation.param_colors')}</h3>
+                 <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors">{t('creation.param_colors_desc')}</p>
+               </div>
              </div>
              
              {/* Effects */}
-             <div className="bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-blue-500/30 transition-colors group">
-               <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-colors">
-                 <Aperture size={24} />
+             <div className="relative bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-blue-500/30 transition-all group overflow-hidden">
+               {/* Animated Background on Hover */}
+               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                 <div className="absolute inset-0 bg-gradient-to-bl from-blue-600/30 via-cyan-500/20 to-teal-600/30 animate-[pulse_3.5s_ease-in-out_infinite]" />
+                 <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-blue-500/40 rounded-full blur-3xl animate-[float_5s_ease-in-out_infinite]" />
+                 <div className="absolute top-1/4 right-1/4 w-14 h-14 bg-cyan-500/40 rounded-full blur-2xl animate-[float_3s_ease-in-out_infinite_reverse]" />
                </div>
-               <h3 className="font-bold text-xl mb-2">{t('creation.param_effects')}</h3>
-               <p className="text-zinc-500 text-sm leading-relaxed">{t('creation.param_effects_desc')}</p>
+               <div className="relative z-10">
+                 <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-colors">
+                   <Aperture size={24} />
+                 </div>
+                 <h3 className="font-bold text-xl mb-2">{t('creation.param_effects')}</h3>
+                 <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors">{t('creation.param_effects_desc')}</p>
+               </div>
              </div>
              
              {/* Motion */}
-             <div className="bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-green-500/30 transition-colors group">
-               <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-500/20 group-hover:text-green-400 transition-colors">
-                 <Activity size={24} />
+             <div className="relative bg-zinc-900 border border-white/5 p-8 rounded-2xl hover:border-green-500/30 transition-all group overflow-hidden">
+               {/* Animated Background on Hover */}
+               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                 <div className="absolute inset-0 bg-gradient-to-tl from-green-600/30 via-emerald-500/20 to-lime-600/30 animate-[pulse_4.5s_ease-in-out_infinite]" />
+                 <div className="absolute bottom-1/4 left-1/3 w-26 h-26 bg-green-500/40 rounded-full blur-2xl animate-[float_4s_ease-in-out_infinite]" />
+                 <div className="absolute top-1/3 right-1/3 w-18 h-18 bg-emerald-500/40 rounded-full blur-2xl animate-[float_3.5s_ease-in-out_infinite_reverse]" />
                </div>
-               <h3 className="font-bold text-xl mb-2">{t('creation.param_motion')}</h3>
-               <p className="text-zinc-500 text-sm leading-relaxed">{t('creation.param_motion_desc')}</p>
+               <div className="relative z-10">
+                 <div className="w-12 h-12 bg-zinc-800 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-500/20 group-hover:text-green-400 transition-colors">
+                   <Activity size={24} />
+                 </div>
+                 <h3 className="font-bold text-xl mb-2">{t('creation.param_motion')}</h3>
+                 <p className="text-zinc-500 text-sm leading-relaxed group-hover:text-zinc-300 transition-colors">{t('creation.param_motion_desc')}</p>
+               </div>
              </div>
           </div>
           
            {/* Deep Customization Alert */}
            <div className="mt-20 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/20 rounded-2xl p-8">
-              <div className="flex flex-col md:flex-row gap-6 items-start">
-                 <div className="bg-purple-500/20 p-4 rounded-full text-purple-400 shrink-0">
-                     <Cpu size={32} />
+              <div className="flex flex-col gap-6">
+                 <div className="flex items-start gap-6">
+                    <div className="bg-purple-500/20 p-4 rounded-full text-purple-400 shrink-0">
+                        <Cpu size={32} />
+                    </div>
+                    <div className="flex-1">
+                        <h3 className="text-2xl font-bold mb-4 text-white">{t('creation.custom_title')}</h3>
+                        <p className="text-zinc-400 leading-relaxed">
+                            {t('creation.custom_desc')}
+                        </p>
+                    </div>
                  </div>
-                 <div className="flex-1">
-                     <h3 className="text-2xl font-bold mb-4 text-white">{t('creation.custom_title')}</h3>
-                     <p className="text-zinc-400 leading-relaxed mb-6">
-                         {t('creation.custom_desc')}
-                     </p>
-                     
-                     {/* Mode-specific Examples */}
-                     <div className="grid md:grid-cols-3 gap-4">
-                        <div className="bg-black/30 rounded-xl p-4 border border-purple-500/10">
-                           <h4 className="font-bold text-purple-400 mb-2 text-sm">{t('creation.boreal_title')}</h4>
-                           <code className="text-xs text-zinc-500 block">blur: 80-150px</code>
-                           <code className="text-xs text-zinc-500 block">blendMode: screen</code>
-                           <code className="text-xs text-zinc-500 block">opacity: 0.3-0.6</code>
-                        </div>
-                        <div className="bg-black/30 rounded-xl p-4 border border-green-500/10">
-                           <h4 className="font-bold text-green-400 mb-2 text-sm">{t('creation.chroma_title')}</h4>
-                           <code className="text-xs text-zinc-500 block">blur: 20-60px</code>
-                           <code className="text-xs text-zinc-500 block">blendMode: difference</code>
-                           <code className="text-xs text-zinc-500 block">opacity: 0.6-0.9</code>
-                        </div>
-                        <div className="bg-black/30 rounded-xl p-4 border border-blue-500/10">
-                           <h4 className="font-bold text-blue-400 mb-2 text-sm">{t('creation.anim_title')}</h4>
-                           <code className="text-xs text-zinc-500 block">speed: 2-8</code>
-                           <code className="text-xs text-zinc-500 block">flow: 1-5</code>
-                           <code className="text-xs text-zinc-500 block">pulse: 0-10</code>
-                        </div>
-                     </div>
+                 
+                 {/* Mode-specific Examples with Sliders */}
+                 <div className="grid md:grid-cols-3 gap-4">
+                    {/* Motor Boreal Panel */}
+                    <div className="bg-black/30 rounded-xl p-5 border border-purple-500/10">
+                       <h4 className="font-bold text-purple-400 mb-4 text-sm">{t('creation.boreal_title')}</h4>
+                       <div className="space-y-4">
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">blur</span>
+                                <span className="text-purple-400 font-mono">120px</span>
+                             </div>
+                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style={{width: '75%'}} />
+                             </div>
+                          </div>
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">opacity</span>
+                                <span className="text-purple-400 font-mono">0.45</span>
+                             </div>
+                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style={{width: '45%'}} />
+                             </div>
+                          </div>
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">blendMode</span>
+                                <span className="text-purple-400 font-mono">screen</span>
+                             </div>
+                             <div className="flex gap-1 mt-1">
+                                {['normal', 'screen', 'overlay'].map(mode => (
+                                   <span key={mode} className={`text-[10px] px-2 py-0.5 rounded ${mode === 'screen' ? 'bg-purple-500/30 text-purple-300' : 'bg-zinc-800 text-zinc-500'}`}>{mode}</span>
+                                ))}
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    
+                    {/* Motor Chroma Panel */}
+                    <div className="bg-black/30 rounded-xl p-5 border border-green-500/10">
+                       <h4 className="font-bold text-green-400 mb-4 text-sm">{t('creation.chroma_title')}</h4>
+                       <div className="space-y-4">
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">blur</span>
+                                <span className="text-green-400 font-mono">40px</span>
+                             </div>
+                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{width: '50%'}} />
+                             </div>
+                          </div>
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">opacity</span>
+                                <span className="text-green-400 font-mono">0.75</span>
+                             </div>
+                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{width: '75%'}} />
+                             </div>
+                          </div>
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">blendMode</span>
+                                <span className="text-green-400 font-mono">difference</span>
+                             </div>
+                             <div className="flex gap-1 mt-1">
+                                {['multiply', 'difference', 'exclusion'].map(mode => (
+                                   <span key={mode} className={`text-[10px] px-2 py-0.5 rounded ${mode === 'difference' ? 'bg-green-500/30 text-green-300' : 'bg-zinc-800 text-zinc-500'}`}>{mode}</span>
+                                ))}
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    
+                    {/* Motor Animation Panel */}
+                    <div className="bg-black/30 rounded-xl p-5 border border-blue-500/10">
+                       <h4 className="font-bold text-blue-400 mb-4 text-sm">{t('creation.anim_title')}</h4>
+                       <div className="space-y-4">
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">speed</span>
+                                <span className="text-blue-400 font-mono">5</span>
+                             </div>
+                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{width: '62.5%'}} />
+                             </div>
+                          </div>
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">flow</span>
+                                <span className="text-blue-400 font-mono">3</span>
+                             </div>
+                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{width: '60%'}} />
+                             </div>
+                          </div>
+                          <div>
+                             <div className="flex justify-between text-xs mb-1">
+                                <span className="text-zinc-500">pulse</span>
+                                <span className="text-blue-400 font-mono">7</span>
+                             </div>
+                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{width: '70%'}} />
+                             </div>
+                          </div>
+                       </div>
+                    </div>
                  </div>
-                
-                {/* Explore Button */}
-                <Link 
-                  to="/creation/procedural"
-                  className="inline-flex items-center gap-3 mt-8 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:translate-x-2 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300"
-                >
-                  {t('creation.explore')}
-                  <ArrowRight size={20} />
-                </Link>
+                 
+                 {/* Explore Button - Moved to bottom, left-aligned */}
+                 <div className="pt-4">
+                    <Link 
+                      to="/creation/procedural"
+                      className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:translate-x-2 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300"
+                    >
+                      {t('creation.explore')}
+                      <ArrowRight size={20} />
+                    </Link>
+                 </div>
               </div>
            </div>
         </div>
