@@ -260,19 +260,19 @@ const ControlsInner: React.FC<ControlsProps> = ({
       {/* Header */}
       <div className="hidden md:block p-6 border-b border-white/10 relative overflow-hidden group">
         <img 
-          src="/header-animation.svg" 
+          src={`${import.meta.env.BASE_URL}header-animation.svg`}
           alt="" 
           className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none group-hover:opacity-50 transition-opacity duration-700" 
         />
         <div className="flex items-center justify-between relative z-10">
             <a 
-              href={import.meta.env.DEV ? 'http://localhost:5173' : '/'}
+              href={import.meta.env.DEV ? 'http://localhost:5173' : '/aurawall/'}
               className="flex items-center gap-3 hover:opacity-100 transition-all cursor-pointer group/logo relative"
               title={t('back_to_home')}
             >
               <div className="relative w-8 h-8">
                 <img 
-                  src="/icon-light.svg" 
+                  src={`${import.meta.env.BASE_URL}icon-light.svg`}
                   alt="AuraWall Logo" 
                   className="w-8 h-8 absolute inset-0 transition-all duration-300 group-hover/logo:opacity-0 group-hover/logo:scale-75"
                 />

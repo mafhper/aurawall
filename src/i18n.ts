@@ -21,6 +21,8 @@ i18n
         translation: {
           "app_title": "AuraWall",
           "app_subtitle": "Abstract Wallpaper Creator",
+          "back_to_home": "Back to Home",
+          "custom_size": "Custom Size",
           "tab_adjust": "Adjust",
           "tab_shapes": "Shapes",
           "tab_motion": "Motion",
@@ -113,6 +115,8 @@ i18n
         translation: {
           "app_title": "AuraWall",
           "app_subtitle": "Criador de Papéis de Parede Abstratos",
+          "back_to_home": "Voltar para Início",
+          "custom_size": "Tamanho Personalizado",
           "tab_adjust": "Ajustar",
           "tab_shapes": "Formas",
           "tab_motion": "Movimento",
