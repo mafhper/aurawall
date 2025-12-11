@@ -2,15 +2,18 @@
 import { WallpaperConfig, Shape, BlendMode, CollectionId, BackgroundConfig } from '../types';
 import { parseHsl, hexToHsl, toHslStr } from '../utils/colorUtils'; // Import from centralized utility
 
-export const shiftColor = (color: string | BackgroundConfig, dH: number, dS: number, dL: number): string | BackgroundConfig => {
+export function shiftColor(color: string, dH: number, dS: number, dL: number): string;
+export function shiftColor(color: BackgroundConfig, dH: number, dS: number, dL: number): BackgroundConfig;
+export function shiftColor(color: string | BackgroundConfig, dH: number, dS: number, dL: number): string | BackgroundConfig;
+export function shiftColor(color: string | BackgroundConfig, dH: number, dS: number, dL: number): string | BackgroundConfig {
   if (typeof color !== 'string') {
     // If background config, shift the primary color (simplification)
     // Ideally we would shift all colors, but let's start with color1
     return {
       ...color,
-      color1: shiftColor(color.color1, dH, dS, dL) as string,
-      color2: shiftColor(color.color2, dH, dS, dL) as string,
-      color3: color.color3 ? shiftColor(color.color3, dH, dS, dL) as string : undefined
+      color1: shiftColor(color.color1, dH, dS, dL),
+      color2: shiftColor(color.color2, dH, dS, dL),
+      color3: color.color3 ? shiftColor(color.color3, dH, dS, dL) : undefined
     };
   }
 
@@ -20,7 +23,7 @@ export const shiftColor = (color: string | BackgroundConfig, dH: number, dS: num
     s: hsl.s + dS,
     l: hsl.l + dL
   });
-};
+}
 
 const jitter = (val: number, amount: number) => val + (Math.random() * amount - (amount / 2));
 const clamp = (val: number, min: number, max: number) => Math.min(max, Math.max(min, val));

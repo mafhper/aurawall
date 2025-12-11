@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
-import { WallpaperConfig, Shape, BlendMode, CollectionId, AnimationSettings, VignetteSettings, AppPreferences } from '../types';
+import { WallpaperConfig, Shape, BlendMode, CollectionId, AnimationSettings, VignetteSettings, AppPreferences, BackgroundConfig } from '../types';
 import { EXPORT_SIZES, PRESETS } from '../constants';
 import WallpaperRenderer from './WallpaperRenderer';
 import { FavoriteItem } from '../hooks/useFavorites';
