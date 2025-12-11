@@ -208,7 +208,10 @@ export default function Home() {
              {/* Boreal Card */}
              <div className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-purple-500/50 transition-all duration-700 shadow-2xl">
                {/* Background */}
-               <div className="absolute inset-0 bg-[url('/bg-boreal.svg')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" />
+               <div 
+                 className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
+                 style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg-boreal.svg)` }}
+               />
                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
                
                <div className="absolute inset-0 p-10 flex flex-col justify-end">
@@ -225,7 +228,10 @@ export default function Home() {
              {/* Chroma Card */}
              <div className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-green-500/50 transition-all duration-700 shadow-2xl">
                {/* Background */}
-               <div className="absolute inset-0 bg-[url('/bg-chroma.svg')] bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" />
+               <div 
+                 className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
+                 style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg-chroma.svg)` }}
+               />
                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
                
                <div className="absolute inset-0 p-10 flex flex-col justify-end">

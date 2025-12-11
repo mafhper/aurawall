@@ -21,7 +21,7 @@ export default function CreationChroma() {
         <div 
           className="absolute inset-0"
           style={{
-            backgroundImage: 'url(/bg-chroma.svg)',
+            backgroundImage: `url(${import.meta.env.BASE_URL}bg-chroma.svg)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
