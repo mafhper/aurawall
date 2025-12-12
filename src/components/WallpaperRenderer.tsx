@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo, memo } from 'react';
 import { WallpaperConfig } from '../types';
 import { getBlobPath } from '../utils/blobUtils';
 import { DEFAULT_VIGNETTE } from '../constants';
-import { shiftColor } from '../services/variationService';
+import { shiftColor } from '../utils/engineUtils';
 
 interface WallpaperRendererProps {
   config: WallpaperConfig;

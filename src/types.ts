@@ -73,7 +73,7 @@ export interface WallpaperConfig {
   vignette?: VignetteSettings;
 }
 
-export type CollectionId = 'boreal' | 'chroma';
+export type CollectionId = string;
 
 export interface Preset {
   id: string;
@@ -94,4 +94,22 @@ export interface AppPreferences {
   format: 'jpg' | 'png';
   quality: number; // 0.1 to 1.0
   filenamePrefix: string;
+}
+
+export interface VariationRule {
+  name: string;
+  transform: (config: WallpaperConfig) => WallpaperConfig;
+}
+
+export interface EngineDefinition {
+  id: string;
+  meta: {
+    name: string;
+    description: string;
+    tagline: string;
+    promoImage?: string;
+  };
+  defaults: Partial<WallpaperConfig>;
+  randomizer: (currentConfig: WallpaperConfig, options: { isGrainLocked: boolean }) => WallpaperConfig;
+  variations: VariationRule[];
 }

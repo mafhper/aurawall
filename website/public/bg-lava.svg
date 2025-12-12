@@ -1,0 +1,82 @@
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: hsl(260, 20%, 10%)">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-lava-1765523114298-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-17.5%, -12.5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(12.5%, -20%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-lava-1765523114298-0 {
+          transform-origin: 35.56070616210613% 81.4068683037691%;
+          animation: move-lava-1765523114298-0 8s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-lava-1765523114298-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-17.5%, 12.5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(12.5%, 20%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-lava-1765523114298-1 {
+          transform-origin: 51.71291929903255% 82.98519741837623%;
+          animation: move-lava-1765523114298-1 9.200000000000001s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-lava-1765523114298-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(17.5%, 12.5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-12.5%, 20%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-lava-1765523114298-2 {
+          transform-origin: 63.38750390626863% 33.6781126037266%;
+          animation: move-lava-1765523114298-2 10.4s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.0015" numOctaves="3" stitchTiles="stitch">
+                
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.15" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-lava-1765523114298-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-lava-1765523114298-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-lava-1765523114298-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="hsl(260, 20%, 10%)" />
+    <g><path id="shape-lava-1765523114298-0" d="M 2187.003752755708 1128.450519118681 C 2187.003752755708 1433.1434565918576 1449.4526571363997 2171.3708184105417 1128.450519118681 2171.3708184105417 C 807.4483811009625 2171.3708184105417 260.9909246493963 1433.1434565918576 260.9909246493962 1128.450519118681 C 260.99092464939616 823.7575816455046 807.4483811009623 343.21319357148286 1128.4505191186809 343.21319357148286 C 1449.4526571363995 343.21319357148286 2187.003752755708 823.7575816455046 2187.003752755708 1128.450519118681 Z" fill="hsl(262.14047835470797, 86.78039990181288%, 53.54421916141828%)" opacity="0.8" filter="url(#blur-lava-1765523114298-0)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-445.68496080624334px, -249.2563414379748px)"></path>
+<path id="shape-lava-1765523114298-1" d="M 2493.1367056794616 1375.966519972962 C 2493.1367056794616 1755.1343490569575 1731.5567010935617 2314.003635910891 1375.966519972962 2314.003635910891 C 1020.3763388523623 2314.003635910891 359.5956189558637 1755.1343490569577 359.59561895586364 1375.9665199729623 C 359.5956189558636 996.7986908889668 1020.3763388523621 38.99666140691787 1375.9665199729618 38.99666140691784 C 1731.5567010935615 38.9966614069178 2493.1367056794616 996.7986908889666 2493.1367056794616 1375.966519972962 Z" fill="hsl(310.25503668372335, 84.00733987148591%, 64.11400375275015%)" opacity="0.8" filter="url(#blur-lava-1765523114298-1)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-383.0784694315372px, -479.72638785449874px)"></path>
+<path id="shape-lava-1765523114298-2" d="M 2658.1287729102028 1412.30293039886 C 2658.1287729102028 1786.184009891436 1809.9526970104935 2749.3911338180824 1412.30293039886 2749.3911338180824 C 1014.6531637872267 2749.3911338180824 272.2301732404031 1786.1840098914363 272.230173240403 1412.3029303988603 C 272.23017324040296 1038.4218509062844 1014.6531637872265 506.1046568626271 1412.3029303988599 506.10465686262705 C 1809.9526970104932 506.104656862627 2658.1287729102028 1038.4218509062841 2658.1287729102028 1412.30293039886 Z" fill="hsl(317.3664608391819, 98.78112959836142%, 69.73538031470125%)" opacity="0.8" filter="url(#blur-lava-1765523114298-2)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-195.26285539850255px, -1048.5793142786129px)"></path></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

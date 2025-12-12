@@ -1,0 +1,181 @@
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: hsl(210.66517809148266, 60%, 10%)">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-ocean-1765523115260-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, -10%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(10%, -16%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-ocean-1765523115260-0 {
+          transform-origin: 8.625984294684685% 57.141127446070676%;
+          animation: move-ocean-1765523115260-0 10.666666666666668s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765523115260-0 10.666666666666668s ease-in-out infinite alternate, hue-rotate 24s linear infinite; animation-delay: 0s, 0s;
+        }
+      
+        @keyframes move-ocean-1765523115260-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, 10%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(10%, 16%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-ocean-1765523115260-1 {
+          transform-origin: 54.93448245568957% 79.40979608633073%;
+          animation: move-ocean-1765523115260-1 12.266666666666667s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765523115260-1 12.266666666666667s ease-in-out infinite alternate, hue-rotate 32.400000000000006s linear infinite; animation-delay: -9s, -1.5s;
+        }
+      
+        @keyframes move-ocean-1765523115260-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(14%, 10%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-10%, 16%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-ocean-1765523115260-2 {
+          transform-origin: 3.0241967049373875% 68.03421026622651%;
+          animation: move-ocean-1765523115260-2 13.866666666666667s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765523115260-2 13.866666666666667s ease-in-out infinite alternate, hue-rotate 28.8s linear infinite; animation-delay: -8s, -3s;
+        }
+      
+        @keyframes move-ocean-1765523115260-3 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(14%, 10%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-10%, 16%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-ocean-1765523115260-3 {
+          transform-origin: 61.192035987474355% 71.31404943219609%;
+          animation: move-ocean-1765523115260-3 15.466666666666669s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765523115260-3 15.466666666666669s ease-in-out infinite alternate, hue-rotate 25.200000000000003s linear infinite; animation-delay: -7s, -4.5s;
+        }
+      
+        @keyframes move-ocean-1765523115260-4 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, 10%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(10%, 16%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-ocean-1765523115260-4 {
+          transform-origin: 74.7730897542451% 53.406093279263104%;
+          animation: move-ocean-1765523115260-4 11.733333333333336s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765523115260-4 11.733333333333336s ease-in-out infinite alternate, hue-rotate 33.6s linear infinite; animation-delay: -6s, -1s;
+        }
+      
+        @keyframes move-ocean-1765523115260-5 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, -10%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(10%, -16%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-ocean-1765523115260-5 {
+          transform-origin: 91.97233347326947% 80.00043465465369%;
+          animation: move-ocean-1765523115260-5 13.333333333333334s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765523115260-5 13.333333333333334s ease-in-out infinite alternate, hue-rotate 30s linear infinite; animation-delay: -5s, -2.5s;
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.0015" numOctaves="3" stitchTiles="stitch">
+                
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.15" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-ocean-1765523115260-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765523115260-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765523115260-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765523115260-3" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765523115260-4" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765523115260-5" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="hsl(210.66517809148266, 60%, 10%)" />
+    <g><path id="shape-ocean-1765523115260-0" d="M 2215.029522169617 1343.9430457404264 C 2207.678524762282 1694.2817660610544 2166.6140690838156 2196.134557170812 1928.6945169724122 2356.762303714876 C 1690.7749648610088 2517.39005025894 1073.852458254416 2476.512734667219 787.5122095011966 2307.7095250048105 C 501.1719607479771 2138.906315342402 203.26021004117447 1652.3938086561802 210.6530244530952 1343.9430457404267 C 218.04583886501595 1035.492282824673 538.1778498121664 638.5404581685084 831.8690959727211 457.0049475102886 C 1125.5603421332758 275.46943685206884 1742.27376371694 106.90696541941813 1972.8005014164228 254.72998179110778 C 2203.3272391159053 402.5529981627974 2222.380519576952 993.6043254197984 2215.029522169617 1343.9430457404264 Z" fill="hsl(224.75999863865718, 61.034999686653%, 24.524420762076904%)" opacity="0.6" filter="url(#blur-ocean-1765523115260-0)" style="mix-blend-mode: overlay; transform-box: fill-box; transform: translate(-1178.3241472824805px, -726.8188693228632px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(224.75999863865718, 61.034999686653%, 24.524420762076904%);hsl(284.7599986386572, 61%, 24%);hsl(344.7599986386572, 61%, 24%);hsl(224.75999863865718, 61.034999686653%, 24.524420762076904%)"
+                dur="24s"
+                begin="0s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765523115260-1" d="M 1808.9868549151965 1035.1358014508269 C 1788.1916773747746 1270.204547798796 1587.1094777343696 1496.7835604755778 1379.9012807757645 1632.2871283374561 C 1172.6930838171593 1767.7906961993344 728.8743640992395 1947.6824297698688 565.7376731635659 1848.1572086220972 C 402.6009822278922 1748.6319874743256 397.44076960407887 1299.8376390706212 401.0811351617223 1035.1358014508269 C 404.7215007193657 770.4339638310325 403.64799803333074 395.4897081035289 587.5798665094264 259.9461829033313 C 771.5117349855221 124.40265770313368 1301.1045146173349 92.67638049172521 1504.6723460182966 221.87465024964115 C 1708.2401774192583 351.07292000755706 1829.7820324556185 800.0670551028577 1808.9868549151965 1035.1358014508269 Z" fill="hsl(202.4232439736368, 74.94922714890782%, 42.64271088357098%)" opacity="0.6" filter="url(#blur-ocean-1765523115260-1)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(19.606261698412936px, -177.51000371845498px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(202.4232439736368, 74.94922714890782%, 42.64271088357098%);hsl(262.4232439736368, 74%, 42%);hsl(322.4232439736368, 74%, 42%);hsl(202.4232439736368, 74.94922714890782%, 42.64271088357098%)"
+                dur="32.400000000000006s"
+                begin="-1.5s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765523115260-2" d="M 1368.2011743095004 764.770870493261 C 1368.2011743095004 978.5103045724209 968.4753299132192 1355.8527895269094 764.770870493261 1355.8527895269094 C 561.0664110733028 1355.8527895269094 145.97441778975158 978.510304572421 145.97441778975156 764.7708704932611 C 145.97441778975153 551.0314364141012 561.0664110733027 73.41618505195017 764.7708704932609 73.41618505195015 C 968.4753299132191 73.41618505195014 1368.2011743095004 551.0314364141011 1368.2011743095004 764.770870493261 Z" fill="hsl(218.7182832764174, 78.0070910236984%, 44.948829217982585%)" opacity="0.6" filter="url(#blur-ocean-1765523115260-2)" style="mix-blend-mode: overlay; transform-box: fill-box; transform: translate(-706.7062937584632px, -30.001399618014602px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(218.7182832764174, 78.0070910236984%, 44.948829217982585%);hsl(278.7182832764174, 78%, 44%);hsl(338.7182832764174, 78%, 44%);hsl(218.7182832764174, 78.0070910236984%, 44.948829217982585%)"
+                dur="28.8s"
+                begin="-3s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765523115260-3" d="M 850.3105626311282 508.84142836967965 C 850.3116186275834 637.3038520742399 735.1479315799734 862.1456872709408 634.064511421331 894.2384495520764 C 532.9810912626886 926.331211833212 325.35357081938344 809.7123648366648 243.81004167927392 701.3980020564934 C 162.2665125391644 593.083639276322 79.76198095345289 340.6746219930109 144.80333658067389 244.35227287104783 C 209.84469220789487 148.0299237490848 516.4736377675242 79.38238140827644 634.0581754425999 123.46390732471508 C 751.6427131176756 167.54543324115372 850.309506634673 380.3790046651194 850.3105626311282 508.84142836967965 Z" fill="hsl(200.77029090024567, 81.01841819661348%, 26.450428268817774%)" opacity="0.6" filter="url(#blur-ocean-1765523115260-3)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(666.0456625898281px, 261.350305498038px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(200.77029090024567, 81.01841819661348%, 26.450428268817774%);hsl(260.77029090024564, 81%, 26%);hsl(320.77029090024564, 81%, 26%);hsl(200.77029090024567, 81.01841819661348%, 26.450428268817774%)"
+                dur="25.200000000000003s"
+                begin="-4.5s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765523115260-4" d="M 1750.4803799916626 913.7009409807036 C 1745.1409861351249 1152.5646910059882 1368.6338739555606 1509.3175059493 1130.5173707088952 1580.9932973442742 C 892.4008674622298 1652.6690887392483 477.3236416065058 1541.7247713682025 321.7813605116703 1343.755689350548 C 166.23907941683476 1145.7866073328935 57.134955250473325 592.5029539313439 197.2636841398819 393.1788052383471 C 337.3924130292904 193.85465654535028 903.6842845394916 61.05710790217442 1162.5537338481217 147.81079719256718 C 1421.4231831567517 234.56448648295992 1755.8197738482004 674.8371909554191 1750.4803799916626 913.7009409807036 Z" fill="hsl(203.28912864328552, 84.04890782359877%, 22.782685983973316%)" opacity="0.6" filter="url(#blur-ocean-1765523115260-4)" style="mix-blend-mode: overlay; transform-box: fill-box; transform: translate(521.9423823008023px, -336.91513356466214px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(203.28912864328552, 84.04890782359877%, 22.782685983973316%);hsl(263.2891286432855, 84%, 22%);hsl(323.2891286432855, 84%, 22%);hsl(203.28912864328552, 84.04890782359877%, 22.782685983973316%)"
+                dur="33.6s"
+                begin="-1s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765523115260-5" d="M 2097.615986463916 1104.3802132973956 C 2083.4512164862495 1320.8396080985087 1662.9746350697592 1575.1405255999396 1436.8045729355338 1680.1560938641996 C 1210.6345108013084 1785.1716621284597 912.6455060083323 1830.4362696440905 740.595613658563 1734.4736228829565 C 568.5457213087938 1638.5109761218225 414.2824837058134 1331.3460693379002 404.5052188369183 1104.3802132973956 C 394.7279539680232 877.414357256891 495.7173621177566 493.175234679908 681.9320244451926 372.6784866399288 C 868.1466867726286 252.1817385999496 1285.845865798414 259.44943728127595 1521.7931928015346 381.3997250575204 C 1757.7405198046552 503.3500128337649 2111.780756441583 887.9208184962823 2097.615986463916 1104.3802132973956 Z" fill="hsl(197.00167890247928, 85.03855527552909%, 48.885818831244656%)" opacity="0.6" filter="url(#blur-ocean-1765523115260-5)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(661.4885893893784px, -240.37551902713574px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(197.00167890247928, 85.03855527552909%, 48.885818831244656%);hsl(257.0016789024793, 85%, 48%);hsl(317.0016789024793, 85%, 48%);hsl(197.00167890247928, 85.03855527552909%, 48.885818831244656%)"
+                dur="30s"
+                begin="-2.5s"
+                repeatCount="indefinite"
+            /></path></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

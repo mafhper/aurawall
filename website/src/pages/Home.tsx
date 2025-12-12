@@ -6,6 +6,7 @@ import { PRESETS, DEFAULT_CONFIG } from '../../../src/constants';
 import GalleryCard from '../components/GalleryCard';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { getAppUrl } from '../utils/appUrl';
+import { encodeConfigCompact } from '../../../src/utils/compactUrlEncoder';
 
 // Synonyms for the random button
 const RANDOM_ACTIONS = [
@@ -65,6 +66,16 @@ export default function Home() {
     return [...PRESETS].sort(() => Math.random() - 0.5).slice(0, 3);
   }, []);
 
+  const launchUrl = useMemo(() => {
+    const fullHdConfig = {
+      ...heroConfig,
+      width: 1920,
+      height: 1080
+    };
+    const encoded = encodeConfigCompact(fullHdConfig);
+    return `${getAppUrl()}#c=${encoded}`;
+  }, [heroConfig]);
+
   return (
     <div className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30">
       
@@ -122,7 +133,7 @@ export default function Home() {
              </button>
 
              <a 
-               href={getAppUrl()} 
+               href={launchUrl} 
                className="bg-white text-black hover:bg-zinc-200 font-bold py-4 px-10 rounded-full shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all transform hover:scale-105 hover:shadow-white/20 flex items-center justify-center gap-2 min-w-[180px]"
              >
                {t('hero.cta_primary')}
@@ -248,10 +259,10 @@ export default function Home() {
 
           <div className="mt-16 text-center">
              <Link 
-               to="/creation" 
+               to="/gallery" 
                className="inline-flex items-center gap-3 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
              >
-               {t('home_compare.btn')}
+               Ver Todos os Motores
                <ArrowRight size={20} />
              </Link>
           </div>
@@ -262,8 +273,10 @@ export default function Home() {
       <div className="py-24 bg-gradient-to-b from-black via-zinc-950/50 to-black">
         <div className="container mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">{t('home_gallery.title')}</h2>
-            <p className="text-zinc-500 max-w-xl mx-auto">{t('home_gallery.desc')}</p>
+            <h2 className="text-4xl font-bold mb-4">Coleção Expandida</h2>
+            <p className="text-zinc-500 max-w-xl mx-auto">
+              Explore 9 motores de geração distintos, de ondas oceânicas a falhas digitais e estética Bauhaus.
+            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
@@ -345,7 +358,7 @@ export default function Home() {
                 </div>
                 
                 <a 
-                  href={getAppUrl()} 
+                  href={launchUrl} 
                   className="inline-flex items-center gap-3 bg-white text-black hover:bg-zinc-100 font-bold py-5 px-14 rounded-full text-lg shadow-[0_0_80px_-10px_rgba(255,255,255,0.5)] transition-all transform hover:scale-105 hover:shadow-[0_0_100px_-5px_rgba(168,85,247,0.4)]"
                 >
                   {t('home_cta.btn')}

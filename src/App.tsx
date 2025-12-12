@@ -4,6 +4,7 @@ import { Controls } from './components/Controls';
 import { WallpaperConfig, Shape, BlendMode, CollectionId, AppPreferences } from './types';
 import { DEFAULT_CONFIG, PRESETS, DEFAULT_PREFERENCES } from './constants';
 import { generateVariations } from './services/variationService';
+import { getEngine } from './engines';
 import { ZoomIn, ZoomOut, Maximize, X } from 'lucide-react';
 import CodeExportModal from './components/CodeExportModal';
 import { useTranslation } from 'react-i18next';
@@ -37,6 +38,8 @@ export default function App() {
   const [variations, setVariations] = useState<WallpaperConfig[]>([]);
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
   const [activeCollection, setActiveCollection] = useState<CollectionId>('boreal');
+  // Default enabled engines (3 slots)
+  const [enabledEngines, setEnabledEngines] = useState<string[]>(['boreal', 'chroma', 'lava']);
   const [isGrainLocked, setIsGrainLocked] = useState(false);
   
   const [zoom, setZoom] = useState(0.4); // Preview scale
@@ -126,99 +129,13 @@ export default function App() {
   const handleRandomize = useCallback(() => {
     setSelectedPresetId('custom-random'); 
     
-    // Helper to create HSL string
-    const getHSL = (h: number, s: number, l: number) => `hsl(${h}, ${s}%, ${l}%)`;
+    const engine = getEngine(activeCollection);
     
-    const numShapes = Math.floor(Math.random() * 3) + 3; // 3 to 5 shapes
-    const newShapes: Shape[] = [];
-    const baseHue = Math.floor(Math.random() * 360);
-    
-    let baseColor = '';
-    
-    // Default to current values if locked
-    let noise = config.noise;
-    let noiseScale = config.noiseScale;
-
-    // --- STRATEGY SELECTION BASED ON COLLECTION ---
-    
-    if (activeCollection === 'boreal') {
-        // BOREAL RANDOMIZATION (Soft, Ethereal, Safe)
-        const isDarkTheme = Math.random() > 0.4;
-        
-        baseColor = isDarkTheme 
-          ? getHSL(baseHue, 40, Math.floor(Math.random() * 10) + 5) 
-          : getHSL(baseHue, 20, Math.floor(Math.random() * 10) + 88);
-        
-        if (!isGrainLocked) {
-           noise = Math.floor(Math.random() * 25) + 20;
-        }
-        
-        const safeBlendModes: BlendMode[] = isDarkTheme
-          ? ['screen', 'color-dodge', 'normal', 'lighten'] 
-          : ['multiply', 'overlay', 'normal', 'difference'];
-
-        // Generate Soft Shapes
-        for (let i = 0; i < numShapes; i++) {
-           const h = (baseHue + (i * 40)) % 360; // Analogous/Sequential
-           const s = Math.random() * 40 + 60;
-           const l = isDarkTheme ? Math.random() * 40 + 50 : Math.random() * 40 + 10;
-           
-           newShapes.push({
-             id: `rand-b-${Date.now()}-${i}`,
-             type: Math.random() > 0.7 ? 'blob' : 'circle', // Occasionally use blobs for boreal
-             x: Math.random() * 100,
-             y: Math.random() * 100,
-             size: Math.random() * 80 + 60,
-             color: getHSL(h, s, l),
-             opacity: Math.random() * 0.4 + 0.5,
-             blur: Math.random() * 60 + 60, // High Blur
-             blendMode: safeBlendModes[Math.floor(Math.random() * safeBlendModes.length)],
-             complexity: Math.floor(Math.random() * 4) + 4
-           });
-        }
-    } else {
-        // CHROMA RANDOMIZATION (Liquid, Acid, Sharp, Distorted)
-        // Usually darker bases work better for "liquid light"
-        baseColor = getHSL(baseHue, 10, 5); // Very dark base
-        
-        if (!isGrainLocked) {
-          noise = Math.floor(Math.random() * 40) + 30; // Higher grain
-          noiseScale = Math.random() * 2 + 2; // Coarser grain
-        }
-
-        const acidModes: BlendMode[] = ['difference', 'exclusion', 'hard-light', 'color-dodge', 'overlay'];
-
-        for (let i = 0; i < numShapes; i++) {
-           // More random hue jumps for acid look
-           const h = Math.random() * 360; 
-           const s = 100; // Max saturation
-           const l = 50; 
-           
-           newShapes.push({
-             id: `rand-c-${Date.now()}-${i}`,
-             type: Math.random() > 0.3 ? 'blob' : 'circle', // Prefer blobs for chroma
-             x: Math.random() * 80 + 10, // Keep more centered
-             y: Math.random() * 80 + 10,
-             size: Math.random() * 100 + 50,
-             color: getHSL(h, s, l),
-             opacity: Math.random() * 0.5 + 0.5,
-             blur: Math.random() * 40 + 10, // LOWER Blur for definition
-             blendMode: acidModes[Math.floor(Math.random() * acidModes.length)],
-             complexity: Math.floor(Math.random() * 5) + 5
-           });
-        }
+    if (engine && engine.randomizer) {
+        const randomConfig = engine.randomizer(config, { isGrainLocked });
+        setConfig(randomConfig);
+        setVariations(generateVariations(randomConfig, activeCollection));
     }
-
-    const randomConfig = {
-      ...config, 
-      baseColor,
-      noise, 
-      noiseScale,
-      shapes: newShapes
-    };
-
-    setConfig(randomConfig);
-    setVariations(generateVariations(randomConfig, activeCollection));
   }, [config, activeCollection, isGrainLocked]);
 
   const handleResize = useCallback((width: number, height: number) => {
@@ -342,6 +259,8 @@ export default function App() {
           selectedPresetId={selectedPresetId}
           activeCollection={activeCollection}
           setActiveCollection={setActiveCollection}
+          enabledEngines={enabledEngines}
+          setEnabledEngines={setEnabledEngines}
           setConfig={setConfig}
           undo={undo}
           redo={redo}

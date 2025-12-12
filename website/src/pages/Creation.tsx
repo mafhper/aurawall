@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, Zap, Play, ArrowRight, Shuffle, Scale, Palette, Aperture, Activity, Layers, Box, Cpu } from 'lucide-react';
+import { Sparkles, Play, ArrowRight, Shuffle, Scale, Palette, Aperture, Activity, Layers, Box, Cpu } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { PRESETS } from '../../../src/constants';
 
@@ -17,23 +17,20 @@ export default function Creation() {
 
   const creationModes = [
     {
-      id: 'boreal',
-      path: '/creation/boreal',
+      id: 'engines',
+      path: '/creation/engines',
       icon: Sparkles,
-      config: getPresetConfig('angel-aura'), // Boreal representative
+      titleKey: 'nav.creation',
+      descKey: t('creation.engines_desc'),
+      config: getPresetConfig('angel-aura'), // Representative
       accentColor: 'purple',
-    },
-    {
-      id: 'chroma',
-      path: '/creation/chroma',
-      icon: Zap,
-      config: getPresetConfig('liquid-metal'), // Chroma representative
-      accentColor: 'green',
     },
     {
       id: 'animation',
       path: '/creation/animation',
       icon: Play,
+      titleKey: 'creation.anim_title',
+      descKey: t('creation.animation_proc_desc'),
       // Custom high-energy config for Animation
       config: useMemo(() => {
         const base = getPresetConfig('soul-glow');
@@ -73,13 +70,11 @@ export default function Creation() {
 
             const accentClasses = {
               purple: 'text-purple-400 border-purple-500/30 hover:border-purple-400/50',
-              green: 'text-green-400 border-green-500/30 hover:border-green-400/50',
               blue: 'text-blue-400 border-blue-500/30 hover:border-blue-400/50',
             };
             
             const buttonBg = {
                purple: 'bg-purple-500/10 hover:bg-purple-500/20 text-purple-300',
-               green: 'bg-green-500/10 hover:bg-green-500/20 text-green-300',
                blue: 'bg-blue-500/10 hover:bg-blue-500/20 text-blue-300',
             };
 
@@ -93,6 +88,10 @@ export default function Creation() {
                 flow: mode.id === 'animation' ? 5 : (isHovered ? 3 : 0),
               }
             }), [mode.config, isHovered, mode.id]);
+
+            // Custom Title/Desc handling because of key changes
+            const title = mode.id === 'engines' ? 'Motores de Criação' : t(mode.titleKey);
+            const desc = mode.id === 'engines' ? mode.descKey : t('showcase.animation_desc'); // Quick fallback for animation desc
 
             return (
               <div 
@@ -112,7 +111,7 @@ export default function Creation() {
                      <WallpaperRenderer 
                         config={displayConfig}
                         className="w-full h-full block"
-                        lowQuality={!isHovered && mode.id !== 'animation'} // Animation mode always high quality? Or maybe toggle too. usage: lowQuality disables filters/animation
+                        lowQuality={!isHovered && mode.id !== 'animation'}
                      />
                    </div>
                    
@@ -130,19 +129,12 @@ export default function Creation() {
                 {/* Text Content */}
                 <div className="w-full lg:w-1/2 space-y-8">
                   <div className="space-y-4">
-                     <h2 className="text-5xl font-bold">{t(`showcase.${mode.id}_title`)}</h2>
+                     <h2 className="text-5xl font-bold">{title}</h2>
                      <p className="text-2xl text-zinc-300 leading-relaxed max-w-lg">
-                       {t(`showcase.${mode.id}_desc`)}
+                       {desc}
                      </p>
                   </div>
                   
-                  {/* Additional Summary/Details as requested */}
-                  <div className="space-y-6 pl-6 border-l-2 border-white/10">
-                     <p className="text-zinc-500 leading-relaxed">
-                       {t(`modes.${mode.id}_desc`)}
-                     </p>
-                  </div>
-
                   <Link 
                     to={mode.path}
                     className={`inline-flex items-center gap-3 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:translate-x-2 ${buttonBg[mode.accentColor as keyof typeof buttonBg]}`}
@@ -318,115 +310,6 @@ export default function Creation() {
                         <p className="text-zinc-400 leading-relaxed">
                             {t('creation.custom_desc')}
                         </p>
-                    </div>
-                 </div>
-                 
-                 {/* Mode-specific Examples with Sliders */}
-                 <div className="grid md:grid-cols-3 gap-4">
-                    {/* Motor Boreal Panel */}
-                    <div className="bg-black/30 rounded-xl p-5 border border-purple-500/10">
-                       <h4 className="font-bold text-purple-400 mb-4 text-sm">{t('creation.boreal_title')}</h4>
-                       <div className="space-y-4">
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">blur</span>
-                                <span className="text-purple-400 font-mono">120px</span>
-                             </div>
-                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style={{width: '75%'}} />
-                             </div>
-                          </div>
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">opacity</span>
-                                <span className="text-purple-400 font-mono">0.45</span>
-                             </div>
-                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" style={{width: '45%'}} />
-                             </div>
-                          </div>
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">blendMode</span>
-                                <span className="text-purple-400 font-mono">screen</span>
-                             </div>
-                             <div className="flex gap-1 mt-1">
-                                {['normal', 'screen', 'overlay'].map(mode => (
-                                   <span key={mode} className={`text-[10px] px-2 py-0.5 rounded ${mode === 'screen' ? 'bg-purple-500/30 text-purple-300' : 'bg-zinc-800 text-zinc-500'}`}>{mode}</span>
-                                ))}
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    
-                    {/* Motor Chroma Panel */}
-                    <div className="bg-black/30 rounded-xl p-5 border border-green-500/10">
-                       <h4 className="font-bold text-green-400 mb-4 text-sm">{t('creation.chroma_title')}</h4>
-                       <div className="space-y-4">
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">blur</span>
-                                <span className="text-green-400 font-mono">40px</span>
-                             </div>
-                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{width: '50%'}} />
-                             </div>
-                          </div>
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">opacity</span>
-                                <span className="text-green-400 font-mono">0.75</span>
-                             </div>
-                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{width: '75%'}} />
-                             </div>
-                          </div>
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">blendMode</span>
-                                <span className="text-green-400 font-mono">difference</span>
-                             </div>
-                             <div className="flex gap-1 mt-1">
-                                {['multiply', 'difference', 'exclusion'].map(mode => (
-                                   <span key={mode} className={`text-[10px] px-2 py-0.5 rounded ${mode === 'difference' ? 'bg-green-500/30 text-green-300' : 'bg-zinc-800 text-zinc-500'}`}>{mode}</span>
-                                ))}
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    
-                    {/* Motor Animation Panel */}
-                    <div className="bg-black/30 rounded-xl p-5 border border-blue-500/10">
-                       <h4 className="font-bold text-blue-400 mb-4 text-sm">{t('creation.anim_title')}</h4>
-                       <div className="space-y-4">
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">speed</span>
-                                <span className="text-blue-400 font-mono">5</span>
-                             </div>
-                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{width: '62.5%'}} />
-                             </div>
-                          </div>
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">flow</span>
-                                <span className="text-blue-400 font-mono">3</span>
-                             </div>
-                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{width: '60%'}} />
-                             </div>
-                          </div>
-                          <div>
-                             <div className="flex justify-between text-xs mb-1">
-                                <span className="text-zinc-500">pulse</span>
-                                <span className="text-blue-400 font-mono">7</span>
-                             </div>
-                             <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{width: '70%'}} />
-                             </div>
-                          </div>
-                       </div>
                     </div>
                  </div>
                  

@@ -39,6 +39,21 @@ import { hslToHex } from '../utils/colorUtils';
 import { useTranslation } from 'react-i18next';
 import PreferencesMenu from './PreferencesMenu'; 
 
+import { getAllEngines, getEngine } from '../engines';
+import EngineGallery from './EngineGallery';
+
+const COLLECTION_ICONS: Record<string, any> = {
+  boreal: Wind,
+  chroma: Zap,
+  lava: Zap, // Reuse Zap or find better
+  midnight: Star,
+  geometrica: Aperture,
+  glitch: FileCode,
+  sakura: Wind,
+  ember: Sparkles,
+  oceanic: Wind // Using Wind as placeholder for Waves/Water
+};
+
 interface ControlsProps {
   config: WallpaperConfig;
   variations?: WallpaperConfig[];
@@ -47,6 +62,8 @@ interface ControlsProps {
   selectedPresetId?: string | null;
   activeCollection: CollectionId;
   setActiveCollection: (c: CollectionId) => void;
+  enabledEngines: string[];
+  setEnabledEngines: (engines: string[]) => void;
   setConfig: React.Dispatch<React.SetStateAction<WallpaperConfig>>;
   undo: () => void;
   redo: () => void;
@@ -116,6 +133,8 @@ const ControlsInner: React.FC<ControlsProps> = ({
   selectedPresetId,
   activeCollection,
   setActiveCollection,
+  enabledEngines,
+  setEnabledEngines,
   setConfig,
   undo,
   redo,
@@ -140,6 +159,23 @@ const ControlsInner: React.FC<ControlsProps> = ({
   const [activeTab, setActiveTab] = useState<'adjust' | 'shapes' | 'sizes' | 'motion' | 'preferences' | 'favorites'>('adjust');
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [copied, setCopied] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
+  const [slotToReplace, setSlotToReplace] = useState<string | null>(null);
+
+  const handleOpenGallery = (currentEngineId: string) => {
+    setSlotToReplace(currentEngineId);
+    setShowGallery(true);
+  };
+
+  const handleEquipEngine = (newEngineId: string) => {
+    if (slotToReplace) {
+        const newEnabled = enabledEngines.map(id => id === slotToReplace ? newEngineId : id);
+        setEnabledEngines(newEnabled);
+        setActiveCollection(newEngineId);
+        setShowGallery(false);
+        setSlotToReplace(null);
+    }
+  };
 
   // Filter categories based on active collection
   const collectionPresets = PRESETS.filter(p => p.collection === activeCollection);
@@ -414,27 +450,47 @@ const ControlsInner: React.FC<ControlsProps> = ({
         {activeTab === 'adjust' && (
           <div> {/* Container for all 'adjust' tab content */}
             {/* Collection Switcher */}
-            <div className="bg-zinc-900 rounded-lg p-1 flex gap-1 border border-white/10 mb-6">
-              <button
-                onClick={() => setActiveCollection('boreal')}
-                className={`flex-1 py-2 rounded text-xs font-medium flex items-center justify-center gap-2 transition-all ${
-                  activeCollection === 'boreal' 
-                    ? 'bg-zinc-800 text-purple-300 shadow-sm border border-purple-500/30' 
-                    : 'text-zinc-500 hover:text-zinc-300'
-                }`}
-              >
-                <Wind size={14} /> {t('collection_boreal')}
-              </button>
-              <button
-                onClick={() => setActiveCollection('chroma')}
-                className={`flex-1 py-2 rounded text-xs font-medium flex items-center justify-center gap-2 transition-all ${
-                  activeCollection === 'chroma' 
-                    ? 'bg-zinc-800 text-green-300 shadow-sm border border-green-500/30' 
-                    : 'text-zinc-500 hover:text-zinc-300'
-                }`}
-              >
-                <Zap size={14} /> {t('collection_chroma')}
-              </button>
+            <div className="bg-zinc-900 rounded-lg p-1 flex gap-1 border border-white/10 mb-6 relative">
+              {enabledEngines.map(engineId => {
+                const engine = getEngine(engineId);
+                if (!engine) return null;
+
+                const Icon = COLLECTION_ICONS[engineId] || Sparkles;
+                const isActive = activeCollection === engineId;
+                
+                // Dynamic style based on ID 
+                let activeClass = 'bg-zinc-800 text-blue-300 shadow-sm border border-blue-500/30';
+                if (engineId === 'boreal') activeClass = 'bg-zinc-800 text-purple-300 shadow-sm border border-purple-500/30';
+                if (engineId === 'chroma') activeClass = 'bg-zinc-800 text-green-300 shadow-sm border border-green-500/30';
+                if (engineId === 'lava') activeClass = 'bg-zinc-800 text-orange-300 shadow-sm border border-orange-500/30';
+                if (engineId === 'midnight') activeClass = 'bg-zinc-800 text-indigo-300 shadow-sm border border-indigo-500/30';
+                if (engineId === 'glitch') activeClass = 'bg-zinc-800 text-pink-300 shadow-sm border border-pink-500/30';
+                if (engineId === 'oceanic') activeClass = 'bg-zinc-800 text-cyan-300 shadow-sm border border-cyan-500/30';
+
+                return (
+                  <div key={engineId} className="flex-1 relative group/btn">
+                    <button
+                        onClick={() => setActiveCollection(engineId)}
+                        className={`w-full py-2 rounded text-xs font-medium flex items-center justify-center gap-2 transition-all ${
+                        isActive ? activeClass : 'text-zinc-500 hover:text-zinc-300'
+                        }`}
+                    >
+                        <Icon size={14} /> <span className="hidden xl:inline">{engine.meta.name}</span>
+                        <span className="inline xl:hidden">{engine.meta.name.slice(0, 3)}</span>
+                    </button>
+                    <button 
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenGallery(engineId);
+                        }}
+                        className="absolute -top-2 -right-2 bg-zinc-700 text-white rounded-full p-1 opacity-0 group-hover/btn:opacity-100 hover:bg-purple-500 transition-all z-10 shadow-lg scale-75"
+                        title="Trocar motor"
+                    >
+                        <Settings2 size={10} />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Quick Actions (Random) */}
@@ -1265,6 +1321,14 @@ const ControlsInner: React.FC<ControlsProps> = ({
           <span className="inline sm:hidden">{t('export_jpg_short')}</span>
         </button>
       </div>
+
+      {showGallery && slotToReplace && (
+        <EngineGallery 
+          onClose={() => setShowGallery(false)}
+          onEquip={handleEquipEngine}
+          activeEngineId={slotToReplace}
+        />
+      )}
     </div>
   );
 };

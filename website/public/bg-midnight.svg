@@ -1,0 +1,367 @@
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: hsl(245.8134291290923, 30%, 4%)">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-nebula-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-nebula-0 {
+          transform-origin: 22.082371897250663% 85.67918273145416%;
+          animation: move-nebula-0 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-nebula-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-nebula-1 {
+          transform-origin: 84.38115011342697% 55.91792747705671%;
+          animation: move-nebula-1 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-nebula-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-nebula-2 {
+          transform-origin: 88.02501750733221% 95.80894501365047%;
+          animation: move-nebula-2 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      
+        @keyframes move-star-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-0 {
+          transform-origin: 86.4206891274298% 36.29832855243351%;
+          animation: move-star-0 4.640000000000001s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          
+        }
+      
+        @keyframes move-star-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-1 {
+          transform-origin: 97.14249141327109% 83.07398467417346%;
+          animation: move-star-1 3.5200000000000005s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          
+        }
+      
+        @keyframes move-star-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-2 {
+          transform-origin: 34.92021164604644% 78.0919291553688%;
+          animation: move-star-2 4s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          
+        }
+      
+        @keyframes move-star-3 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-3 {
+          transform-origin: 20.551093262935517% 53.684353989997206%;
+          animation: move-star-3 4.48s ease-in-out infinite alternate;
+          animation-delay: -4s;
+          
+        }
+      
+        @keyframes move-star-4 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-4 {
+          transform-origin: 28.800481152761968% 88.98267178467508%;
+          animation: move-star-4 3.3600000000000003s ease-in-out infinite alternate;
+          animation-delay: -3s;
+          
+        }
+      
+        @keyframes move-star-5 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-5 {
+          transform-origin: 15.268317070465965% 31.665978865367062%;
+          animation: move-star-5 3.8400000000000003s ease-in-out infinite alternate;
+          animation-delay: -2s;
+          
+        }
+      
+        @keyframes move-star-6 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-6 {
+          transform-origin: 51.99631208655562% 28.607403481122915%;
+          animation: move-star-6 4.32s ease-in-out infinite alternate;
+          animation-delay: -1s;
+          
+        }
+      
+        @keyframes move-star-7 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-7 {
+          transform-origin: 74.1082634583991% 60.52285745113992%;
+          animation: move-star-7 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-star-8 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-8 {
+          transform-origin: 3.2627135942846497% 21.165333598374914%;
+          animation: move-star-8 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-star-9 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-9 {
+          transform-origin: 46.936682798454065% 98.90324175138763%;
+          animation: move-star-9 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      
+        @keyframes move-star-10 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-10 {
+          transform-origin: 42.16774792081006% 90.11566938462646%;
+          animation: move-star-10 4.640000000000001s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          
+        }
+      
+        @keyframes move-star-11 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-11 {
+          transform-origin: 85.2769355241228% 59.660243765089696%;
+          animation: move-star-11 3.5200000000000005s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          
+        }
+      
+        @keyframes move-star-12 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-12 {
+          transform-origin: 88.64952389597597% 90.34066441367263%;
+          animation: move-star-12 4s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          
+        }
+      
+        @keyframes move-star-13 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-13 {
+          transform-origin: 14.013103944592054% 76.50846737306034%;
+          animation: move-star-13 4.48s ease-in-out infinite alternate;
+          animation-delay: -4s;
+          
+        }
+      
+        @keyframes move-star-14 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-14 {
+          transform-origin: 21.408486373328817% 70.54546169406449%;
+          animation: move-star-14 3.3600000000000003s ease-in-out infinite alternate;
+          animation-delay: -3s;
+          
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.001" numOctaves="3" stitchTiles="stitch">
+                
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.1" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-nebula-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="100" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-nebula-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="100" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-nebula-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="100" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-3" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-4" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-5" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-6" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-7" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-8" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-9" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-10" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-11" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-12" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-13" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-14" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="hsl(245.8134291290923, 30%, 4%)" />
+    <g><path id="shape-nebula-0" d="M 2734.8741929233074 1440 C 2722.2887926258013 1839.07327082548 2181.811956323101 2394.0508762172267 1791.2440969013433 2521.018174563253 C 1400.676237479585 2647.9854729092795 598.5077040763618 2489.8650402505205 391.4670363927585 2201.8037900761587 C 184.42636870915507 1913.7425399017973 303.1185137507857 1138.521546928048 549.0000907997228 792.6506735170838 C 794.8816678486598 446.77980010611947 1502.44414833245 18.686995196553497 1866.7564986863806 126.57854961037287 C 2231.0688490403113 234.47010402419227 2747.4595932208135 1040.92672917452 2734.8741929233074 1440 Z" fill="hsl(292.1822194093078, 60%, 20%)" opacity="0.3" filter="url(#blur-nebula-0)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-1016.0184595727873px, -514.664826500295px)"></path>
+<path id="shape-nebula-1" d="M 2487.947372943163 1440 C 2481.5188209776275 1833.4252136021405 2148.5818100320525 2437.6154987443697 1804.2091467853152 2560.9204951498095 C 1459.8364835385776 2684.2254915552494 668.5546923310845 2501.8899763005857 421.7113934627379 2179.829978432639 C 174.86809459439118 1857.7699805646926 86.30450938927001 958.4706354247421 323.14935357523495 628.5605079421299 C 559.9941977611999 298.65038045951775 1481.9807886838728 65.12929819398795 1842.7804585785275 200.3692135369663 C 2203.580128473182 335.60912887994465 2494.3759249086984 1046.5747863978595 2487.947372943163 1440 Z" fill="hsl(277.88098530189006, 60%, 20%)" opacity="0.3" filter="url(#blur-nebula-1)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(180.118082177798px, -836.0863832477876px)"></path>
+<path id="shape-nebula-2" d="M 2643.428746327758 1440 C 2643.374854944502 1808.5100497072724 2123.319978805509 2455.158039576061 1799.0468460792138 2545.0325672526933 C 1474.7737133529183 2634.9070949293255 943.6193576005822 2298.547646009445 697.7899499699853 1979.2471660597926 C 451.9605423393883 1659.94668611014 140.4736928941717 903.4421703965671 324.070400295632 629.2296875547783 C 507.6671076970923 355.0172047129894 1412.8104700400593 198.84388360152238 1799.3701943787469 333.97226900905935 C 2185.9299187174347 469.1006544165963 2643.4826377110135 1071.4899502927276 2643.428746327758 1440 Z" fill="hsl(299.99072458097874, 60%, 20%)" opacity="0.3" filter="url(#blur-nebula-2)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(250.0803361407784px, -405.26339385257484px)"></path>
+<circle id="shape-star-0" cx="86.4206891274298%" cy="36.29832855243351%" r="1.4190178413779326%" fill="#ffffff" opacity="0.981277004292747" filter="url(#blur-star-0)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-1" cx="97.14249141327109%" cy="83.07398467417346%" r="1.025899608920306%" fill="#ffffff" opacity="0.6657181398069754" filter="url(#blur-star-1)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-2" cx="34.92021164604644%" cy="78.0919291553688%" r="0.5231463440645192%" fill="#ffffff" opacity="0.5885632595445155" filter="url(#blur-star-2)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-3" cx="20.551093262935517%" cy="53.684353989997206%" r="1.343640376832406%" fill="#ffffff" opacity="0.5364352642080206" filter="url(#blur-star-3)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-4" cx="28.800481152761968%" cy="88.98267178467508%" r="0.9767417686433308%" fill="#ffffff" opacity="0.8816353293713379" filter="url(#blur-star-4)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-5" cx="15.268317070465965%" cy="31.665978865367062%" r="0.7881448565845253%" fill="#ffffff" opacity="0.7138423597643397" filter="url(#blur-star-5)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-6" cx="51.99631208655562%" cy="28.607403481122915%" r="0.980666603509186%" fill="#ffffff" opacity="0.7157373047137591" filter="url(#blur-star-6)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-7" cx="74.1082634583991%" cy="60.52285745113992%" r="0.7791729421299369%" fill="#ffffff" opacity="0.8297460948412779" filter="url(#blur-star-7)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-8" cx="3.2627135942846497%" cy="21.165333598374914%" r="0.9447657240827749%" fill="#ffffff" opacity="0.7944341788997469" filter="url(#blur-star-8)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-9" cx="46.936682798454065%" cy="98.90324175138763%" r="1.3475106199900952%" fill="#ffffff" opacity="0.8548890092528125" filter="url(#blur-star-9)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-10" cx="42.16774792081006%" cy="90.11566938462646%" r="0.9224499321513944%" fill="#ffffff" opacity="0.8562769435795389" filter="url(#blur-star-10)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-11" cx="85.2769355241228%" cy="59.660243765089696%" r="1.3266860923402684%" fill="#ffffff" opacity="0.9241994363654352" filter="url(#blur-star-11)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-12" cx="88.64952389597597%" cy="90.34066441367263%" r="0.933734705085586%" fill="#ffffff" opacity="0.97309443225617" filter="url(#blur-star-12)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-13" cx="14.013103944592054%" cy="76.50846737306034%" r="1.043499996481092%" fill="#ffffff" opacity="0.7714193319053345" filter="url(#blur-star-13)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-14" cx="21.408486373328817%" cy="70.54546169406449%" r="0.8056016920259088%" fill="#ffffff" opacity="0.5402899591478402" filter="url(#blur-star-14)" style="mix-blend-mode: normal"></circle></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

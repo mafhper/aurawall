@@ -1,0 +1,196 @@
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: #050505">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-glitch-0-r {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-0-r {
+          transform-origin: 51.653444207754355% 43.32960771611445%;
+          animation: move-glitch-0-r 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-glitch-0-g {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-0-g {
+          transform-origin: 56.46655423019433% 38.516497693674474%;
+          animation: move-glitch-0-g 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-glitch-0-b {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-0-b {
+          transform-origin: 61.27966425263431% 43.32960771611445%;
+          animation: move-glitch-0-b 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      
+        @keyframes move-glitch-1-r {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-1-r {
+          transform-origin: 91.8569180441514% 87.25926401652085%;
+          animation: move-glitch-1-r 4.640000000000001s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          
+        }
+      
+        @keyframes move-glitch-1-g {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-1-g {
+          transform-origin: 95.73310247896441% 83.38307958170783%;
+          animation: move-glitch-1-g 3.5200000000000005s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          
+        }
+      
+        @keyframes move-glitch-1-b {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-1-b {
+          transform-origin: 99.60928691377742% 87.25926401652085%;
+          animation: move-glitch-1-b 4s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          
+        }
+      
+        @keyframes move-glitch-2-r {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-2-r {
+          transform-origin: 61.31096855753569% 23.471792480790743%;
+          animation: move-glitch-2-r 4.48s ease-in-out infinite alternate;
+          animation-delay: -4s;
+          
+        }
+      
+        @keyframes move-glitch-2-g {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-2-g {
+          transform-origin: 64.06411144122275% 20.718649597103678%;
+          animation: move-glitch-2-g 3.3600000000000003s ease-in-out infinite alternate;
+          animation-delay: -3s;
+          
+        }
+      
+        @keyframes move-glitch-2-b {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-2-b {
+          transform-origin: 66.81725432490981% 23.471792480790743%;
+          animation: move-glitch-2-b 3.8400000000000003s ease-in-out infinite alternate;
+          animation-delay: -2s;
+          
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.004" numOctaves="3" stitchTiles="stitch">
+                <animate attributeName="seed" values="0;100;0" dur="1.25s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.6" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-glitch-0-r" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-0-g" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-0-b" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-1-r" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-1-g" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-1-b" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-2-r" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-2-g" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-2-b" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="#050505" />
+    <g><circle id="shape-glitch-0-r" cx="51.653444207754355%" cy="43.32960771611445%" r="25.865011724960663%" fill="#ff0000" opacity="0.8" filter="url(#blur-glitch-0-r)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-0-g" cx="56.46655423019433%" cy="38.516497693674474%" r="25.865011724960663%" fill="#00ff00" opacity="0.8" filter="url(#blur-glitch-0-g)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-0-b" cx="61.27966425263431%" cy="43.32960771611445%" r="25.865011724960663%" fill="#0000ff" opacity="0.8" filter="url(#blur-glitch-0-b)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-1-r" cx="91.8569180441514%" cy="87.25926401652085%" r="19.83473700472262%" fill="#ff0000" opacity="0.8" filter="url(#blur-glitch-1-r)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-1-g" cx="95.73310247896441%" cy="83.38307958170783%" r="19.83473700472262%" fill="#00ff00" opacity="0.8" filter="url(#blur-glitch-1-g)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-1-b" cx="99.60928691377742%" cy="87.25926401652085%" r="19.83473700472262%" fill="#0000ff" opacity="0.8" filter="url(#blur-glitch-1-b)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-2-r" cx="61.31096855753569%" cy="23.471792480790743%" r="13.490716839463019%" fill="#ff0000" opacity="0.8" filter="url(#blur-glitch-2-r)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-2-g" cx="64.06411144122275%" cy="20.718649597103678%" r="13.490716839463019%" fill="#00ff00" opacity="0.8" filter="url(#blur-glitch-2-g)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-2-b" cx="66.81725432490981%" cy="23.471792480790743%" r="13.490716839463019%" fill="#0000ff" opacity="0.8" filter="url(#blur-glitch-2-b)" style="mix-blend-mode: screen"></circle></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

@@ -13,8 +13,8 @@ import Changes from './pages/Changes';
 import About from './pages/About';
 
 // Sub-pages for Creation
-import CreationBoreal from './pages/CreationBoreal';
-import CreationChroma from './pages/CreationChroma';
+import CreationEngines from './pages/CreationEngines';
+import CreationEngineDetail from './pages/CreationEngineDetail';
 import CreationAnimation from './pages/CreationAnimation';
 import CreationProcedural from './pages/CreationProcedural';
 
@@ -171,7 +171,6 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
           </div>
 
           <div className="flex-1 overflow-y-auto px-8 py-4 flex flex-col gap-4">
-            <MobileLink to="/">{t('nav.home')}</MobileLink>
             
             <div className="flex flex-col gap-2 border-b border-white/5 pb-4">
                 <MobileLink to="/creation" className="border-none pb-0">{t('nav.creation')}</MobileLink>
@@ -223,8 +222,7 @@ export default function App() {
   };
 
   const creationItems = [
-    { to: '/creation/boreal', label: t('creation.boreal_title', 'Boreal'), icon: Sparkles, key: 'boreal' },
-    { to: '/creation/chroma', label: t('creation.chroma_title', 'Chroma'), icon: Zap, key: 'chroma' },
+    { to: '/creation/engines', label: 'Motores de Criação', icon: Sparkles, key: 'engines' },
     { to: '/creation/animation', label: t('creation.anim_title', 'Animação'), icon: Play, key: 'animation' },
     { to: '/creation/procedural', label: t('procedural.title', 'Procedural'), icon: Shuffle, key: 'procedural' }
   ];
@@ -246,8 +244,6 @@ export default function App() {
             
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-1">
-              <NavLink to="/">{t('nav.home')}</NavLink>
-              
               <NavDropdown 
                 to="/creation" 
                 title={t('nav.creation')} 
@@ -294,8 +290,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/creation" element={<Creation />} />
-            <Route path="/creation/boreal" element={<CreationBoreal />} />
-            <Route path="/creation/chroma" element={<CreationChroma />} />
+            <Route path="/creation/engines" element={<CreationEngines />} />
+            <Route path="/creation/engine/:id" element={<CreationEngineDetail />} />
             <Route path="/creation/animation" element={<CreationAnimation />} />
             <Route path="/creation/procedural" element={<CreationProcedural />} />
             <Route path="/architecture" element={<Tech />} />

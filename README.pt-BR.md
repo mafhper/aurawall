@@ -43,6 +43,13 @@ O AuraWall opera inteiramente no navegador sem dependências de servidor. A apli
 |--------|----------|-----------------|
 | **Boreal** | Etéreo, suave | Alto blur, cores análogas, blend modes multiply/screen |
 | **Chroma** | Líquido, ácido | Baixo blur, cores complementares, blend modes difference/exclusion |
+| **Lava** | Psicodélico, quente | Movimento fluido retrô, paletas quentes, formas blob |
+| **Midnight** | Cósmico, profundo | Fundos escuros, nuvens de nebulosa, partículas de estrelas |
+| **Geometrica** | Bauhaus, grade | Alinhamento rígido à grade, cores primárias, formas nítidas |
+| **Glitch** | Caos digital | Separação RGB (aberração cromática), artefatos, ruído digital |
+| **Sakura** | Floral, gentil | Tons pastéis, formas de pétalas, simulação de vento |
+| **Ember** | Fogo, cinza | Carvão escuro, faíscas laranjas vibrantes, fumaça subindo |
+| **Oceanic** | Aquático, profundo | Azuis profundos, movimento fluido orgânico, sensação subaquática |
 | **Animation** | Cinético, fluido | Animações CSS keyframe para drift, pulse, rotate, noise |
 
 ### Controles
@@ -212,7 +219,21 @@ export const PRESETS: Preset[] = [
 
 ### Criando Engines Personalizados
 
-Engines são definidos pelo blend mode e características de blur. Modifique `src/services/svgGenerator.ts` para adicionar novos algoritmos de geração.
+Engines agora são modulares e definidos em `src/engines/`. Para criar um novo engine:
+
+1. Crie um novo arquivo (ex: `src/engines/meuEngine.ts`) implementando a interface `EngineDefinition`.
+2. Defina metadados, configuração padrão e uma função `randomizer`.
+3. Registre o engine em `src/engines/index.ts`.
+
+```typescript
+// src/engines/meuEngine.ts
+export const meuEngine: EngineDefinition = {
+  id: 'meu-engine',
+  meta: { name: 'Meu Engine', ... },
+  randomizer: (config) => { ... },
+  variations: [ ... ]
+};
+```
 
 ### Estendendo o Site Promocional
 
