@@ -38,7 +38,7 @@ import { DEFAULT_ANIMATION, DEFAULT_VIGNETTE } from '../constants';
 import { hslToHex } from '../utils/colorUtils';
 import { useTranslation } from 'react-i18next';
 import PreferencesMenu from './PreferencesMenu'; 
-
+import ColorPaletteExtractor from './ColorPaletteExtractor'; // New Import
 import { getAllEngines, getEngine } from '../engines';
 import EngineGallery from './EngineGallery';
 
@@ -483,7 +483,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                             e.stopPropagation();
                             handleOpenGallery(engineId);
                         }}
-                        className="absolute -top-2 -right-2 bg-zinc-700 text-white rounded-full p-1 opacity-0 group-hover/btn:opacity-100 hover:bg-purple-500 transition-all z-10 shadow-lg scale-75"
+                        className="absolute -top-2 -right-2 bg-zinc-700 text-white rounded-full p-1 opacity-50 group-hover/btn:opacity-100 hover:bg-purple-500 transition-all z-10 shadow-lg scale-75"
                         title="Trocar motor"
                     >
                         <Settings2 size={10} />
@@ -1293,6 +1293,11 @@ const ControlsInner: React.FC<ControlsProps> = ({
           </div>
         )}
       </div>
+
+      {/* Palette Extraction Section */}
+      <CollapsibleSection title={t('palette_extraction_title', 'Paleta de Cores')}>
+        <ColorPaletteExtractor config={config} />
+      </CollapsibleSection>
 
       {/* Footer / Download - Fixed at bottom */}
       <div className="p-4 md:p-6 border-t border-white/10 bg-[#18181b] z-20 shrink-0 flex gap-2">

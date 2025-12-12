@@ -56,8 +56,10 @@ O AuraWall opera inteiramente no navegador sem dependências de servidor. A apli
 
 - **Gerenciamento de Formas**: Adicionar, remover e configurar camadas individuais
 - **Ciência de Cores**: Gradientes base, restrições de matiz, seleção harmônica
+- **Extrator de Paleta**: Visualize e copie os códigos Hex exatos usados na composição
 - **Pós-Processamento**: Efeito de vinheta, granulação procedural, intensidade de blur
 - **Física de Movimento**: Velocidade de animação, direção de fluxo, turbulência
+- **Modo Zen**: Oculte a interface para uma experiência imersiva de quadro digital
 
 ### Opções de Exportação
 

@@ -1,9 +1,9 @@
 
 // Helper: HSL String to Object
 export const parseHsl = (hsl: string) => {
-  const match = hsl.match(/hsl\((\d+(?:\.\d+)?),\s*(\d+)%,\s*(\d+)%\)/);
+  const match = hsl.match(/hsl\((\d+(?:\.\d+)?),\s*(\d+(?:\.\d+)?)%,\s*(\d+(?:\.\d+)?)%\)/);
   if (!match) return { h: 0, s: 0, l: 0 };
-  return { h: parseFloat(match[1]), s: parseInt(match[2]), l: parseInt(match[3]) };
+  return { h: parseFloat(match[1]), s: parseFloat(match[2]), l: parseFloat(match[3]) };
 };
 
 // Helper: Object to HSL String

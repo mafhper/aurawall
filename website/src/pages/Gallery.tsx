@@ -15,6 +15,17 @@ const getPreviewConfig = (engineId: string) => {
 
 const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: () => void }) => {
   const { t } = useTranslation();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); 
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Find presets for this engine
   const examples = useMemo(() => {
     return PRESETS.filter(p => p.collection === engine.id).slice(0, 3);
@@ -26,7 +37,7 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
           ...preset.config,
           animation: {
               ...preset.config.animation,
-              enabled: true // Always enable to allow CSS generation
+              enabled: true 
           }
       }), [preset]);
 
@@ -34,9 +45,9 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
           ...config,
           animation: {
               ...config.animation,
-              enabled: isHovered
+              enabled: isHovered && !isMobile
           }
-      }), [config, isHovered]);
+      }), [config, isHovered, isMobile]);
 
       return (
           <div 
@@ -47,7 +58,7 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
              <WallpaperRenderer 
                 config={activeConfig}
                 className="w-full h-full block"
-                lowQuality={!isHovered}
+                lowQuality={true} // Always low quality for examples in modal
              />
              <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
                  <span className="text-xs font-bold text-white">{preset.name}</span>
@@ -112,6 +123,17 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
 export default function Gallery() {
   const { t } = useTranslation();
   const [selectedEngine, setSelectedEngine] = useState<typeof ENGINES[0] | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      // TailwindCSS default breakpoint for md is 768px
+      setIsMobile(window.innerWidth < 768); 
+    };
+    checkMobile(); // Check on mount
+    window.addEventListener('resize', checkMobile); // Check on resize
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-white pt-32 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -123,13 +145,13 @@ export default function Gallery() {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold uppercase tracking-wider mb-6 border border-purple-500/20">
-            <Sparkles size={12} /> Coleção Completa
+            <Sparkles size={12} /> {t('gallery.full_collection')}
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-            Motores de Criação
+            {t('gallery.hero_title')}
           </h1>
           <p className="text-lg text-zinc-400 leading-relaxed">
-            O AuraWall opera com 9 "motores" estéticos distintos. Cada um encapsula um conjunto único de regras matemáticas, paletas de cores e comportamentos físicos para gerar arte procedural infinita.
+            {t('gallery.hero_desc')}
           </p>
         </div>
         
@@ -141,9 +163,9 @@ export default function Gallery() {
                 ...config,
                 animation: {
                     ...config.animation,
-                    enabled: isHovered
+                    enabled: isHovered && !isMobile // Animation enabled only on hover AND not on mobile
                 }
-            }), [config, isHovered]);
+            }), [config, isHovered, isMobile]);
 
             return (
               <div 
@@ -158,7 +180,7 @@ export default function Gallery() {
                    <WallpaperRenderer 
                      config={activeConfig} 
                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
-                     lowQuality={!isHovered}
+                     lowQuality={true} // Always low quality for gallery cards
                    />
                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
                 </div>
@@ -177,23 +199,44 @@ export default function Gallery() {
           })}
         </div>
 
-        {/* CTA */}
-        <div className="text-center mt-20 p-8 md:p-12 rounded-3xl border border-white/10 bg-zinc-900/30 backdrop-blur-sm relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-50" />
-          <div className="relative z-10">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Pronto para criar?</h2>
-            <p className="text-zinc-400 mb-8 max-w-xl mx-auto">
-              Todos esses motores estão disponíveis gratuitamente no editor. Misture, combine e exporte em 4K.
-            </p>
-            <a 
-              href={getAppUrl()} 
-              className="inline-flex items-center gap-2 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full font-bold transition-all transform hover:scale-105 shadow-xl shadow-white/5"
-            >
-              Iniciar Editor
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+                {/* CTA */}
+
+                <div className="text-center mt-20 p-8 md:p-12 rounded-3xl border border-white/10 bg-zinc-900/30 backdrop-blur-sm relative overflow-hidden">
+
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 opacity-50" />
+
+                  <div className="relative z-10">
+
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4">{t('gallery.ready_title')}</h2>
+
+                    <p className="text-zinc-400 mb-8 max-w-xl mx-auto">
+
+                      {t('gallery.ready_desc')}
+
+                    </p>
+
+                    <a 
+
+                      href={getAppUrl()} 
+
+                      className="inline-flex items-center gap-2 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full font-bold transition-all transform hover:scale-105 shadow-xl shadow-white/5"
+
+                    >
+
+                      {t('gallery.start')}
+
+                    </a>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          );
+
+        }
+
+        

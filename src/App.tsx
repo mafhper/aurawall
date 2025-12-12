@@ -5,7 +5,7 @@ import { WallpaperConfig, Shape, BlendMode, CollectionId, AppPreferences } from 
 import { DEFAULT_CONFIG, PRESETS, DEFAULT_PREFERENCES } from './constants';
 import { generateVariations } from './services/variationService';
 import { getEngine } from './engines';
-import { ZoomIn, ZoomOut, Maximize, X } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize, X, Play } from 'lucide-react';
 import CodeExportModal from './components/CodeExportModal';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from './hooks/useHistory';
@@ -15,8 +15,27 @@ import { encodeConfigToUrl, decodeConfigFromUrl } from './utils/urlUtils';
 export default function App() {
   const { t } = useTranslation();
   
-  // Initialize with URL config if available, otherwise default
-  const getInitialConfig = () => decodeConfigFromUrl() || DEFAULT_CONFIG;
+  // Helper to check for collection param
+  const getCollectionFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('collection');
+  }
+
+  // Initialize with URL config if available, otherwise check collection param, otherwise default
+  const getInitialConfig = () => {
+    const decoded = decodeConfigFromUrl();
+    if (decoded) return decoded;
+
+    const colParam = getCollectionFromUrl();
+    if (colParam) {
+       const engine = getEngine(colParam);
+       if (engine && engine.randomizer) {
+           // Generate a fresh random config for this collection
+           return engine.randomizer(DEFAULT_CONFIG, { isGrainLocked: false });
+       }
+    }
+    return DEFAULT_CONFIG;
+  };
 
   const { 
     state: config, 
@@ -37,10 +56,13 @@ export default function App() {
   const [preferences, setPreferences] = useState<AppPreferences>(DEFAULT_PREFERENCES);
   const [variations, setVariations] = useState<WallpaperConfig[]>([]);
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
-  const [activeCollection, setActiveCollection] = useState<CollectionId>('boreal');
+  const [activeCollection, setActiveCollection] = useState<CollectionId>(() => {
+      return (getCollectionFromUrl() as CollectionId) || 'boreal';
+  });
   // Default enabled engines (3 slots)
   const [enabledEngines, setEnabledEngines] = useState<string[]>(['boreal', 'chroma', 'lava']);
   const [isGrainLocked, setIsGrainLocked] = useState(false);
+  const [isZenMode, setIsZenMode] = useState(false); // New state for Zen Mode
   
   const [zoom, setZoom] = useState(0.4); // Preview scale
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -48,6 +70,34 @@ export default function App() {
 
   const [showCodeModal, setShowCodeModal] = useState(false);
   const [svgContentForModal, setSvgContentForModal] = useState('');
+
+  // Zen Mode: Hide cursor on inactivity
+  useEffect(() => {
+    if (!isZenMode) return;
+
+    let cursorTimer: number;
+    const hideCursor = () => {
+      document.documentElement.style.cursor = 'none';
+    };
+    const showCursor = () => {
+      document.documentElement.style.cursor = 'default';
+      clearTimeout(cursorTimer);
+      cursorTimer = setTimeout(hideCursor, 3000); // Hide after 3 seconds
+    };
+
+    document.documentElement.style.cursor = 'default'; // Ensure visible on mode entry
+    showCursor(); // Start timer immediately
+
+    window.addEventListener('mousemove', showCursor);
+    window.addEventListener('keydown', showCursor);
+
+    return () => {
+      clearTimeout(cursorTimer);
+      document.documentElement.style.cursor = 'default'; // Always ensure cursor is restored on unmount or mode change
+      window.removeEventListener('mousemove', showCursor);
+      window.removeEventListener('keydown', showCursor);
+    };
+  }, [isZenMode]);
 
   // Persist state to URL
   useEffect(() => {
@@ -235,6 +285,9 @@ export default function App() {
            <button onClick={() => setIsFullscreen(true)} className="p-1.5 md:p-2 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" title={t('full_screen_preview')}>
             <Maximize size={16} />
           </button>
+          <button onClick={() => setIsZenMode(true)} className="p-1.5 md:p-2 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" title="Modo Zen">
+            <Play size={16} />
+          </button>
         </div>
 
         <div 
@@ -248,66 +301,82 @@ export default function App() {
           {config.width}x{config.height}px
         </div>
       </div>
-
-      {/* Controls Sidebar */}
-      <div className="md:order-1 h-[55vh] md:h-full w-full md:w-96 flex-shrink-0 order-2">
-        <Controls 
-          config={config} 
-          variations={variations}
-          preferences={preferences}
-          setPreferences={setPreferences}
-          selectedPresetId={selectedPresetId}
-          activeCollection={activeCollection}
-          setActiveCollection={setActiveCollection}
-          enabledEngines={enabledEngines}
-          setEnabledEngines={setEnabledEngines}
-          setConfig={setConfig}
-          undo={undo}
-          redo={redo}
-          canUndo={canUndo}
-          canRedo={canRedo} 
-          favorites={favorites}
-          isFavorite={isCurrentConfigFavorite}
-          toggleFavorite={handleToggleFavorite}
-          addFavorite={handleAddFavorite}
-          removeFavorite={removeFavorite}
-          onDownload={handleDownload}
-          onDownloadSvgFile={handleDownloadSvgFile} 
-          onShowSVGModal={handleShowCodeModal} 
-          onApplyPreset={handleApplyPreset}
-          onApplyVariation={handleApplyVariation}
-          onResize={handleResize}
-          onRandomize={handleRandomize}
-          isGrainLocked={isGrainLocked}
-          onToggleGrainLock={() => setIsGrainLocked(prev => !prev)}
-        />
-      </div>
-
-      {/* Fullscreen Modal */}
-      {isFullscreen && (
-        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-          <button 
-            onClick={() => setIsFullscreen(false)}
-            className="absolute top-4 right-4 md:top-6 md:right-6 p-3 md:p-4 bg-black/40 hover:bg-black/60 rounded-full text-white backdrop-blur-md z-50 transition-colors border border-white/10"
-          >
-            <X size={24} />
-          </button>
-          <div className="w-full h-full p-0 flex items-center justify-center bg-zinc-950">
-             <WallpaperRenderer 
-              config={config}
-              style={{ width: '100%', height: '100%', objectFit: 'contain', maxHeight: '100vh', maxWidth: '100vw' }} 
+      
+      {/* Conditionally render Controls Sidebar and Modals */}
+      {!isZenMode && (
+        <>
+          {/* Controls Sidebar */}
+          <div className="md:order-1 h-[55vh] md:h-full w-full md:w-96 flex-shrink-0 order-2">
+            <Controls 
+              config={config} 
+              variations={variations}
+              preferences={preferences}
+              setPreferences={setPreferences}
+              selectedPresetId={selectedPresetId}
+              activeCollection={activeCollection}
+              setActiveCollection={setActiveCollection}
+              enabledEngines={enabledEngines}
+              setEnabledEngines={setEnabledEngines}
+              setConfig={setConfig}
+              undo={undo}
+              redo={redo}
+              canUndo={canUndo}
+              canRedo={canRedo} 
+              favorites={favorites}
+              isFavorite={isCurrentConfigFavorite}
+              toggleFavorite={handleToggleFavorite}
+              addFavorite={handleAddFavorite}
+              removeFavorite={removeFavorite}
+              onDownload={handleDownload}
+              onDownloadSvgFile={handleDownloadSvgFile} 
+              onShowSVGModal={handleShowCodeModal} 
+              onApplyPreset={handleApplyPreset}
+              onApplyVariation={handleApplyVariation}
+              onResize={handleResize}
+              onRandomize={handleRandomize}
+              isGrainLocked={isGrainLocked}
+              onToggleGrainLock={() => setIsGrainLocked(prev => !prev)}
             />
           </div>
-        </div>
+
+          {/* Fullscreen Modal */}
+          {isFullscreen && (
+            <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+              <button 
+                onClick={() => setIsFullscreen(false)}
+                className="absolute top-4 right-4 md:top-6 md:right-6 p-3 md:p-4 bg-black/40 hover:bg-black/60 rounded-full text-white backdrop-blur-md z-50 transition-colors border border-white/10"
+              >
+                <X size={24} />
+              </button>
+              <div className="w-full h-full p-0 flex items-center justify-center bg-zinc-950">
+                 <WallpaperRenderer 
+                  config={config}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', maxHeight: '100vh', maxWidth: '100vw' }} 
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Code Export Modal */}
+          {showCodeModal && (
+            <CodeExportModal 
+              svgContent={svgContentForModal} 
+              config={config}
+              onClose={() => setShowCodeModal(false)} 
+            />
+          )}
+        </>
       )}
 
-      {/* Code Export Modal */}
-      {showCodeModal && (
-        <CodeExportModal 
-          svgContent={svgContentForModal} 
-          config={config}
-          onClose={() => setShowCodeModal(false)} 
-        />
+      {/* Zen Mode Exit Button */}
+      {isZenMode && (
+        <button 
+          onClick={() => setIsZenMode(false)}
+          className="fixed top-6 right-6 z-50 p-3 bg-black/40 hover:bg-black/60 rounded-full text-white backdrop-blur-md transition-opacity duration-300 opacity-0 hover:opacity-100"
+          title="Sair do Modo Zen"
+        >
+          <X size={24} />
+        </button>
       )}
     </div>
   );

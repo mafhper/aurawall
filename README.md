@@ -56,8 +56,10 @@ AuraWall operates entirely in the browser with zero server dependencies. The app
 
 - **Shape Management**: Add, remove, and configure individual layers
 - **Color Science**: Base gradients, hue constraints, harmonic selection
+- **Color Palette Extractor**: Extract and copy the exact hex codes used in the composition
 - **Post-Processing**: Vignette effect, procedural grain, blur intensity
 - **Motion Physics**: Animation speed, flow direction, turbulence
+- **Zen Mode**: Hide the UI for an immersive digital frame experience
 
 ### Export Options
 
