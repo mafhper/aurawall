@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ENGINES } from '../data/engines';
 import { getAppUrl } from '../utils/appUrl';
