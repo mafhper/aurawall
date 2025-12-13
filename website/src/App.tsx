@@ -113,11 +113,35 @@ const NavDropdown = ({
   );
 };
 
+// Mobile Navigation Link Component
+const MobileLink = ({ 
+  to, 
+  children, 
+  className = "", 
+  onClick 
+}: { 
+  to: string, 
+  children: React.ReactNode, 
+  className?: string,
+  onClick: () => void 
+}) => {
+  const location = useLocation();
+  const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
+  return (
+    <Link 
+      to={to} 
+      onClick={onClick}
+      className={`text-xl font-bold py-2 border-b border-white/5 ${isActive ? 'text-white' : 'text-zinc-500'} ${className}`}
+    >
+      {children}
+    </Link>
+  )
+}
+
 // Mobile Navigation Component
 const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?: React.ElementType, key: string }> }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
-  const location = useLocation();
 
   // Prevent background scroll when menu is open
   React.useEffect(() => {
@@ -128,18 +152,7 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
     }
   }, [isOpen]);
 
-  const MobileLink = ({ to, children, className = "" }: { to: string, children: React.ReactNode, className?: string }) => {
-     const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
-     return (
-       <Link 
-         to={to} 
-         onClick={() => setIsOpen(false)}
-         className={`text-xl font-bold py-2 border-b border-white/5 ${isActive ? 'text-white' : 'text-zinc-500'} ${className}`}
-       >
-         {children}
-       </Link>
-     )
-  }
+  const closeMenu = () => setIsOpen(false);
 
   return (
     <div className="md:hidden">
@@ -163,7 +176,7 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
                   AuraWall
               </span>
               <button 
-                onClick={() => setIsOpen(false)}
+                onClick={closeMenu}
                 className="text-zinc-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"
               >
                 <X size={28} />
@@ -173,13 +186,13 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
           <div className="flex-1 overflow-y-auto px-8 py-4 flex flex-col gap-4">
             
             <div className="flex flex-col gap-2 border-b border-white/5 pb-4">
-                <MobileLink to="/creation" className="border-none pb-0">{t('nav.creation')}</MobileLink>
+                <MobileLink to="/creation" className="border-none pb-0" onClick={closeMenu}>{t('nav.creation')}</MobileLink>
                 <div className="pl-4 flex flex-col gap-3">
                     {items.map(item => (
                       <Link 
                         key={item.key} 
                         to={item.to} 
-                        onClick={() => setIsOpen(false)}
+                        onClick={closeMenu}
                         className="text-zinc-400 hover:text-white text-base flex items-center gap-2"
                       >
                         {item.icon && <item.icon size={16} />}
@@ -189,10 +202,10 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
                 </div>
             </div>
 
-            <MobileLink to="/architecture">{t('nav.arch')}</MobileLink>
-            <MobileLink to="/gallery">{t('nav.gallery')}</MobileLink>
-            <MobileLink to="/changes">{t('nav.changes')}</MobileLink>
-            <MobileLink to="/about">{t('nav.about')}</MobileLink>
+            <MobileLink to="/architecture" onClick={closeMenu}>{t('nav.arch')}</MobileLink>
+            <MobileLink to="/gallery" onClick={closeMenu}>{t('nav.gallery')}</MobileLink>
+            <MobileLink to="/changes" onClick={closeMenu}>{t('nav.changes')}</MobileLink>
+            <MobileLink to="/about" onClick={closeMenu}>{t('nav.about')}</MobileLink>
             
             <div className="mt-8">
               <a 

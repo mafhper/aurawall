@@ -97,14 +97,14 @@ export default function CreationEngines() {
   const { t } = useTranslation();
 
   // Shuffle engines once on mount
-  const { hero, secondary, grid } = useMemo(() => {
+  const [{ hero, secondary, grid }] = useState(() => {
     const shuffled = [...ENGINES].sort(() => Math.random() - 0.5);
     return {
       hero: shuffled[0],
       secondary: shuffled.slice(1, 4),
       grid: shuffled.slice(4)
     };
-  }, []);
+  });
 
   return (
     <div className="min-h-screen bg-black text-white pt-32 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">

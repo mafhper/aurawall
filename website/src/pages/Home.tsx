@@ -81,9 +81,9 @@ export default function Home() {
   };
 
   // Get 3 random presets for the gallery teaser
-  const galleryPresets = useMemo(() => {
+  const [galleryPresets] = useState(() => {
     return [...PRESETS].sort(() => Math.random() - 0.5).slice(0, 3);
-  }, []);
+  });
 
   const launchUrl = useMemo(() => {
     const fullHdConfig = {
