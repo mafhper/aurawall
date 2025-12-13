@@ -107,11 +107,15 @@ cd aurawall
 # Install dependencies
 npm install
 
-# Start development server (main application)
+# Start development server (Main App + Promo Site concurrently)
 npm run dev
 
-# Start promo site development server
-npm run dev:site
+# OR start them individually:
+# Main Application
+npm run app
+
+# Promotional Website
+npm run promo
 ```
 
 The application will be available at `http://localhost:5173`.
@@ -119,11 +123,14 @@ The application will be available at `http://localhost:5173`.
 ### Production Build
 
 ```bash
-# Build main application
+# Build both applications
 npm run build
 
-# Build promotional website
-npm run build:site
+# Build main application only
+npm run build-app
+
+# Build promotional website only
+npm run build-promo
 
 # Preview production build
 npm run preview

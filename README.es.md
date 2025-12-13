@@ -98,11 +98,15 @@ cd aurawall
 # Instalar dependencias
 npm install
 
-# Iniciar servidor de desarrollo (aplicacion principal)
+# Iniciar servidor de desarrollo (App Principal + Sitio Promo concurrentemente)
 npm run dev
 
-# Iniciar servidor de desarrollo del sitio promocional
-npm run dev:site
+# O iniciar individualmente:
+# Aplicacion Principal
+npm run app
+
+# Sitio Promocional
+npm run promo
 ```
 
 La aplicacion estara disponible en `http://localhost:5173`.
@@ -110,11 +114,14 @@ La aplicacion estara disponible en `http://localhost:5173`.
 ### Build de Produccion
 
 ```bash
-# Build de la aplicacion principal
+# Build de ambas aplicaciones
 npm run build
 
-# Build del sitio promocional
-npm run build:site
+# Build solo de la aplicacion principal
+npm run build-app
+
+# Build solo del sitio promocional
+npm run build-promo
 
 # Preview del build de produccion
 npm run preview
