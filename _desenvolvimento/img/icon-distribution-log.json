@@ -1,0 +1,234 @@
+{
+  "timestamp": "2025-12-10T21:09:44.777Z",
+  "sourceDir": "C:\\Users\\mafhp\\Documents\\GitHub\\aurawall\\_desenvolvimento\\img\\icon-forge-assets",
+  "stats": {
+    "success": 37,
+    "failed": 0,
+    "skipped": 1,
+    "notFound": 0
+  },
+  "results": [
+    {
+      "sourceFile": "favicon.ico",
+      "destPath": "public/favicon.ico",
+      "status": "OK",
+      "message": "11.61 KB"
+    },
+    {
+      "sourceFile": "favicon.ico",
+      "destPath": "website/public/favicon.ico",
+      "status": "OK",
+      "message": "11.61 KB"
+    },
+    {
+      "sourceFile": "favicon.svg",
+      "destPath": "public/favicon.svg",
+      "status": "OK",
+      "message": "10.62 KB"
+    },
+    {
+      "sourceFile": "favicon-dark.ico",
+      "destPath": "public/favicon-dark.ico",
+      "status": "OK",
+      "message": "11.61 KB"
+    },
+    {
+      "sourceFile": "favicon-dark.svg",
+      "destPath": "public/favicon-dark.svg",
+      "status": "OK",
+      "message": "10.62 KB"
+    },
+    {
+      "sourceFile": "favicon-16x16.png",
+      "destPath": "public/favicon-16x16.png",
+      "status": "OK",
+      "message": "824 B"
+    },
+    {
+      "sourceFile": "favicon-16x16-dark.png",
+      "destPath": "public/favicon-16x16-dark.png",
+      "status": "OK",
+      "message": "824 B"
+    },
+    {
+      "sourceFile": "favicon-32x32.png",
+      "destPath": "public/favicon-32x32.png",
+      "status": "OK",
+      "message": "1.99 KB"
+    },
+    {
+      "sourceFile": "favicon-32x32-dark.png",
+      "destPath": "public/favicon-32x32-dark.png",
+      "status": "OK",
+      "message": "1.99 KB"
+    },
+    {
+      "sourceFile": "apple-touch-icon.png",
+      "destPath": "public/apple-touch-icon.png",
+      "status": "OK",
+      "message": "42.42 KB"
+    },
+    {
+      "sourceFile": "apple-touch-icon-dark.png",
+      "destPath": "public/apple-touch-icon-dark.png",
+      "status": "OK",
+      "message": "41.27 KB"
+    },
+    {
+      "sourceFile": "pwa-192x192.png",
+      "destPath": "public/pwa-192x192.png",
+      "status": "OK",
+      "message": "47.31 KB"
+    },
+    {
+      "sourceFile": "pwa-192x192-dark.png",
+      "destPath": "public/pwa-192x192-dark.png",
+      "status": "OK",
+      "message": "46.05 KB"
+    },
+    {
+      "sourceFile": "pwa-512x512.png",
+      "destPath": "public/pwa-512x512.png",
+      "status": "OK",
+      "message": "264.71 KB"
+    },
+    {
+      "sourceFile": "pwa-512x512-dark.png",
+      "destPath": "public/pwa-512x512-dark.png",
+      "status": "OK",
+      "message": "256.45 KB"
+    },
+    {
+      "sourceFile": "pwa-maskable-192x192.png",
+      "destPath": "public/pwa-maskable-192x192.png",
+      "status": "OK",
+      "message": "47.31 KB"
+    },
+    {
+      "sourceFile": "pwa-maskable-192x192-dark.png",
+      "destPath": "public/pwa-maskable-192x192-dark.png",
+      "status": "OK",
+      "message": "46.05 KB"
+    },
+    {
+      "sourceFile": "pwa-maskable-512x512.png",
+      "destPath": "public/pwa-maskable-512x512.png",
+      "status": "OK",
+      "message": "264.71 KB"
+    },
+    {
+      "sourceFile": "pwa-maskable-512x512-dark.png",
+      "destPath": "public/pwa-maskable-512x512-dark.png",
+      "status": "OK",
+      "message": "256.45 KB"
+    },
+    {
+      "sourceFile": "mstile-150x150.png",
+      "destPath": "public/mstile-150x150.png",
+      "status": "OK",
+      "message": "31.58 KB"
+    },
+    {
+      "sourceFile": "mstile-150x150-dark.png",
+      "destPath": "public/mstile-150x150-dark.png",
+      "status": "OK",
+      "message": "30.45 KB"
+    },
+    {
+      "sourceFile": "og-image.jpg",
+      "destPath": "public/og-image.jpg",
+      "status": "OK",
+      "message": "31.14 KB"
+    },
+    {
+      "sourceFile": "og-image-dark.jpg",
+      "destPath": "public/og-image-dark.jpg",
+      "status": "OK",
+      "message": "29.11 KB"
+    },
+    {
+      "sourceFile": "logo-linux-48x48.png",
+      "destPath": "public/logo-linux-48x48.png",
+      "status": "OK",
+      "message": "3.55 KB"
+    },
+    {
+      "sourceFile": "logo-linux-48x48-dark.png",
+      "destPath": "public/logo-linux-48x48-dark.png",
+      "status": "OK",
+      "message": "3.55 KB"
+    },
+    {
+      "sourceFile": "logo-linux-512x512.png",
+      "destPath": "public/logo-linux-512x512.png",
+      "status": "OK",
+      "message": "264.71 KB"
+    },
+    {
+      "sourceFile": "logo-linux-512x512-dark.png",
+      "destPath": "public/logo-linux-512x512-dark.png",
+      "status": "OK",
+      "message": "256.45 KB"
+    },
+    {
+      "sourceFile": "logo-mac-512x512.png",
+      "destPath": "public/logo-mac-512x512.png",
+      "status": "OK",
+      "message": "264.71 KB"
+    },
+    {
+      "sourceFile": "logo-mac-512x512-dark.png",
+      "destPath": "public/logo-mac-512x512-dark.png",
+      "status": "OK",
+      "message": "256.45 KB"
+    },
+    {
+      "sourceFile": "logo-mac-1024x1024.png",
+      "destPath": "public/logo-mac-1024x1024.png",
+      "status": "OK",
+      "message": "933.08 KB"
+    },
+    {
+      "sourceFile": "logo-mac-1024x1024-dark.png",
+      "destPath": "public/logo-mac-1024x1024-dark.png",
+      "status": "OK",
+      "message": "884.46 KB"
+    },
+    {
+      "sourceFile": "logo-win-150x150.png",
+      "destPath": "public/logo-win-150x150.png",
+      "status": "OK",
+      "message": "31.58 KB"
+    },
+    {
+      "sourceFile": "logo-win-150x150-dark.png",
+      "destPath": "public/logo-win-150x150-dark.png",
+      "status": "OK",
+      "message": "30.45 KB"
+    },
+    {
+      "sourceFile": "logo-win-310x310.png",
+      "destPath": "public/logo-win-310x310.png",
+      "status": "OK",
+      "message": "108.38 KB"
+    },
+    {
+      "sourceFile": "logo-win-310x310-dark.png",
+      "destPath": "public/logo-win-310x310-dark.png",
+      "status": "OK",
+      "message": "106.01 KB"
+    },
+    {
+      "sourceFile": "favicon.svg",
+      "destPath": "public/icon-light.svg",
+      "status": "OK",
+      "message": "renamed to icon-light.svg, 10.62 KB"
+    },
+    {
+      "sourceFile": "favicon.svg",
+      "destPath": "website/public/icon-light.svg",
+      "status": "OK",
+      "message": "renamed to icon-light.svg, 10.62 KB"
+    }
+  ]
+}

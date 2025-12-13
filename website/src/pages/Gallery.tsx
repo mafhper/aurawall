@@ -41,14 +41,6 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
           }
       }), [preset]);
 
-      const activeConfig = useMemo(() => ({
-          ...config,
-          animation: {
-              ...config.animation,
-              enabled: isHovered && !isMobile
-          }
-      }), [config, isHovered, isMobile]);
-
       return (
           <div 
             className="group relative aspect-video rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all cursor-pointer"
@@ -56,9 +48,10 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
             onMouseLeave={() => setIsHovered(false)}
           >
              <WallpaperRenderer 
-                config={activeConfig}
+                config={config}
                 className="w-full h-full block"
-                lowQuality={true} // Always low quality for examples in modal
+                lowQuality={false}
+                paused={!isHovered || isMobile}
              />
              <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
                  <span className="text-xs font-bold text-white">{preset.name}</span>
@@ -159,13 +152,6 @@ export default function Gallery() {
           {ENGINES.map((engine) => {
             const [isHovered, setIsHovered] = useState(false); // Local state for each card
             const config = useMemo(() => getPreviewConfig(engine.id), [engine.id]);
-            const activeConfig = useMemo(() => ({
-                ...config,
-                animation: {
-                    ...config.animation,
-                    enabled: isHovered && !isMobile // Animation enabled only on hover AND not on mobile
-                }
-            }), [config, isHovered, isMobile]);
 
             return (
               <div 
@@ -178,9 +164,10 @@ export default function Gallery() {
                 {/* Background with WallpaperRenderer */}
                 <div className="absolute inset-0 bg-zinc-900">
                    <WallpaperRenderer 
-                     config={activeConfig} 
+                     config={config} 
                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
-                     lowQuality={true} // Always low quality for gallery cards
+                     lowQuality={false}
+                     paused={!isHovered || isMobile}
                    />
                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
                 </div>

@@ -84,10 +84,10 @@ export default function Creation() {
               animation: {
                 ...mode.config.animation,
                 enabled: true, // Always enable for this view to ensure it works on hover
-                speed: mode.id === 'animation' ? 8 : (isHovered ? 4 : 0), // Speed up on hover
-                flow: mode.id === 'animation' ? 5 : (isHovered ? 3 : 0),
+                speed: mode.id === 'animation' ? 8 : 4, // Fixed speed
+                flow: mode.id === 'animation' ? 5 : 3,  // Fixed flow
               }
-            }), [mode.config, isHovered, mode.id]);
+            }), [mode.config, mode.id]);
 
             // Custom Title/Desc handling because of key changes
             const title = mode.id === 'engines' ? 'Motores de Criação' : t(mode.titleKey);
@@ -111,7 +111,8 @@ export default function Creation() {
                      <WallpaperRenderer 
                         config={displayConfig}
                         className="w-full h-full block"
-                        lowQuality={!isHovered && mode.id !== 'animation'}
+                        lowQuality={false}
+                        paused={!isHovered}
                      />
                    </div>
                    

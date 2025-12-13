@@ -39,6 +39,25 @@ export default function Home() {
   const [actionIndex, setActionIndex] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
 
+  // Hover states for animations
+  const [isHeroHovered, setIsHeroHovered] = useState(false);
+  const [isBorealHovered, setIsBorealHovered] = useState(false);
+  const [isChromaHovered, setIsChromaHovered] = useState(false);
+
+  // Prepare configs for feature cards
+  const borealPreset = useMemo(() => PRESETS.find(p => p.id === 'angel-aura') || PRESETS[0], []);
+  const chromaPreset = useMemo(() => PRESETS.find(p => p.id === 'liquid-metal') || PRESETS[1], []);
+
+  const borealConfig = useMemo(() => ({
+    ...borealPreset.config,
+    animation: { ...borealPreset.config.animation, enabled: true, speed: 2, flow: 4 }
+  }), [borealPreset]);
+
+  const chromaConfig = useMemo(() => ({
+    ...chromaPreset.config,
+    animation: { ...chromaPreset.config.animation, enabled: true, speed: 3, flow: 3 }
+  }), [chromaPreset]);
+
   const handleRandomize = () => {
     setIsRotating(true);
     setTimeout(() => setIsRotating(false), 500);
@@ -80,19 +99,24 @@ export default function Home() {
     <div className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30">
       
       {/* Dynamic Hero Background */}
-      <div className="absolute inset-0 w-full h-screen overflow-hidden pointer-events-none transition-opacity duration-1000">
+      <div 
+        className="absolute inset-0 w-full h-screen overflow-hidden transition-opacity duration-1000"
+        onMouseEnter={() => setIsHeroHovered(true)}
+        onMouseLeave={() => setIsHeroHovered(false)}
+      >
          <WallpaperRenderer 
            config={heroConfig}
            className="w-full h-full block scale-110" // Scale up to avoid edges during browser resize
            lowQuality={false}
+           paused={!isHeroHovered}
          />
          {/* Overlay to ensure text readability */}
-         <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]" />
+         <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px] pointer-events-none" />
       </div>
 
       {/* Hero Section */}
-      <div className="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-6">
-        <div className="container mx-auto max-w-6xl text-center">
+      <div className="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-6 pointer-events-none">
+        <div className="container mx-auto max-w-6xl text-center pointer-events-auto">
           <span className="inline-block py-2 px-4 rounded-full bg-white/5 border border-white/10 text-purple-300 text-xs font-semibold tracking-wider mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 backdrop-blur-md">
             {t('hero.badge')}
           </span>
@@ -217,15 +241,23 @@ export default function Home() {
           
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch">
              {/* Boreal Card */}
-             <div className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-purple-500/50 transition-all duration-700 shadow-2xl">
+             <div 
+               className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-purple-500/50 transition-all duration-700 shadow-2xl"
+               onMouseEnter={() => setIsBorealHovered(true)}
+               onMouseLeave={() => setIsBorealHovered(false)}
+             >
                {/* Background */}
-               <div 
-                 className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
-                 style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg-boreal.svg)` }}
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+               <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110">
+                  <WallpaperRenderer 
+                    config={borealConfig}
+                    className="w-full h-full block"
+                    lowQuality={false}
+                    paused={!isBorealHovered}
+                  />
+               </div>
+               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
                
-               <div className="absolute inset-0 p-10 flex flex-col justify-end">
+               <div className="absolute inset-0 p-10 flex flex-col justify-end pointer-events-none">
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                     <span className="inline-block px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold tracking-widest mb-4 border border-purple-500/20 backdrop-blur-md">
                       ORIGIN
@@ -237,15 +269,23 @@ export default function Home() {
              </div>
 
              {/* Chroma Card */}
-             <div className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-green-500/50 transition-all duration-700 shadow-2xl">
+             <div 
+               className="group relative h-[500px] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-green-500/50 transition-all duration-700 shadow-2xl"
+               onMouseEnter={() => setIsChromaHovered(true)}
+               onMouseLeave={() => setIsChromaHovered(false)}
+             >
                {/* Background */}
-               <div 
-                 className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
-                 style={{ backgroundImage: `url(${import.meta.env.BASE_URL}bg-chroma.svg)` }}
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+               <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110">
+                  <WallpaperRenderer 
+                    config={chromaConfig}
+                    className="w-full h-full block"
+                    lowQuality={false}
+                    paused={!isChromaHovered}
+                  />
+               </div>
+               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
                
-               <div className="absolute inset-0 p-10 flex flex-col justify-end">
+               <div className="absolute inset-0 p-10 flex flex-col justify-end pointer-events-none">
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                     <span className="inline-block px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-bold tracking-widest mb-4 border border-green-500/20 backdrop-blur-md">
                       EVOLVED

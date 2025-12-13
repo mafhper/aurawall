@@ -37,6 +37,11 @@ O visual "Ethereal" é alcançado combinando:
 2.  **`<feGaussianBlur>`:** Aplicado individualmente por forma ou globalmente.
 3.  **`<feColorMatrix>`:** Usado para saturação e ajustes de cor no ruído.
 
+### Props Importantes
+- **`config`**: O objeto de estado completo que define o wallpaper (cores, formas, animação).
+- **`lowQuality`**: Quando `true`, desativa filtros pesados (blur, noise) e a geração de CSS de animação. Ideal para thumbnails ou listas.
+- **`paused`**: Quando `true`, define `animation-play-state: paused` nos elementos. Isso congela o movimento das formas (CSS) na posição atual sem remover a animação. *Nota: Não afeta animações nativas SVG (`<animate>`) como a oscilação de ruído.*
+
 ---
 
 ## 3. Animação e Movimento

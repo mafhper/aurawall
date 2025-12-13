@@ -106,14 +106,15 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
     >
       
       {/* Real Renderer Preview */}
-      {/* Logic: When hovered (isHovered=true), lowQuality becomes false. 
-          WallpaperRenderer sees lowQuality=false and anim.enabled=true (from displayConfig), 
-          so it enables SVG animations and High Quality filters. */}
+      {/* Logic: When hovered (isHovered=true), we unpause the animation. 
+          We keep lowQuality={false} to ensure the filters (noise/blur) are applied, making it look good even when static.
+          The 'paused' prop handles the freezing efficiently. */}
       <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
         <WallpaperRenderer 
           config={displayConfig} 
           className="w-full h-full block" 
-          lowQuality={!isHovered} 
+          lowQuality={false} 
+          paused={!isHovered}
         />
       </div>
       

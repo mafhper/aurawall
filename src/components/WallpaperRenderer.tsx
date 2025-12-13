@@ -9,9 +9,10 @@ interface WallpaperRendererProps {
   className?: string;
   style?: React.CSSProperties;
   lowQuality?: boolean; // New prop for thumbnails
+  paused?: boolean; // New prop to pause animation without removing it
 }
 
-const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>(({ config, className, style, lowQuality = false }, ref) => {
+const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>(({ config, className, style, lowQuality = false, paused = false }, ref) => {
   const { width = 1920, height = 1080, shapes, baseColor, noise = 0, noiseScale = 1, animation } = config;
   
   const anim = animation || { enabled: false, speed: 0, flow: 0, pulse: 0, rotate: 0, noiseAnim: 0, colorCycle: false, colorCycleSpeed: 0 };
@@ -81,12 +82,13 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
           animation: move-${shape.id} ${duration}s ease-in-out infinite alternate;
           animation-delay: ${delay}s;
           ${anim.colorCycle ? `filter: hue-rotate(0deg); animation: move-${shape.id} ${duration}s ease-in-out infinite alternate, hue-rotate ${colorAnimDuration}s linear infinite; animation-delay: ${delay}s, ${colorAnimDelay}s;` : ''}
+          animation-play-state: ${paused ? 'paused' : 'running'};
         }
       `;
     });
 
     return <style>{css}</style>;
-  }, [anim, shapes, isAnimated]);
+  }, [anim, shapes, isAnimated, paused]);
 
   // Background Gradient Logic
   const bgDef = useMemo(() => {
@@ -175,7 +177,7 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
               stitchTiles="stitch" 
             >
               {/* Animate Grain Turbulence for TV Static effect */}
-              {isAnimated && anim.noiseAnim > 0 && (
+              {isAnimated && !paused && anim.noiseAnim > 0 && (
                  <animate 
                    attributeName="seed" 
                    values="0;100;0" 
@@ -239,7 +241,7 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
                    transform: `translate(${(shape.x / 100) * width - shape.pixelSize!/2}px, ${(shape.y / 100) * height - shape.pixelSize!/2}px)`
                  }}
                >
-                 {anim.colorCycle && (
+                 {anim.colorCycle && !paused && (
                    <animate 
                      attributeName="fill"
                      values={`${shape.color};${shiftColor(shape.color, 60, 0, 0)};${shiftColor(shape.color, 120, 0, 0)};${shape.color}`}
@@ -264,7 +266,7 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
               filter={`url(#blur-${shape.id})`}
               style={{ mixBlendMode: shape.blendMode }}
             >
-              {anim.colorCycle && (
+              {anim.colorCycle && !paused && (
                  <animate 
                    attributeName="fill"
                    values={`${shape.color};${shiftColor(shape.color, 60, 0, 0)};${shiftColor(shape.color, 120, 0, 0)};${shape.color}`}

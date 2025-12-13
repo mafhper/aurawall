@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Github, ExternalLink, Newspaper, FileText, Server, Rss, PenTool, Database } from 'lucide-react';
+import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import { PRESETS } from '../../../src/constants';
 
 const projects = [
   {
@@ -41,9 +43,36 @@ const projects = [
 export default function About() {
   const { t } = useTranslation();
 
+  // Config for the Hero Background
+  const heroConfig = useMemo(() => {
+    // Use 'Deep Space' or similar dark/subtle preset
+    const preset = PRESETS.find(p => p.id === 'deep-space') || PRESETS[0];
+    return {
+      ...preset.config,
+      animation: {
+        ...preset.config.animation,
+        enabled: true,
+        speed: 1, // Very slow
+        flow: 2
+      }
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 relative overflow-hidden">
+      
+      {/* Background Renderer */}
+      <div className="absolute inset-0 pointer-events-none opacity-40">
+        <WallpaperRenderer 
+          config={heroConfig}
+          className="w-full h-full block scale-110"
+          lowQuality={false}
+          paused={false} // Always animated
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+      </div>
+
+      <div className="container mx-auto px-6 max-w-5xl relative z-10">
         
         {/* Hero */}
         <div className="text-center mb-20">
