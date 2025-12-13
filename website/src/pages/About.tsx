@@ -59,17 +59,18 @@ export default function About() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 relative">
       
-      {/* Background Renderer */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
+      {/* Background Renderer - Header Only */}
+      <div className="absolute top-0 left-0 w-full h-[70vh] overflow-hidden pointer-events-none opacity-40">
         <WallpaperRenderer 
           config={heroConfig}
           className="w-full h-full block scale-110"
           lowQuality={false}
           paused={false} // Always animated
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+        {/* Gradient: Fade from transparent to black at the bottom to blend with page */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
       </div>
 
       <div className="container mx-auto px-6 max-w-5xl relative z-10">

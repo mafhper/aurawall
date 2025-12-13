@@ -86,3 +86,23 @@ Implementado com `i18next` e `react-i18next`.
 - `utils/`: Funções auxiliares (conversão de cores, paths SVG).
 - `docs/`: Documentação técnica.
 - `public/`: Assets estáticos (ícones, manifest, branding).
+
+---
+
+## 7. Gerenciamento de Scripts (`package.json`)
+
+Para otimizar o fluxo de trabalho e padronizar o acesso às principais funcionalidades, os scripts do `package.json` foram simplificados e renomeados para comandos de palavra única sempre que possível.
+
+| Comando NPM         | Descrição                                                                      |
+| :------------------ | :----------------------------------------------------------------------------- |
+| `npm run dev`       | Inicia os servidores de desenvolvimento para a aplicação principal e o site promocional (concurrentemente). |
+| `npm run app`       | Inicia o servidor de desenvolvimento apenas para a aplicação principal.        |
+| `npm run promo`     | Inicia o servidor de desenvolvimento apenas para o site promocional.           |
+| `npm run build`     | Executa a build de produção para ambos, o site promocional e a aplicação principal. |
+| `npm run build-app`   | Executa a build de produção apenas para a aplicação principal.                   |
+| `npm run build-promo` | Executa a build de produção apenas para o site promocional.                      |
+| `npm run health`    | Realiza uma verificação completa de saúde do sistema: limpa dependências, reinstala e executa todas as builds, gerando um relatório detalhado. |
+| `npm run icons`     | Distribui os ícones e favicons gerados para os diretórios corretos.             |
+| `npm run logs`      | Busca e atualiza o changelog do projeto.                                        |
+| `npm run preview`   | Inicia um servidor de preview para os artefatos da build de produção.         |
+
