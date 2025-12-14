@@ -1,4 +1,4 @@
-import { Shape, BackgroundConfig, BlendMode } from '../types';
+import { Shape, BackgroundConfig } from '../types';
 import { parseHsl, hexToHsl, toHslStr } from './colorUtils';
 
 export const jitter = (val: number, amount: number) => val + (Math.random() * amount - (amount / 2));
@@ -34,10 +34,10 @@ export const ensureVisibility = (shapes: Shape[], baseColor: string | Background
   const isLightBase = baseHsl.l > 60;
 
   return shapes.map(s => {
-    let shapeHsl = s.color.startsWith('#') ? hexToHsl(s.color) : parseHsl(s.color);
+    const shapeHsl = s.color.startsWith('#') ? hexToHsl(s.color) : parseHsl(s.color);
     let newBlend = s.blendMode;
-    let newOpacity = Math.max(0.4, s.opacity); // Increase opacity floor
-    let newSize = Math.max(30, s.size);
+    const newOpacity = Math.max(0.4, s.opacity); // Increase opacity floor
+    const newSize = Math.max(30, s.size);
 
     // --- PITCH BLACK BACKGROUND RULES (Risk Level: HIGH) ---
     if (isPitchBlack) {

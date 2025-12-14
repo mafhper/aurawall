@@ -1,22 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { createPortal } from 'react-dom';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, Sparkles, Zap, Play, Menu, X, Shuffle } from 'lucide-react';
+import { ChevronDown, Sparkles, Play, Menu, X, Shuffle, Loader2 } from 'lucide-react';
 import { getAppUrl } from './utils/appUrl';
 import './i18n'; 
-import Home from './pages/Home';
-import Creation from './pages/Creation';
-import Tech from './pages/Tech';
-import Gallery from './pages/Gallery';
-import Changes from './pages/Changes';
-import About from './pages/About';
+
+// Lazy Load Pages
+const Home = lazy(() => import('./pages/Home'));
+const Creation = lazy(() => import('./pages/Creation'));
+const Tech = lazy(() => import('./pages/Tech'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const Changes = lazy(() => import('./pages/Changes'));
+const About = lazy(() => import('./pages/About'));
 
 // Sub-pages for Creation
-import CreationEngines from './pages/CreationEngines';
-import CreationEngineDetail from './pages/CreationEngineDetail';
-import CreationAnimation from './pages/CreationAnimation';
-import CreationProcedural from './pages/CreationProcedural';
+const CreationEngines = lazy(() => import('./pages/CreationEngines'));
+const CreationEngineDetail = lazy(() => import('./pages/CreationEngineDetail'));
+const CreationAnimation = lazy(() => import('./pages/CreationAnimation'));
+const CreationProcedural = lazy(() => import('./pages/CreationProcedural'));
+
+// Loading Component
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center min-h-[60vh] text-white">
+    <div className="flex flex-col items-center gap-4">
+      <Loader2 size={48} className="animate-spin text-purple-500" />
+      <span className="text-sm font-medium text-zinc-500 animate-pulse">Carregando...</span>
+    </div>
+  </div>
+);
 
 // ScrollToTop component - scrolls to top on route change
 const ScrollToTop = () => {
@@ -248,7 +260,16 @@ export default function App() {
         <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
           <nav className="glass-nav rounded-full px-6 py-3 flex items-center justify-between gap-4 md:gap-8 max-w-5xl w-full transition-all duration-300">
             
-            <Link to="/" className="flex items-center gap-2 shrink-0 hover:scale-105 transition-transform">
+            <Link 
+              to="/" 
+              onClick={(e) => {
+                if (location.pathname === '/') {
+                  e.preventDefault(); // Prevent re-navigation if already on home
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              className="flex items-center gap-2 shrink-0 hover:scale-105 transition-transform"
+            >
               <img src={`${import.meta.env.BASE_URL}icon-light.svg`} className="w-8 h-8" alt="Logo" />
               <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 hidden sm:block">
                 AuraWall
@@ -300,18 +321,20 @@ export default function App() {
         {/* Content, padding managed by individual pages */}
         <ScrollToTop />
         <div>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/creation" element={<Creation />} />
-            <Route path="/creation/engines" element={<CreationEngines />} />
-            <Route path="/creation/engine/:id" element={<CreationEngineDetail />} />
-            <Route path="/creation/animation" element={<CreationAnimation />} />
-            <Route path="/creation/procedural" element={<CreationProcedural />} />
-            <Route path="/architecture" element={<Tech />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/changes" element={<Changes />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/creation" element={<Creation />} />
+              <Route path="/creation/engines" element={<CreationEngines />} />
+              <Route path="/creation/engine/:id" element={<CreationEngineDetail />} />
+              <Route path="/creation/animation" element={<CreationAnimation />} />
+              <Route path="/creation/procedural" element={<CreationProcedural />} />
+              <Route path="/architecture" element={<Tech />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/changes" element={<Changes />} />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </Suspense>
         </div>
         
         {/* Footer Gradient Transition */}

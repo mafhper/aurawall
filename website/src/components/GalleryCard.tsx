@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Download, ExternalLink, ChevronDown, Check, Image as ImageIcon, FileImage, Code } from 'lucide-react';
+import { Download, ExternalLink, ChevronDown, Image as ImageIcon, FileImage, Code } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { generateWallpaperSVG } from '../utils/svgGenerator';
 import { getAppUrl } from '../utils/appUrl';
@@ -26,7 +26,7 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
     for (let i = 0; i < preset.id.length; i++) seed += preset.id.charCodeAt(i);
     
     // Helper to get number from seed
-    const rnd = (mod: number) => (seed % mod); // Simplistic but deterministic for this purpose
+    // const rnd = (mod: number) => (seed % mod); // unused
     
     // Add variations to seed for different properties
     const s1 = seed + 10;

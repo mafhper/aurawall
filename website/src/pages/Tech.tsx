@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Code, Cpu, Layers, Palette, Download, Share2, Globe, Zap, TestTube2, ArrowRight, Github, Binary } from 'lucide-react';
+import { Code, Layers, Palette, Download, Share2, Globe, Zap, TestTube2, ArrowRight, Github, Binary } from 'lucide-react';
 import CodeWindow from '../components/CodeWindow';
 
 const stackItems = [

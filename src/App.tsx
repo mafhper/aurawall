@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import WallpaperRenderer from './components/WallpaperRenderer';
-import { Controls } from './components/Controls';
-import { WallpaperConfig, Shape, BlendMode, CollectionId, AppPreferences } from './types';
+// import { Controls } from './components/Controls'; // Converted to lazy
+// Type needs to match so we import type or just rely on fallback
+const Controls = React.lazy(() => import('./components/Controls').then(module => ({ default: module.Controls })));
+import { WallpaperConfig, CollectionId, AppPreferences } from './types';
 import { DEFAULT_CONFIG, PRESETS, DEFAULT_PREFERENCES } from './constants';
 import { generateVariations } from './services/variationService';
 import { getEngine } from './engines';
 import { ZoomIn, ZoomOut, Maximize, X, Play } from 'lucide-react';
-import CodeExportModal from './components/CodeExportModal';
+const CodeExportModal = React.lazy(() => import('./components/CodeExportModal'));
 import { useTranslation } from 'react-i18next';
 import { useHistory } from './hooks/useHistory';
 import { useFavorites } from './hooks/useFavorites';
@@ -162,7 +164,7 @@ export default function App() {
       // Immediate variation generation
       setVariations(generateVariations(newConfig, activeCollection));
     }
-  }, [config, activeCollection, isGrainLocked]);
+  }, [config, activeCollection, isGrainLocked, setConfig]);
 
   const handleApplyVariation = useCallback((variantConfig: WallpaperConfig) => {
     setConfig(prevConfig => ({
@@ -173,7 +175,7 @@ export default function App() {
       noise: isGrainLocked ? prevConfig.noise : variantConfig.noise,
       noiseScale: isGrainLocked ? prevConfig.noiseScale : variantConfig.noiseScale
     }));
-  }, [isGrainLocked]);
+  }, [isGrainLocked, setConfig]);
 
   // Improved Color Logic for Randomization
   const handleRandomize = useCallback(() => {
@@ -186,14 +188,14 @@ export default function App() {
         setConfig(randomConfig);
         setVariations(generateVariations(randomConfig, activeCollection));
     }
-  }, [config, activeCollection, isGrainLocked]);
+  }, [config, activeCollection, isGrainLocked, setConfig]);
 
   const handleResize = useCallback((width: number, height: number) => {
     setConfig(prev => ({ ...prev, width, height }));
-  }, []);
+  }, [setConfig]);
 
   // Helper to generate filename with readable date
-  const generateFilename = (ext: string) => {
+  const generateFilename = useCallback((ext: string) => {
     const prefix = preferences.filenamePrefix || 'AuraWall';
     const collection = activeCollection;
     const isAnimated = config.animation?.enabled;
@@ -204,7 +206,7 @@ export default function App() {
     const dateStr = now.toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '-');
     
     return `${prefix}-${collection}${animSuffix}-${dateStr}.${ext}`;
-  };
+  }, [preferences.filenamePrefix, activeCollection, config.animation, t]);
 
   // New function for direct SVG file download
   const handleDownloadSvgFile = useCallback(() => {
@@ -219,7 +221,7 @@ export default function App() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-  }, [activeCollection, config.animation, preferences.filenamePrefix, t]);
+  }, [generateFilename]);
 
   // Function to capture SVG content and show the modal
   const handleShowCodeModal = useCallback(() => {
@@ -265,28 +267,28 @@ export default function App() {
     };
 
     img.src = url;
-  }, [config.width, config.height, activeCollection, preferences, config.animation, t]);
+  }, [config.width, config.height, preferences, generateFilename]);
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-black text-white overflow-hidden">
+    <main className="flex flex-col md:flex-row h-screen bg-black text-white overflow-hidden">
       
       {/* Preview Area */}
       <div className="md:order-2 flex-1 relative bg-[#09090b] overflow-hidden flex flex-col items-center justify-center p-4 md:p-8 order-1 h-[45vh] md:h-auto border-b md:border-b-0 border-white/10">
         
         <div className="absolute top-4 right-4 md:top-6 md:right-6 flex items-center gap-2 bg-zinc-900/80 backdrop-blur-md rounded-lg p-1.5 md:p-2 border border-white/5 z-10 shadow-lg">
-          <button onClick={() => setZoom(z => Math.max(0.1, z - 0.05))} className="p-1.5 md:p-2 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors">
-            <ZoomOut size={16} />
+          <button onClick={() => setZoom(z => Math.max(0.1, z - 0.05))} className="p-2 md:p-3 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" aria-label={t('zoom_out')}>
+            <ZoomOut size={20} />
           </button>
           <span className="text-[10px] md:text-xs font-mono w-8 md:w-12 text-center text-zinc-300">{Math.round(zoom * 100)}%</span>
-          <button onClick={() => setZoom(z => Math.min(1.5, z + 0.05))} className="p-1.5 md:p-2 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors">
-            <ZoomIn size={16} />
+          <button onClick={() => setZoom(z => Math.min(1.5, z + 0.05))} className="p-2 md:p-3 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" aria-label={t('zoom_in')}>
+            <ZoomIn size={20} />
           </button>
           <div className="w-px h-3 md:h-4 bg-white/10 mx-1"></div>
-           <button onClick={() => setIsFullscreen(true)} className="p-1.5 md:p-2 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" title={t('full_screen_preview')}>
-            <Maximize size={16} />
+           <button onClick={() => setIsFullscreen(true)} className="p-2 md:p-3 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" title={t('full_screen_preview')} aria-label={t('full_screen_preview')}>
+            <Maximize size={20} />
           </button>
-          <button onClick={() => setIsZenMode(true)} className="p-1.5 md:p-2 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" title="Modo Zen">
-            <Play size={16} />
+          <button onClick={() => setIsZenMode(true)} className="p-2 md:p-3 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" title="Modo Zen" aria-label="Modo Zen">
+            <Play size={20} />
           </button>
         </div>
 
@@ -307,36 +309,38 @@ export default function App() {
         <>
           {/* Controls Sidebar */}
           <div className="md:order-1 h-[55vh] md:h-full w-full md:w-96 flex-shrink-0 order-2">
-            <Controls 
-              config={config} 
-              variations={variations}
-              preferences={preferences}
-              setPreferences={setPreferences}
-              selectedPresetId={selectedPresetId}
-              activeCollection={activeCollection}
-              setActiveCollection={setActiveCollection}
-              enabledEngines={enabledEngines}
-              setEnabledEngines={setEnabledEngines}
-              setConfig={setConfig}
-              undo={undo}
-              redo={redo}
-              canUndo={canUndo}
-              canRedo={canRedo} 
-              favorites={favorites}
-              isFavorite={isCurrentConfigFavorite}
-              toggleFavorite={handleToggleFavorite}
-              addFavorite={handleAddFavorite}
-              removeFavorite={removeFavorite}
-              onDownload={handleDownload}
-              onDownloadSvgFile={handleDownloadSvgFile} 
-              onShowSVGModal={handleShowCodeModal} 
-              onApplyPreset={handleApplyPreset}
-              onApplyVariation={handleApplyVariation}
-              onResize={handleResize}
-              onRandomize={handleRandomize}
-              isGrainLocked={isGrainLocked}
-              onToggleGrainLock={() => setIsGrainLocked(prev => !prev)}
-            />
+            <React.Suspense fallback={<div className="w-full h-full bg-[#18181b] animate-pulse" />}>
+              <Controls 
+                config={config} 
+                variations={variations}
+                preferences={preferences}
+                setPreferences={setPreferences}
+                selectedPresetId={selectedPresetId}
+                activeCollection={activeCollection}
+                setActiveCollection={setActiveCollection}
+                enabledEngines={enabledEngines}
+                setEnabledEngines={setEnabledEngines}
+                setConfig={setConfig}
+                undo={undo}
+                redo={redo}
+                canUndo={canUndo}
+                canRedo={canRedo} 
+                favorites={favorites}
+                isFavorite={isCurrentConfigFavorite}
+                toggleFavorite={handleToggleFavorite}
+                addFavorite={handleAddFavorite}
+                removeFavorite={removeFavorite}
+                onDownload={handleDownload}
+                onDownloadSvgFile={handleDownloadSvgFile} 
+                onShowSVGModal={handleShowCodeModal} 
+                onApplyPreset={handleApplyPreset}
+                onApplyVariation={handleApplyVariation}
+                onResize={handleResize}
+                onRandomize={handleRandomize}
+                isGrainLocked={isGrainLocked}
+                onToggleGrainLock={() => setIsGrainLocked(prev => !prev)}
+              />
+            </React.Suspense>
           </div>
 
           {/* Fullscreen Modal */}
@@ -359,11 +363,13 @@ export default function App() {
 
           {/* Code Export Modal */}
           {showCodeModal && (
-            <CodeExportModal 
-              svgContent={svgContentForModal} 
-              config={config}
-              onClose={() => setShowCodeModal(false)} 
-            />
+            <React.Suspense fallback={null}>
+              <CodeExportModal 
+                svgContent={svgContentForModal} 
+                config={config}
+                onClose={() => setShowCodeModal(false)} 
+              />
+            </React.Suspense>
           )}
         </>
       )}
@@ -378,6 +384,6 @@ export default function App() {
           <X size={24} />
         </button>
       )}
-    </div>
+    </main>
   );
 }

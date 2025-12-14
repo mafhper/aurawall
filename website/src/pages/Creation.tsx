@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Sparkles, Play, ArrowRight, Shuffle, Scale, Palette, Aperture, Activity, Layers, Box, Cpu } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { PRESETS } from '../../../src/constants';
+import HeroBackground from '../components/HeroBackground';
 
 // Helper to get specific preset configs
 const getPresetConfig = (id: string) => {
@@ -11,9 +12,112 @@ const getPresetConfig = (id: string) => {
   return preset ? preset.config : PRESETS[0].config;
 };
 
+// Component for rendering individual creation modes
+const CreationModeItem = ({ mode, hoveredMode, setHoveredMode }: { 
+  mode: any, 
+  hoveredMode: string | null, 
+  setHoveredMode: (id: string | null) => void 
+}) => {
+  const { t } = useTranslation();
+  const isHovered = hoveredMode === mode.id;
+
+  const accentClasses = {
+    purple: 'text-purple-400 border-purple-500/30 hover:border-purple-400/50',
+    blue: 'text-blue-400 border-blue-500/30 hover:border-blue-400/50',
+  };
+  
+  const buttonBg = {
+     purple: 'bg-purple-500/10 hover:bg-purple-500/20 text-purple-300',
+     blue: 'bg-blue-500/10 hover:bg-blue-500/20 text-blue-300',
+  };
+
+  // Dynamic config for hover animation
+  const displayConfig = useMemo(() => ({
+    ...mode.config,
+    animation: {
+      ...mode.config.animation,
+      enabled: true, // Always enable for this view to ensure it works on hover
+      speed: mode.id === 'animation' ? 8 : 4, // Fixed speed
+      flow: mode.id === 'animation' ? 5 : 3,  // Fixed flow
+    }
+  }), [mode.config, mode.id]);
+
+  // Custom Title/Desc handling because of key changes
+  const title = mode.id === 'engines' ? 'Motores de Criação' : t(mode.titleKey);
+  const desc = mode.id === 'engines' ? mode.descKey : t('showcase.animation_desc'); // Quick fallback for animation desc
+
+  return (
+    <div 
+      className={`flex flex-col ${mode.isReverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-20`}
+      onMouseEnter={() => setHoveredMode(mode.id)}
+      onMouseLeave={() => setHoveredMode(null)}
+    >
+      
+      {/* Visual Card */}
+      <Link 
+        to={mode.path}
+        className={`relative w-full lg:w-1/2 aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-white/10 transition-all duration-500 shadow-2xl group ${isHovered ? 'scale-[1.02] border-opacity-50' : ''} ${accentClasses[mode.accentColor as keyof typeof accentClasses].split(' ')[1]}`}
+      >
+         {/* Background Renderer */}
+         <div className="absolute inset-0">
+           <WallpaperRenderer 
+              config={displayConfig}
+              className="w-full h-full block"
+              lowQuality={false}
+              paused={!isHovered}
+           />
+         </div>
+         
+         {/* Overlay */}
+         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60" />
+
+         {/* Icon Badge */}
+         <div className="absolute top-8 left-8">
+           <div className={`w-16 h-16 rounded-2xl bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center ${accentClasses[mode.accentColor as keyof typeof accentClasses].split(' ')[0]}`}>
+             <mode.icon size={32} />
+           </div>
+         </div>
+      </Link>
+
+      {/* Text Content */}
+      <div className="w-full lg:w-1/2 space-y-8">
+        <div className="space-y-4">
+           <h2 className="text-5xl font-bold">{title}</h2>
+           <p className="text-2xl text-zinc-300 leading-relaxed max-w-lg">
+             {desc}
+           </p>
+        </div>
+        
+        <Link 
+          to={mode.path}
+          className={`inline-flex items-center gap-3 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:translate-x-2 ${buttonBg[mode.accentColor as keyof typeof buttonBg]}`}
+        >
+          {t('creation.explore')}
+          <ArrowRight size={20} />
+        </Link>
+      </div>
+    </div>
+  );
+};
+
 export default function Creation() {
   const { t } = useTranslation();
   const [hoveredMode, setHoveredMode] = useState<string | null>(null);
+
+  // Compute animation config once
+  const animationConfig = useMemo(() => {
+    const base = getPresetConfig('soul-glow');
+    return {
+      ...base,
+      animation: {
+        ...base.animation,
+        enabled: true,
+        speed: 8,
+        flow: 5,
+        pulse: 10
+      }
+    };
+  }, []);
 
   const creationModes = [
     {
@@ -24,6 +128,7 @@ export default function Creation() {
       descKey: t('creation.engines_desc'),
       config: getPresetConfig('angel-aura'), // Representative
       accentColor: 'purple',
+      isReverse: false,
     },
     {
       id: 'animation',
@@ -31,26 +136,15 @@ export default function Creation() {
       icon: Play,
       titleKey: 'creation.anim_title',
       descKey: t('creation.animation_proc_desc'),
-      // Custom high-energy config for Animation
-      config: useMemo(() => {
-        const base = getPresetConfig('soul-glow');
-        return {
-          ...base,
-          animation: {
-            ...base.animation,
-            enabled: true,
-            speed: 8,
-            flow: 5,
-            pulse: 10
-          }
-        };
-      }, []),
+      config: animationConfig,
       accentColor: 'blue',
+      isReverse: true,
     },
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 relative overflow-hidden">
+      <HeroBackground config={getPresetConfig('angel-aura')} opacity={0.4} />
       <div className="container mx-auto px-6">
         
         {/* Hero */}
@@ -63,90 +157,14 @@ export default function Creation() {
 
         {/* Zig-Zag Mode Sections */}
         <div className="flex flex-col gap-32 mb-40">
-          {creationModes.map((mode, index) => {
-            const Icon = mode.icon;
-            const isReverse = index % 2 !== 0;
-            const isHovered = hoveredMode === mode.id;
-
-            const accentClasses = {
-              purple: 'text-purple-400 border-purple-500/30 hover:border-purple-400/50',
-              blue: 'text-blue-400 border-blue-500/30 hover:border-blue-400/50',
-            };
-            
-            const buttonBg = {
-               purple: 'bg-purple-500/10 hover:bg-purple-500/20 text-purple-300',
-               blue: 'bg-blue-500/10 hover:bg-blue-500/20 text-blue-300',
-            };
-
-            // Dynamic config for hover animation
-            const displayConfig = useMemo(() => ({
-              ...mode.config,
-              animation: {
-                ...mode.config.animation,
-                enabled: true, // Always enable for this view to ensure it works on hover
-                speed: mode.id === 'animation' ? 8 : 4, // Fixed speed
-                flow: mode.id === 'animation' ? 5 : 3,  // Fixed flow
-              }
-            }), [mode.config, mode.id]);
-
-            // Custom Title/Desc handling because of key changes
-            const title = mode.id === 'engines' ? 'Motores de Criação' : t(mode.titleKey);
-            const desc = mode.id === 'engines' ? mode.descKey : t('showcase.animation_desc'); // Quick fallback for animation desc
-
-            return (
-              <div 
-                key={mode.id} 
-                className={`flex flex-col ${isReverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-20`}
-                onMouseEnter={() => setHoveredMode(mode.id)}
-                onMouseLeave={() => setHoveredMode(null)}
-              >
-                
-                {/* Visual Card */}
-                <Link 
-                  to={mode.path}
-                  className={`relative w-full lg:w-1/2 aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-white/10 transition-all duration-500 shadow-2xl group ${isHovered ? 'scale-[1.02] border-opacity-50' : ''} ${accentClasses[mode.accentColor as keyof typeof accentClasses].split(' ')[1]}`}
-                >
-                   {/* Background Renderer */}
-                   <div className="absolute inset-0">
-                     <WallpaperRenderer 
-                        config={displayConfig}
-                        className="w-full h-full block"
-                        lowQuality={false}
-                        paused={!isHovered}
-                     />
-                   </div>
-                   
-                   {/* Overlay */}
-                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60" />
-
-                   {/* Icon Badge */}
-                   <div className="absolute top-8 left-8">
-                     <div className={`w-16 h-16 rounded-2xl bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center ${accentClasses[mode.accentColor as keyof typeof accentClasses].split(' ')[0]}`}>
-                       <Icon size={32} />
-                     </div>
-                   </div>
-                </Link>
-
-                {/* Text Content */}
-                <div className="w-full lg:w-1/2 space-y-8">
-                  <div className="space-y-4">
-                     <h2 className="text-5xl font-bold">{title}</h2>
-                     <p className="text-2xl text-zinc-300 leading-relaxed max-w-lg">
-                       {desc}
-                     </p>
-                  </div>
-                  
-                  <Link 
-                    to={mode.path}
-                    className={`inline-flex items-center gap-3 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:translate-x-2 ${buttonBg[mode.accentColor as keyof typeof buttonBg]}`}
-                  >
-                    {t('creation.explore')}
-                    <ArrowRight size={20} />
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
+          {creationModes.map((mode) => (
+            <CreationModeItem 
+              key={mode.id} 
+              mode={mode} 
+              hoveredMode={hoveredMode} 
+              setHoveredMode={setHoveredMode} 
+            />
+          ))}
         </div>
         
         {/* Procedural Intelligence Section (Deep Dive) */}

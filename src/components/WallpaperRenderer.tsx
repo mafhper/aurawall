@@ -15,7 +15,7 @@ interface WallpaperRendererProps {
 const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>(({ config, className, style, lowQuality = false, paused = false }, ref) => {
   const { width = 1920, height = 1080, shapes, baseColor, noise = 0, noiseScale = 1, animation } = config;
   
-  const anim = animation || { enabled: false, speed: 0, flow: 0, pulse: 0, rotate: 0, noiseAnim: 0, colorCycle: false, colorCycleSpeed: 0 };
+  const anim = useMemo(() => animation || { enabled: false, speed: 0, flow: 0, pulse: 0, rotate: 0, noiseAnim: 0, colorCycle: false, colorCycleSpeed: 0 }, [animation]);
   const isAnimated = anim.enabled && !lowQuality;
 
   const vig = useMemo(() => config.vignette ? { 
@@ -134,7 +134,7 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
       }
       return { ...shape, isBlob: false };
     });
-  }, [shapes, width, height]); // Re-calculate only if dimensions or shapes change
+  }, [shapes, width]); // Re-calculate only if dimensions or shapes change
 
   return (
     <svg

@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { ensureVisibility, shiftColor, jitter, clamp } from '../utils/engineUtils';
+import { ensureVisibility, shiftColor } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });

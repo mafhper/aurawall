@@ -21,7 +21,6 @@ import {
   Lock,
   Unlock,
   Play,
-  Copy, 
   Aperture,
   RotateCw,
   SlidersHorizontal,
@@ -31,7 +30,6 @@ import {
   CopyCheck,
   Heart,
   Star,
-  Search,
   ArrowLeft
 } from 'lucide-react';
 import { DEFAULT_ANIMATION, DEFAULT_VIGNETTE } from '../constants';
@@ -39,10 +37,10 @@ import { hslToHex } from '../utils/colorUtils';
 import { useTranslation } from 'react-i18next';
 import PreferencesMenu from './PreferencesMenu'; 
 import ColorPaletteExtractor from './ColorPaletteExtractor'; // New Import
-import { getAllEngines, getEngine } from '../engines';
+import { getEngine } from '../engines';
 import EngineGallery from './EngineGallery';
 
-const COLLECTION_ICONS: Record<string, any> = {
+const COLLECTION_ICONS: Record<string, React.ElementType> = {
   boreal: Wind,
   chroma: Zap,
   lava: Zap, // Reuse Zap or find better
@@ -143,7 +141,6 @@ const ControlsInner: React.FC<ControlsProps> = ({
   favorites,
   isFavorite,
   toggleFavorite,
-  addFavorite,
   removeFavorite,
   onDownload,
   onDownloadSvgFile,
@@ -169,7 +166,21 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
   const handleEquipEngine = (newEngineId: string) => {
     if (slotToReplace) {
-        const newEnabled = enabledEngines.map(id => id === slotToReplace ? newEngineId : id);
+        let newEnabled: string[];
+        
+        // Check if the selected engine is already active in another slot
+        if (enabledEngines.includes(newEngineId)) {
+            // Swap logic: The old slot gets the new engine, the existing slot gets the old engine
+            newEnabled = enabledEngines.map(id => {
+                if (id === slotToReplace) return newEngineId;
+                if (id === newEngineId) return slotToReplace;
+                return id;
+            });
+        } else {
+            // Standard replacement
+            newEnabled = enabledEngines.map(id => id === slotToReplace ? newEngineId : id);
+        }
+
         setEnabledEngines(newEnabled);
         setActiveCollection(newEngineId);
         setShowGallery(false);
@@ -183,7 +194,10 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
   // Reset category when collection changes
   useEffect(() => {
-    setActiveCategory('All');
+    const timer = setTimeout(() => {
+        setActiveCategory('All');
+    }, 0);
+    return () => clearTimeout(timer);
   }, [activeCollection]);
 
   const handleShare = async () => {
@@ -359,36 +373,42 @@ const ControlsInner: React.FC<ControlsProps> = ({
       <div className="flex border-b border-white/10 bg-[#18181b] z-10 shrink-0">
         <button 
           onClick={() => setActiveTab('adjust')}
+          aria-label={t('tab_adjust')}
           className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'adjust' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
         >
           <Settings2 size={16} /> <span className="hidden xs:inline">{t('tab_adjust')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('shapes')}
+          aria-label={t('tab_shapes')}
           className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'shapes' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
         >
           <Layers size={16} /> <span className="hidden xs:inline">{t('tab_shapes')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('motion')}
+          aria-label={t('tab_motion')}
           className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'motion' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
         >
           <Play size={16} /> <span className="hidden xs:inline">{t('tab_motion')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('sizes')}
+          aria-label={t('tab_size')}
           className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'sizes' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
         >
           <Monitor size={16} /> <span className="hidden xs:inline">{t('tab_size')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('favorites')}
+          aria-label={t('tab_favorites')}
           className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'favorites' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
         >
           <Star size={16} /> <span className="hidden xs:inline">{t('tab_favorites')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('preferences')}
+          aria-label={t('preferences')}
           className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'preferences' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
         >
           <SlidersHorizontal size={16} /> <span className="hidden xs:inline">{t('preferences')}</span>
@@ -476,14 +496,15 @@ const ControlsInner: React.FC<ControlsProps> = ({
                         }`}
                     >
                         <Icon size={14} /> <span className="hidden xl:inline">{engine.meta.name}</span>
-                        <span className="inline xl:hidden">{engine.meta.name.slice(0, 3)}</span>
+                        <span className="inline xl:hidden text-zinc-400">{engine.meta.name.slice(0, 3)}</span>
                     </button>
                     <button 
                         onClick={(e) => {
                             e.stopPropagation();
                             handleOpenGallery(engineId);
                         }}
-                        className="absolute -top-2 -right-2 bg-zinc-700 text-white rounded-full p-1 opacity-50 group-hover/btn:opacity-100 hover:bg-purple-500 transition-all z-10 shadow-lg scale-75"
+                        aria-label="Trocar motor"
+                        className="absolute -top-2 -right-2 bg-zinc-700 text-white rounded-full p-2 opacity-50 group-hover/btn:opacity-100 hover:bg-purple-500 transition-all z-10 shadow-lg scale-75"
                         title="Trocar motor"
                     >
                         <Settings2 size={10} />
@@ -645,6 +666,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                      <div className="w-8 h-8 rounded-full border border-white/20 overflow-hidden relative flex-shrink-0">
                         <input 
                           type="color" 
+                          aria-label="Cor primária"
                           value={bgConfig.color1.startsWith('#') ? bgConfig.color1 : hslToHex(bgConfig.color1)} 
                           onChange={(e) => updateBackground({ color1: e.target.value })}
                           className="absolute -top-2 -left-2 w-12 h-12 cursor-pointer p-0 border-0 opacity-0"
@@ -663,6 +685,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                          <div className="w-8 h-8 rounded-full border border-white/20 overflow-hidden relative flex-shrink-0">
                             <input 
                               type="color" 
+                              aria-label="Cor secundária"
                               value={bgConfig.color2.startsWith('#') ? bgConfig.color2 : hslToHex(bgConfig.color2)} 
                               onChange={(e) => updateBackground({ color2: e.target.value })}
                               className="absolute -top-2 -left-2 w-12 h-12 cursor-pointer p-0 border-0 opacity-0"
@@ -675,12 +698,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
                        {/* Angle (Linear only) */}
                        {bgConfig.type === 'linear' && (
                          <div>
-                            <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+                            <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
                               <span>Angle</span>
                               <span>{bgConfig.angle}°</span>
                             </div>
                             <input 
                               type="range" min="0" max="360" 
+                              aria-label="Angle"
                               value={bgConfig.angle || 0} 
                               onChange={(e) => updateBackground({ angle: Number(e.target.value) })}
                               className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
@@ -699,6 +723,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   <div className="relative inline-block w-8 mr-1 align-middle select-none">
                     <input 
                       type="checkbox" 
+                      aria-label="Ativar/Desativar Vinheta"
                       checked={vig.enabled}
                       onChange={(e) => {
                         e.stopPropagation(); // Prevent collapse
@@ -725,11 +750,12 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   
                   {/* Color */}
                   <div className="flex items-center justify-between">
-                     <span className="text-[10px] text-zinc-500">{t('mask_color')}</span>
+                     <span className="text-[10px] text-zinc-400">{t('mask_color')}</span>
                      <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full border border-white/20 overflow-hidden relative">
                           <input 
                             type="color" 
+                            aria-label={t('mask_color')}
                             value={vig.color.startsWith('#') ? vig.color : hslToHex(vig.color)} 
                             onChange={(e) => updateVignette('color', e.target.value)}
                             className="absolute -top-2 -left-2 w-10 h-10 cursor-pointer p-0 opacity-0"
@@ -741,12 +767,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                   {/* Intensity */}
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('intensity_opacity')}</span>
                       <span>{Math.round(vig.intensity * 100)}%</span>
                     </div>
                     <input 
                       type="range" 
+                      aria-label={t('intensity_opacity')}
                       min="0" 
                       max="1" 
                       step="0.05"
@@ -758,12 +785,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                   {/* Size */}
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('spread_center_size')}</span>
                       <span>{vig.size}%</span>
                     </div>
                     <input 
                       type="range" 
+                      aria-label={t('spread_center_size')}
                       min="0" 
                       max="100" 
                       value={vig.size} 
@@ -774,12 +802,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                   {/* Offset X */}
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('offset_x')}</span>
                       <span>{vig.offsetX}%</span>
                     </div>
                     <input 
                       type="range" 
+                      aria-label={t('offset_x')}
                       min="-50" 
                       max="50" 
                       value={vig.offsetX} 
@@ -790,12 +819,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                   {/* Offset Y */}
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('offset_y')}</span>
                       <span>{vig.offsetY}%</span>
                     </div>
                     <input 
                       type="range" 
+                      aria-label={t('offset_y')}
                       min="-50" 
                       max="50" 
                       value={vig.offsetY} 
@@ -880,12 +910,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
               >
                 <div className={`bg-zinc-800/30 p-3 rounded-lg border border-white/5 space-y-3 transition-opacity ${isGrainLocked ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('intensity')}</span>
                       <span>{config.noise}%</span>
                     </div>
                     <input 
                       type="range" 
+                      aria-label={t('intensity')}
                       min="0" 
                       max="100" 
                       disabled={isGrainLocked}
@@ -895,12 +926,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
                     />
                   </div>
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('scale')}</span>
                       <span>{config.noiseScale}</span>
                     </div>
                     <input 
                       type="range" 
+                      aria-label={t('scale')}
                       min="1" 
                       max="20" 
                       step="0.1"
@@ -949,17 +981,19 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   {/* Position X/Y */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <span className="text-[10px] text-zinc-500 block mb-1">{t('pos_x')}</span>
+                      <span className="text-[10px] text-zinc-400 block mb-1">{t('pos_x')}</span>
                       <input 
                         type="range" min="-50" max="150" 
+                        aria-label={t('pos_x')}
                         value={shape.x} onChange={(e) => updateShape(shape.id, 'x', Number(e.target.value))}
                         className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                       />
                     </div>
                     <div>
-                       <span className="text-[10px] text-zinc-500 block mb-1">{t('pos_y')}</span>
+                       <span className="text-[10px] text-zinc-400 block mb-1">{t('pos_y')}</span>
                       <input 
                         type="range" min="-50" max="150" 
+                        aria-label={t('pos_y')}
                         value={shape.y} onChange={(e) => updateShape(shape.id, 'y', Number(e.target.value))}
                         className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                       />
@@ -969,17 +1003,19 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   {/* Size & Blur */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                       <span className="text-[10px] text-zinc-500 block mb-1">{t('size')}</span>
+                       <span className="text-[10px] text-zinc-400 block mb-1">{t('size')}</span>
                       <input 
                         type="range" min="10" max="200" 
+                        aria-label={t('size')}
                         value={shape.size} onChange={(e) => updateShape(shape.id, 'size', Number(e.target.value))}
                         className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                       />
                     </div>
                     <div>
-                       <span className="text-[10px] text-zinc-500 block mb-1">{t('blur')}</span>
+                       <span className="text-[10px] text-zinc-400 block mb-1">{t('blur')}</span>
                       <input 
                         type="range" min="0" max="200" 
+                        aria-label={t('blur')}
                         value={shape.blur} onChange={(e) => updateShape(shape.id, 'blur', Number(e.target.value))}
                         className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                       />
@@ -991,6 +1027,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                      <div className="w-8 h-8 rounded-full overflow-hidden relative border border-white/20 shrink-0">
                         <input 
                           type="color" 
+                          aria-label={t('layer_color')}
                           value={shape.color.startsWith('#') ? shape.color : hslToHex(shape.color)} 
                           onChange={(e) => updateShape(shape.id, 'color', e.target.value)}
                           className="absolute -top-2 -left-2 w-12 h-12 cursor-pointer p-0 opacity-0"
@@ -1070,6 +1107,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                 <div className="relative inline-block w-10 mr-2 align-middle select-none">
                   <input 
                     type="checkbox" 
+                    aria-label="Ativar/Desativar Animação"
                     checked={anim.enabled}
                     onChange={toggleAnim}
                     className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 ease-in-out top-0.5"
@@ -1092,12 +1130,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
                  
                  {/* Speed */}
                  <div>
-                    <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
                       <span>{t('global_speed')}</span>
                       <span>{anim.speed.toFixed(1)}</span>
                     </div>
                     <input 
                       type="range" min="0.1" max="10" step="0.1"
+                      aria-label={t('global_speed')}
                       value={anim.speed} onChange={(e) => updateAnim('speed', Number(e.target.value))}
                       className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                     />
@@ -1107,12 +1146,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
                  
                  {/* Drift/Flow */}
                  <div>
-                    <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
                       <span>{t('drift_flow')}</span>
                       <span>{anim.flow}</span>
                     </div>
                     <input 
                       type="range" min="0" max="10" step="1"
+                      aria-label={t('drift_flow')}
                       value={anim.flow} onChange={(e) => updateAnim('flow', Number(e.target.value))}
                       className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                     />
@@ -1120,12 +1160,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                  {/* Pulse */}
                  <div>
-                    <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
                       <span>{t('pulse_breathing')}</span>
                       <span>{anim.pulse}</span>
                     </div>
                     <input 
                       type="range" min="0" max="10" step="1"
+                      aria-label={t('pulse_breathing')}
                       value={anim.pulse} onChange={(e) => updateAnim('pulse', Number(e.target.value))}
                       className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                     />
@@ -1133,12 +1174,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                  {/* Rotate */}
                  <div>
-                    <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
                       <span>{t('slow_rotate')}</span>
                       <span>{anim.rotate}</span>
                     </div>
                     <input 
                       type="range" min="0" max="10" step="1"
+                      aria-label={t('slow_rotate')}
                       value={anim.rotate} onChange={(e) => updateAnim('rotate', Number(e.target.value))}
                       className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                     />
@@ -1146,12 +1188,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
                  
                  {/* Noise Anim */}
                  <div>
-                    <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
                       <span>{t('static_noise_tv')}</span>
                       <span>{anim.noiseAnim}</span>
                     </div>
                     <input 
                       type="range" min="0" max="10" step="1"
+                      aria-label={t('static_noise_tv')}
                       value={anim.noiseAnim} onChange={(e) => updateAnim('noiseAnim', Number(e.target.value))}
                       className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
                     />
@@ -1295,7 +1338,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
       </div>
 
       {/* Palette Extraction Section */}
-      <CollapsibleSection title={t('palette_extraction_title', 'Paleta de Cores')}>
+      <CollapsibleSection title={t('palette_extraction_title', 'Paleta de Cores')} defaultOpen={false}>
         <ColorPaletteExtractor config={config} />
       </CollapsibleSection>
 

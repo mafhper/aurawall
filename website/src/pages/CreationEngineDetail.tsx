@@ -10,7 +10,7 @@ import { getAppUrl } from '../utils/appUrl';
 
 export default function CreationEngineDetail() {
   const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
+  // const { t } = useTranslation(); // unused
 
   const engineMeta = ENGINES.find(e => e.id === id);
   const engineLogic = getEngine(id || '');
@@ -28,7 +28,7 @@ export default function CreationEngineDetail() {
             speed: Math.max(2, (cfg.animation?.speed || 1)) // Ensure decent speed
         }
     };
-  }, [id]);
+  }, [engineLogic]);
 
   if (!engineMeta) {
     return (

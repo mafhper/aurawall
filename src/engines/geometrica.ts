@@ -1,8 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
 import { ensureVisibility } from '../utils/engineUtils';
-import { toHslStr } from '../utils/colorUtils';
-
-const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
 
 export const geometricaEngine: EngineDefinition = {
   id: 'geometrica',

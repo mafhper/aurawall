@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { WallpaperConfig, BackgroundConfig } from '../types';
-import { hexToHsl, hslToHex, parseHsl, toHslStr } from '../utils/colorUtils';
+import { WallpaperConfig } from '../types';
+import { hslToHex } from '../utils/colorUtils';
 import { Copy, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

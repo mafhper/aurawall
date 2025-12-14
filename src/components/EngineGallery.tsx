@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getAllEngines } from '../engines';
 import WallpaperRenderer from './WallpaperRenderer';
-import { X, Check, Zap, Sparkles } from 'lucide-react';
-import { EngineDefinition, WallpaperConfig } from '../types';
+import { X, Check, Sparkles } from 'lucide-react';
+import { WallpaperConfig } from '../types';
 import { DEFAULT_CONFIG } from '../constants';
 
 interface EngineGalleryProps {
@@ -16,15 +16,18 @@ export default function EngineGallery({ onClose, onEquip, activeEngineId }: Engi
   const [previews, setPreviews] = useState<Record<string, WallpaperConfig>>({});
 
   useEffect(() => {
-    // Generate previews for all engines
-    const newPreviews: Record<string, WallpaperConfig> = {};
-    engines.forEach(eng => {
-        if (eng.randomizer) {
-            newPreviews[eng.id] = eng.randomizer(DEFAULT_CONFIG, { isGrainLocked: false });
-        }
-    });
-    setPreviews(newPreviews);
-  }, []);
+    // Generate previews for all engines asynchronously to avoid render blocking/impurity
+    const timer = setTimeout(() => {
+        const newPreviews: Record<string, WallpaperConfig> = {};
+        engines.forEach(eng => {
+            if (eng.randomizer) {
+                newPreviews[eng.id] = eng.randomizer(DEFAULT_CONFIG, { isGrainLocked: false });
+            }
+        });
+        setPreviews(newPreviews);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [engines]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
@@ -47,10 +50,14 @@ export default function EngineGallery({ onClose, onEquip, activeEngineId }: Engi
 
         {/* Grid */}
         <div className="overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-           {engines.map(engine => (
+           {engines.map(engine => {
+             const [isHovered, setIsHovered] = useState(false);
+             return (
              <button
                key={engine.id}
                onClick={() => onEquip(engine.id)}
+               onMouseEnter={() => setIsHovered(true)}
+               onMouseLeave={() => setIsHovered(false)}
                className={`group flex flex-col text-left rounded-lg overflow-hidden border transition-all hover:scale-[1.02] ${
                  activeEngineId === engine.id 
                  ? 'border-purple-500 ring-1 ring-purple-500 bg-zinc-800' 
@@ -61,9 +68,16 @@ export default function EngineGallery({ onClose, onEquip, activeEngineId }: Engi
                 <div className="h-32 w-full relative bg-black overflow-hidden">
                    {previews[engine.id] && (
                      <WallpaperRenderer 
-                       config={previews[engine.id]} 
+                       config={{
+                         ...previews[engine.id],
+                         animation: {
+                             ...previews[engine.id].animation,
+                             enabled: true // Ensure animation is considered enabled in config
+                         }
+                       }} 
                        className="w-full h-full object-cover" 
-                       lowQuality={true}
+                       lowQuality={true} // Keep lowQuality for performance
+                       paused={!isHovered} // Pause when not hovering
                      />
                    )}
                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
@@ -81,7 +95,7 @@ export default function EngineGallery({ onClose, onEquip, activeEngineId }: Engi
                    <p className="text-xs text-zinc-400 line-clamp-3">{engine.meta.description}</p>
                 </div>
              </button>
-           ))}
+           )})}
         </div>
       </div>
     </div>

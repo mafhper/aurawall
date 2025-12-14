@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Sparkles } from 'lucide-react';
@@ -94,17 +94,29 @@ const EngineCard = ({ engine, variant = 'grid' }: { engine: typeof ENGINES[0], v
 };
 
 export default function CreationEngines() {
-  const { t } = useTranslation();
+  // const { t } = useTranslation(); // unused
 
-  // Shuffle engines once on mount
-  const [{ hero, secondary, grid }] = useState(() => {
-    const shuffled = [...ENGINES].sort(() => Math.random() - 0.5);
-    return {
-      hero: shuffled[0],
-      secondary: shuffled.slice(1, 4),
-      grid: shuffled.slice(4)
-    };
-  });
+  // Initialize with default order, then shuffle on mount
+  const [layout, setLayout] = useState(() => ({
+    hero: ENGINES[0],
+    secondary: ENGINES.slice(1, 4),
+    grid: ENGINES.slice(4)
+  }));
+
+  useEffect(() => {
+    // Shuffle engines on client-side mount
+    const timer = setTimeout(() => {
+      const shuffled = [...ENGINES].sort(() => Math.random() - 0.5);
+      setLayout({
+        hero: shuffled[0],
+        secondary: shuffled.slice(1, 4),
+        grid: shuffled.slice(4)
+      });
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const { hero, secondary, grid } = layout;
 
   return (
     <div className="min-h-screen bg-black text-white pt-32 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">

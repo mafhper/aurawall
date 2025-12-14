@@ -50,13 +50,13 @@ export const hexToHsl = (hex: string) => {
 // Helper: HSL to Hex
 export const hslToHex = (hslString: string) => {
     const hsl = parseHsl(hslString);
-    let h = hsl.h;
-    let s = hsl.s / 100;
-    let l = hsl.l / 100;
+    const h = hsl.h;
+    const s = hsl.s / 100;
+    const l = hsl.l / 100;
 
-    let c = (1 - Math.abs(2 * l - 1)) * s;
-    let x = c * (1 - Math.abs((h / 60) % 2 - 1));
-    let m = l - c / 2;
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    const m = l - c / 2;
     let r = 0;
     let g = 0;
     let b = 0;

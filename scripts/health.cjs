@@ -3,9 +3,20 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 // --- Configuration ---
-const LOG_DIR = path.join(__dirname, '../_desenvolvimento/logs');
-const TIMESTAMP = new Date().toISOString().replace(/[:.]/g, '-');
-const LOG_FILE = path.join(LOG_DIR, `health-report-${TIMESTAMP}.md`);
+const LOG_DIR = path.join(__dirname, '../performance-reports');
+
+// Helper to generate filename: REMOVED (using shared)
+// const generateReportFilename = (status, failCount) => {
+//     const now = new Date();
+//     const p = n => String(n).padStart(2, '0');
+//     const dateStr = `${now.getFullYear()}.${p(now.getMonth() + 1)}.${p(now.getDate())}-${p(now.getHours())}.${p(now.getMinutes())}`;
+
+//     // Status normalization
+//     const statusStr = status === 'SUCCESS' ? 'OK' : 'FAIL';
+
+//     return `${dateStr}_Health-Check_Status-${statusStr}_Failures-${failCount}-Local_Health.md`;
+// };
+
 const PROJECT_ROOT = path.join(__dirname, '..');
 
 // --- ANSI Colors ---
@@ -51,19 +62,25 @@ function formatDuration(ms) {
     return (ms / 1000).toFixed(2) + 's';
 }
 
-function generateReport() {
-    const osInfo = `${process.platform} ${process.arch}`;
-    const nodeInfo = process.version;
-    
-    let md = `# Health Check Report\n`;
-    md += `**Date:** ${new Date().toLocaleString()}\n`;
-    md += `**System:** ${osInfo} | **Node:** ${nodeInfo}\n\n`;
+function generateReport(results, duration) {
+    const { saveReport, minifyMarkdown } = require('./utils/audit-helpers.cjs');
+
+    const failedTasks = results.filter(r => r.status === 'failed');
+    const warningTasks = results.filter(r => r.status === 'warning');
+
+    const issueCount = failedTasks.length + warningTasks.length;
+    let specificStatus = 'OK';
+    if (results.some(r => r.status === 'failed')) specificStatus = 'FAIL';
+    else if (results.some(r => r.status === 'warning')) specificStatus = 'WARN';
+
+    let md = `# Relatório de Saúde do Projeto\n\n`;
+    md += `**Data:** ${new Date().toLocaleString('pt-BR')}\n`;
+    md += `**Status:** ${specificStatus === 'OK' ? '✅ Aprovado' : (specificStatus === 'WARN' ? '⚠️ Com Avisos' : '❌ Falhou')}\n`;
+    md += `**Duração Total:** ${duration}s\n`;
+    md += `**Falhas/Avisos:** ${issueCount}\n\n`;
 
     // 1. Executive Summary Table
     md += `## 📊 Executive Summary\n\n`;
-    md += `| Task | Status | Duration |\n`;
-    md += `| :--- | :---: | :---: |\n`;
-    
     tasks.forEach(task => {
         const icon = task.status === 'SUCCESS' ? '✅' : (task.status === 'SKIPPED' ? '⏭️' : '❌');
         md += `| **${task.name}** | ${icon} ${task.status} | ${formatDuration(task.duration)} |\n`;
@@ -72,29 +89,23 @@ function generateReport() {
 
     // 2. Detailed Logs
     md += `## 📝 Detailed Logs\n\n`;
-    
+
     tasks.forEach(task => {
         if (task.status === 'SKIPPED') return;
 
         const icon = task.status === 'SUCCESS' ? '✅' : '❌';
         md += `### ${icon} ${task.name}\n`;
-        
+
         if (task.error) {
             md += `**Error:** ${task.error}\n`;
         }
 
         // Clean output for markdown
         const cleanOutput = task.output.replace(/\x1B\[\d+m/g, '').trim(); // Remove ANSI
-        
+
         if (cleanOutput) {
             md += `<details>\n<summary>View Output Log</summary>\n\n`;
-            md += `\
-\
-${cleanOutput.slice(-10000)}\
-\
-\
-\
-`; // Limit to 10k chars
+            md += `${cleanOutput.slice(-10000)}`; // Limit to 10k chars
             if (cleanOutput.length > 10000) md += `\n*(Log truncated)*\n`;
             md += `\n</details>\n\n`;
         } else {
@@ -111,7 +122,7 @@ function runTask(task) {
     return new Promise((resolve) => {
         task.status = 'RUNNING';
         task.startTime = Date.now();
-        
+
         hr();
         log(`Starting: ${task.name}`, 'header');
 
@@ -128,7 +139,12 @@ function runTask(task) {
             } catch (e) {
                 task.error = e.message;
                 task.status = 'FAILED';
-                log(`Clean failed: ${e.message}`, 'error');
+                if (e.code === 'EPERM') {
+                    log(`Clean failed: File locked. Please release or close 'npm run dev' / servers.`, 'error');
+                    log(`Details: ${e.message}`, 'error');
+                } else {
+                    log(`Clean failed: ${e.message}`, 'error');
+                }
             }
             task.endTime = Date.now();
             task.duration = task.endTime - task.startTime;
@@ -163,7 +179,7 @@ function runTask(task) {
         child.on('close', (code) => {
             task.endTime = Date.now();
             task.duration = task.endTime - task.startTime;
-            
+
             if (code === 0) {
                 task.status = 'SUCCESS';
                 log(`Completed: ${task.name}`, 'success');
@@ -179,12 +195,19 @@ function runTask(task) {
 
 // --- Main Script ---
 (async function main() {
+    const args = process.argv.slice(2);
+    const isQuick = args.includes('--quick');
+
     console.clear();
     console.log(`${CYAN}${BOLD}
     ╔════════════════════════════════════════╗
     ║      AURA WALL - SYSTEM HEALTH         ║
     ╚════════════════════════════════════════╝
     ${RESET}`);
+
+    if (isQuick) {
+        log('Quick Mode: Skipping Clean & Install', 'info');
+    }
 
     // Ensure log dir
     if (!fs.existsSync(LOG_DIR)) fs.mkdirSync(LOG_DIR, { recursive: true });
@@ -202,15 +225,20 @@ function runTask(task) {
 
     // Execute Sequentially
     for (const task of tasks) {
+        if (isQuick && (task.name === 'Clean Environment' || task.name === 'Install Dependencies')) {
+            task.status = 'SKIPPED';
+            continue;
+        }
+
         // Run everything unless it's a critical dependency like 'Install'
-        
+
         const success = await runTask(task);
         if (!success) {
             overallSuccess = false;
             // We abort immediately only for critical setup steps
             if (task.name === 'Install Dependencies') {
                 log('Critical failure. Aborting.', 'error');
-                break; 
+                break;
             }
         }
     }
@@ -220,11 +248,25 @@ function runTask(task) {
     const finalMsg = overallSuccess ? 'Health Check PASSED' : 'Health Check COMPLETED WITH ERRORS';
     log(finalMsg, overallSuccess ? 'success' : 'warn');
 
+    // Minify Markdown Helper
+    function minifyMarkdown(text) {
+        return text
+            .replace(/[ \t]+$/gm, '') // Remove trailing spaces
+            .replace(/\n{3,}/g, '\n\n') // Max 1 blank line
+            .trim();
+    }
+
+    // ... existing code ...
+
     // Write Report
-    fs.writeFileSync(LOG_FILE, generateReport());
+    const statusStr = overallSuccess ? 'SUCCESS' : 'FAILED';
+    const filename = `Health-Check_${statusStr}_${getFormattedTimestamp()}.md`;
+    const logPath = path.join(LOG_DIR, filename);
+
+    fs.writeFileSync(logPath, minifyMarkdown(generateReport()));
     log(`Report saved to:`, 'info');
-    console.log(`${YELLOW}${LOG_FILE}${RESET}`);
-    
+    console.log(`${YELLOW}${logPath}${RESET}`);
+
     process.exit(overallSuccess ? 0 : 1);
 
 })();

@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { ensureVisibility, shiftColor, jitter, clamp } from '../utils/engineUtils';
+import { clamp } from '../utils/engineUtils';
 
 export const glitchEngine: EngineDefinition = {
   id: 'glitch',

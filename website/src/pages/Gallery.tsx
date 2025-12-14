@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { ENGINES } from '../data/engines';
 import { getAppUrl } from '../utils/appUrl';
 import { Sparkles, X, ExternalLink } from 'lucide-react';
-import { PRESETS, DEFAULT_CONFIG } from '../../../src/constants'; // Import DEFAULT_CONFIG
+import { PRESETS, DEFAULT_CONFIG, DEFAULT_ANIMATION } from '../../../src/constants'; // Import DEFAULT_CONFIG
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { getEngine } from '../../../src/engines'; // Import getEngine
 
@@ -13,52 +13,58 @@ const getPreviewConfig = (engineId: string) => {
   return engine.randomizer(DEFAULT_CONFIG, { isGrainLocked: false });
 };
 
-const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: () => void }) => {
-  const { t } = useTranslation();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768); 
+const ExampleCard = ({ preset, isMobile }: { preset: typeof PRESETS[0], isMobile: boolean }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const config = useMemo(() => {
+    // Force animation parameters to ensure visibility in gallery
+    const baseSpeed = preset.config.animation?.speed || 1;
+    const baseFlow = preset.config.animation?.flow || 1;
+    return {
+      ...preset.config,
+      animation: {
+          ...DEFAULT_ANIMATION,
+          ...preset.config.animation,
+          enabled: true,
+          speed: baseSpeed === 0 ? 1 : baseSpeed, // If 0, boost to 1
+          flow: baseFlow === 0 ? 1 : baseFlow
+      }
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [preset]);
+
+  const appUrl = getAppUrl();
+  const targetUrl = `${appUrl}${appUrl.endsWith('/') ? '' : '/'}?preset=${preset.id}&width=1920&height=1080`;
+
+  return (
+      <a 
+        href={targetUrl}
+        className="group relative aspect-video rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all cursor-pointer block"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+         <WallpaperRenderer 
+            config={config}
+            className="w-full h-full block"
+            lowQuality={false}
+            paused={!isHovered || isMobile}
+         />
+         <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+             <span className="text-xs font-bold text-white flex items-center justify-between">
+                {preset.name}
+                <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+             </span>
+         </div>
+      </a>
+  );
+};
+
+const EngineModal = ({ engine, onClose, isMobile }: { engine: typeof ENGINES[0], onClose: () => void, isMobile: boolean }) => {
+  const { t } = useTranslation();
+  const [isHovered, setIsHovered] = useState(false);
 
   // Find presets for this engine
   const examples = useMemo(() => {
     return PRESETS.filter(p => p.collection === engine.id).slice(0, 3);
   }, [engine.id]);
-
-  const ExampleCard = ({ preset }: { preset: typeof PRESETS[0] }) => {
-      const [isHovered, setIsHovered] = useState(false);
-      const config = useMemo(() => ({
-          ...preset.config,
-          animation: {
-              ...preset.config.animation,
-              enabled: true 
-          }
-      }), [preset]);
-
-      return (
-          <div 
-            className="group relative aspect-video rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all cursor-pointer"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-             <WallpaperRenderer 
-                config={config}
-                className="w-full h-full block"
-                lowQuality={false}
-                paused={!isHovered || isMobile}
-             />
-             <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                 <span className="text-xs font-bold text-white">{preset.name}</span>
-             </div>
-          </div>
-      );
-  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -71,16 +77,30 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
           </button>
 
           {/* Left: Visual Hero */}
-          <div className="w-full md:w-2/5 relative h-48 md:h-auto bg-black">
+          <div 
+            className="w-full md:w-2/5 relative h-48 md:h-auto bg-black cursor-crosshair group"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
              {/* Using WallpaperRenderer here too for consistency and potential animation */}
              <WallpaperRenderer 
-                config={getPreviewConfig(engine.id)}
-                className="w-full h-full object-cover opacity-80"
+                config={{
+                    ...getPreviewConfig(engine.id),
+                    animation: {
+                        speed: 1,
+                        flow: 1,
+                        ...DEFAULT_ANIMATION,
+                        ...getPreviewConfig(engine.id).animation,
+                        enabled: true
+                    }
+                }}
+                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700"
                 lowQuality={false}
+                paused={!isHovered}
              />
-             <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent md:bg-gradient-to-r" />
+             <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent md:bg-gradient-to-r pointer-events-none" />
              
-             <div className="absolute bottom-6 left-6 right-6">
+             <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
                 <h2 className="text-4xl font-bold text-white mb-2">{engine.name}</h2>
                 <div className={`h-1 w-12 rounded-full bg-gradient-to-r ${engine.colors}`} />
              </div>
@@ -95,7 +115,7 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
                  <div className="mb-8">
                     <h3 className="text-sm font-bold text-zinc-500 uppercase tracking-wider mb-4">{t('gallery.examples')}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {examples.map(ex => <ExampleCard key={ex.id} preset={ex} />)}
+                        {examples.map(ex => <ExampleCard key={ex.id} preset={ex} isMobile={isMobile} />)}
                     </div>
                  </div>
              )}
@@ -111,6 +131,53 @@ const EngineModal = ({ engine, onClose }: { engine: typeof ENGINES[0], onClose: 
        </div>
     </div>
   );
+};
+
+const EngineCard = ({ engine, onSelect, isMobile }: { engine: typeof ENGINES[0], onSelect: (e: typeof ENGINES[0]) => void, isMobile: boolean }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const config = useMemo(() => {
+        const c = getPreviewConfig(engine.id);
+        return {
+            ...c,
+            animation: {
+                speed: 1,
+                flow: 1,
+                ...DEFAULT_ANIMATION,
+                ...c.animation,
+                enabled: true
+            }
+        };
+    }, [engine.id]);
+
+    return (
+      <div 
+        onClick={() => onSelect(engine)}
+        className="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Background with WallpaperRenderer */}
+        <div className="absolute inset-0 bg-zinc-900">
+           <WallpaperRenderer 
+             config={config} 
+             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
+             lowQuality={false}
+             paused={!isHovered || isMobile}
+           />
+           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
+        </div>
+
+        {/* Content */}
+        <div className="absolute inset-0 p-8 flex flex-col justify-end">
+           <div className={`w-12 h-1 mb-4 rounded-full bg-gradient-to-r ${engine.colors}`} />
+           <h3 className="text-2xl font-bold text-white mb-2">{engine.name}</h3>
+           <p className="text-sm font-medium text-white/80 italic mb-3">{engine.tagline}</p>
+           <p className="text-xs text-zinc-500 leading-relaxed line-clamp-3 group-hover:text-zinc-400 transition-colors">
+             {engine.description}
+           </p>
+        </div>
+      </div>
+    );
 };
 
 export default function Gallery() {
@@ -132,7 +199,7 @@ export default function Gallery() {
     <div className="min-h-screen bg-black text-white pt-32 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       {selectedEngine && (
-          <EngineModal engine={selectedEngine} onClose={() => setSelectedEngine(null)} />
+          <EngineModal engine={selectedEngine} onClose={() => setSelectedEngine(null)} isMobile={isMobile} />
       )}
 
       <div className="container mx-auto px-6">
@@ -149,41 +216,9 @@ export default function Gallery() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ENGINES.map((engine) => {
-            const [isHovered, setIsHovered] = useState(false); // Local state for each card
-            const config = useMemo(() => getPreviewConfig(engine.id), [engine.id]);
-
-            return (
-              <div 
-                key={engine.id}
-                onClick={() => setSelectedEngine(engine)}
-                className="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl cursor-pointer"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                {/* Background with WallpaperRenderer */}
-                <div className="absolute inset-0 bg-zinc-900">
-                   <WallpaperRenderer 
-                     config={config} 
-                     className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
-                     lowQuality={false}
-                     paused={!isHovered || isMobile}
-                   />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500" />
-                </div>
-
-                {/* Content */}
-                <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                   <div className={`w-12 h-1 mb-4 rounded-full bg-gradient-to-r ${engine.colors}`} />
-                   <h3 className="text-2xl font-bold text-white mb-2">{engine.name}</h3>
-                   <p className="text-sm font-medium text-white/80 italic mb-3">{engine.tagline}</p>
-                   <p className="text-xs text-zinc-500 leading-relaxed line-clamp-3 group-hover:text-zinc-400 transition-colors">
-                     {engine.description}
-                   </p>
-                </div>
-              </div>
-            );
-          })}
+          {ENGINES.map((engine) => (
+             <EngineCard key={engine.id} engine={engine} onSelect={setSelectedEngine} isMobile={isMobile} />
+          ))}
         </div>
 
                 {/* CTA */}

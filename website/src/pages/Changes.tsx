@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GitCommit, Tag, Calendar, ArrowRight, Sparkles, Wrench, AlertTriangle, Rocket, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { GitCommit, Calendar, Sparkles, Wrench, AlertTriangle, Rocket, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 
 // GitHub commit interface
 interface GitHubCommit {
@@ -63,28 +63,16 @@ const roadmapItems = [
     status: 'in-progress' as const,
   },
   {
-    id: 'mobile',
-    title: 'Versão Mobile',
-    description: 'App dedicado para iOS e Android com geração offline.',
-    status: 'planned' as const,
-  },
-  {
     id: 'modes',
-    title: 'Novos Modos',
-    description: 'Exploração de fractais 3D e simulações de fluidos.',
-    status: 'planned' as const,
+    title: 'Novos Modos e Fluidos',
+    description: 'Expansão da galeria com novos motores visuais: Midnight, Geometrica, Glitch, Sakura, Ember, Oceanic e mais.',
+    status: 'completed' as const,
   },
   {
     id: 'perf',
-    title: 'Otimização',
-    description: 'Melhorias drásticas na performance de renderização e animação.',
+    title: 'Otimização Extrema',
+    description: 'Remoção de GTM, Code Splitting, Otimização de Assets (WebP/SVG) e preparação para Static Site Generation (SSG) no GitHub Pages.',
     status: 'in-progress' as const,
-  },
-  {
-    id: 'video',
-    title: 'Exportação de Vídeo',
-    description: 'Exportar wallpapers animados como MP4/WebM para uso em qualquer dispositivo.',
-    status: 'planned' as const,
   },
 ];
 
@@ -110,7 +98,7 @@ const statusColors = {
 
 export default function Changes() {
   const { t } = useTranslation();
-  const [changelog, setChangelog] = useState<ChangelogEntry[]>(staticChangelog);
+  const [changelog] = useState<ChangelogEntry[]>(staticChangelog);
   const [commits, setCommits] = useState<GitHubCommit[]>([]);
   const [showAllCommits, setShowAllCommits] = useState(false);
   const [loadingCommits, setLoadingCommits] = useState(true);

@@ -15,6 +15,7 @@ import {
   Database
 } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import HeroBackground from '../components/HeroBackground';
 import { PRESETS } from '../../../src/constants';
 import CodeWindow from '../components/CodeWindow';
 
@@ -63,9 +64,10 @@ export default function CreationProcedural() {
       {/* Hero with Background */}
       <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         {/* Background Renderer */}
-        <div className="absolute inset-0 opacity-40">
-          <WallpaperRenderer config={heroConfig} className="w-full h-full" lowQuality />
-        </div>
+        <HeroBackground 
+          config={heroConfig}
+          opacity={0.4}
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
         
         <div className="container mx-auto px-6 max-w-6xl relative z-10">

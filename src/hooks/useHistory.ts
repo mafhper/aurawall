@@ -17,7 +17,7 @@ export function useHistory<T>(initialState: T, maxHistory = 20) {
 
     setHistory((prev) => {
         const current = prev[currentIndex];
-        const next = typeof newState === 'function' ? (newState as Function)(current) : newState;
+        const next = typeof newState === 'function' ? (newState as (prev: T) => T)(current) : newState;
         
         // Deep comparison could be here, but for performance we assume change happened
         // if setState was called by user action.

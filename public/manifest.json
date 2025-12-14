@@ -7,28 +7,56 @@
   "theme_color": "#a855f7",
   "icons": [
     {
-      "src": "pwa-192x192.png",
+      "src": "pwa-192x192.webp",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/webp",
       "purpose": "any"
     },
     {
-      "src": "pwa-512x512.png",
+      "src": "pwa-512x512.webp",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/webp",
       "purpose": "any"
     },
     {
-      "src": "pwa-maskable-192x192.png",
+      "src": "pwa-maskable-192x192.webp",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/webp",
       "purpose": "maskable"
     },
     {
-      "src": "pwa-maskable-512x512.png",
+      "src": "pwa-maskable-512x512.webp",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/webp",
       "purpose": "maskable"
+    },
+    {
+      "src": "pwa-192x192-dark.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any",
+      "media": "(prefers-color-scheme: dark)"
+    },
+    {
+      "src": "pwa-512x512-dark.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any",
+      "media": "(prefers-color-scheme: dark)"
+    },
+    {
+      "src": "pwa-maskable-192x192-dark.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "maskable",
+      "media": "(prefers-color-scheme: dark)"
+    },
+    {
+      "src": "pwa-maskable-512x512-dark.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "maskable",
+      "media": "(prefers-color-scheme: dark)"
     }
   ]
 }

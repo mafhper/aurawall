@@ -1,23 +1,6 @@
-/**
- * Icon Forge Assets Distribution Script
- * 
- * Automatically distributes icon assets from the icon-forge output folder
- * to all required locations in the project.
- * 
- * Usage: node scripts/distribute-icons.js
- * 
- * Source: _desenvolvimento/img/icon-forge-assets/
- * Destinations: public/, website/public/
- * 
- * Features:
- * - Automatic file mapping based on naming convention
- * - Detailed logging with status for each operation
- * - Error handling with descriptive messages
- * - Summary report at the end
- */
-
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp'); // Import sharp
 
 // Configuration
 const PROJECT_ROOT = path.join(__dirname, '..');
@@ -39,54 +22,64 @@ const colors = {
 // Destination mappings
 // Each source file maps to an array of destination paths (relative to PROJECT_ROOT)
 const FILE_MAPPINGS = {
-    // Favicons
+    // Favicons (keep PNG for broad compatibility, SVG is ideal)
     'favicon.ico': ['public/favicon.ico', 'website/public/favicon.ico'],
     'favicon.svg': ['public/favicon.svg'],
     'favicon-dark.ico': ['public/favicon-dark.ico'],
-    'favicon-dark.svg': ['public/favicon-dark.svg'],
+    'favicon-dark.svg': ['public/favicon/favicon-dark.svg'], // Assuming a favicon folder for website
     'favicon-16x16.png': ['public/favicon-16x16.png'],
     'favicon-16x16-dark.png': ['public/favicon-16x16-dark.png'],
     'favicon-32x32.png': ['public/favicon-32x32.png'],
     'favicon-32x32-dark.png': ['public/favicon-32x32-dark.png'],
 
-    // Apple Touch Icons
+    // Apple Touch Icons (keep PNG for Apple's preference)
     'apple-touch-icon.png': ['public/apple-touch-icon.png'],
     'apple-touch-icon-dark.png': ['public/apple-touch-icon-dark.png'],
 
-    // PWA Icons
-    'pwa-192x192.png': ['public/pwa-192x192.png'],
-    'pwa-192x192-dark.png': ['public/pwa-192x192-dark.png'],
-    'pwa-512x512.png': ['public/pwa-512x512.png'],
-    'pwa-512x512-dark.png': ['public/pwa-512x512-dark.png'],
-    'pwa-maskable-192x192.png': ['public/pwa-maskable-192x192.png'],
-    'pwa-maskable-192x192-dark.png': ['public/pwa-maskable-192x192-dark.png'],
-    'pwa-maskable-512x512.png': ['public/pwa-maskable-512x512.png'],
-    'pwa-maskable-512x512-dark.png': ['public/pwa-maskable-512x512-dark.png'],
-
-    // Microsoft Tiles
+    // Microsoft Tiles (keep PNG)
     'mstile-150x150.png': ['public/mstile-150x150.png'],
     'mstile-150x150-dark.png': ['public/mstile-150x150-dark.png'],
 
-    // Open Graph Images
-    'og-image.jpg': ['public/og-image.jpg'],
-    'og-image-dark.jpg': ['public/og-image-dark.jpg'],
+    // Platform-specific logos (unused)
+    // 'logo-linux-48x48.png': ['public/logo-linux-48x48.png'],
+    // 'logo-linux-48x48-dark.png': ['public/logo-linux-48x48-dark.png'],
+    // 'logo-linux-512x512.png': ['public/logo-linux-512x512.png'],
+    // 'logo-linux-512x512-dark.png': ['public/logo-linux-512x512-dark.png'],
+    // 'logo-mac-512x512.png': ['public/logo-mac-512x512.png'],
+    // 'logo-mac-512x512-dark.png': ['public/logo-mac-512x512-dark.png'],
+    // 'logo-win-150x150.png': ['public/logo-win-150x150.png'],
+    // 'logo-win-150x150-dark.png': ['public/logo-win-150x150-dark.png'],
+    // 'logo-win-310x310.png': ['public/logo-win-310x310.png'],
+    // 'logo-win-310x310-dark.png': ['public/logo-win-310x310-dark.png'],
+};
 
-    // Platform-specific logos
-    'logo-linux-48x48.png': ['public/logo-linux-48x48.png'],
-    'logo-linux-48x48-dark.png': ['public/logo-linux-48x48-dark.png'],
-    'logo-linux-512x512.png': ['public/logo-linux-512x512.png'],
-    'logo-linux-512x512-dark.png': ['public/logo-linux-512x512-dark.png'],
-    'logo-mac-512x512.png': ['public/logo-mac-512x512.png'],
-    'logo-mac-512x512-dark.png': ['public/logo-mac-512x512-dark.png'],
-    'logo-mac-1024x1024.png': ['public/logo-mac-1024x1024.png'],
-    'logo-mac-1024x1024-dark.png': ['public/logo-mac-1024x1024-dark.png'],
-    'logo-win-150x150.png': ['public/logo-win-150x150.png'],
-    'logo-win-150x150-dark.png': ['public/logo-win-150x150-dark.png'],
-    'logo-win-310x310.png': ['public/logo-win-310x310.png'],
-    'logo-win-310x310-dark.png': ['public/logo-win-310x310-dark.png'],
-
-    // Website-specific icons (icon-light.svg is used as the navbar logo)
-    // This maps favicon.svg to icon-light.svg for the website
+// Mappings for images that should be optimized (converted to WebP)
+// Source file => Array of { dest: relative_path, format: 'webp', size: [width, height], purpose: 'any'|'maskable' }
+const OPTIMIZED_MAPPINGS = {
+    // PWA Icons (to WebP)
+    'pwa-192x192.png': [
+        { dest: 'public/pwa-192x192.webp', format: 'webp', purpose: 'any', originalSize: '192x192' },
+        { dest: 'public/pwa-maskable-192x192.webp', format: 'webp', purpose: 'maskable', originalSize: '192x192' } // Maskable handled separately
+    ],
+    'pwa-512x512.png': [
+        { dest: 'public/pwa-512x512.webp', format: 'webp', purpose: 'any', originalSize: '512x512' },
+        { dest: 'public/pwa-maskable-512x512.webp', format: 'webp', purpose: 'maskable', originalSize: '512x512' } // Maskable handled separately
+    ],
+    // Dark versions
+    'pwa-192x192-dark.png': [
+        { dest: 'public/pwa-192x192-dark.webp', format: 'webp', purpose: 'any', originalSize: '192x192' },
+        { dest: 'public/pwa-maskable-192x192-dark.webp', format: 'webp', purpose: 'maskable', originalSize: '192x192' }
+    ],
+    'pwa-512x512-dark.png': [
+        { dest: 'public/pwa-512x512-dark.webp', format: 'webp', purpose: 'any', originalSize: '512x512' },
+        { dest: 'public/pwa-maskable-512x512-dark.webp', format: 'webp', purpose: 'maskable', originalSize: '512x512' }
+    ],
+    // Open Graph Images (to WebP)
+    'og-image.jpg': [
+        { dest: 'public/og-image.webp', format: 'webp' },
+        { dest: 'public/hero-mobile.webp', format: 'webp', resize: { width: 600 } } // Mobile Hero
+    ],
+    'og-image-dark.jpg': [{ dest: 'public/og-image-dark.webp', format: 'webp' }],
 };
 
 // Special mappings where source name differs from destination name
@@ -103,6 +96,7 @@ const stats = {
     failed: 0,
     skipped: 0,
     notFound: 0,
+    optimized: 0,
 };
 
 // Results log
@@ -118,6 +112,7 @@ function logResult(sourceFile, destPath, status, message = '') {
         'FAIL': colors.red,
         'SKIP': colors.yellow,
         'NOT_FOUND': colors.magenta,
+        'OPTIMIZED': colors.blue,
     };
 
     const statusSymbols = {
@@ -125,6 +120,7 @@ function logResult(sourceFile, destPath, status, message = '') {
         'FAIL': '✗',
         'SKIP': '○',
         'NOT_FOUND': '?',
+        'OPTIMIZED': '✨',
     };
 
     const color = statusColors[status] || colors.reset;
@@ -152,6 +148,45 @@ function copyFile(sourcePath, destPath) {
     }
 }
 
+async function processImage(sourcePath, destPath, options = {}) {
+    try {
+        const destDir = path.dirname(destPath);
+        if (!fs.existsSync(destDir)) {
+            fs.mkdirSync(destDir, { recursive: true });
+        }
+
+        let image = sharp(sourcePath);
+
+        // Apply resize if specified
+        if (options.resize) {
+            image = image.resize(options.resize);
+        }
+
+        const format = options.format;
+        const quality = options.quality || 80;
+
+        // Convert to specified format
+        if (format === 'webp') {
+            await image.webp({ quality }).toFile(destPath);
+        } else if (format === 'avif') {
+            await image.avif({ quality }).toFile(destPath);
+        } else {
+            // Default to PNG/JPEG optimization
+            const ext = path.extname(destPath).toLowerCase();
+            if (ext === '.png') {
+                await image.png({ quality }).toFile(destPath);
+            } else if (ext === '.jpg' || ext === '.jpeg') {
+                await image.jpeg({ quality }).toFile(destPath);
+            } else {
+                fs.copyFileSync(sourcePath, destPath); // Fallback to copy if unknown format
+            }
+        }
+        return { success: true };
+    } catch (error) {
+        return { success: false, error: error.message };
+    }
+}
+
 function getFileSize(filePath) {
     try {
         const stats = fs.statSync(filePath);
@@ -169,7 +204,7 @@ function formatBytes(bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
-function main() {
+async function main() {
     console.log('');
     log('╔════════════════════════════════════════════════════════════════╗', colors.cyan);
     log('║          ICON FORGE - Asset Distribution Script                ║', colors.cyan);
@@ -221,6 +256,44 @@ function main() {
         }
     }
 
+    // Process optimized mappings
+    console.log('');
+    log('─── Optimized Mappings (WebP Conversion) ────────────────────────', colors.dim);
+    console.log('');
+
+    for (const [sourceFile, mappings] of Object.entries(OPTIMIZED_MAPPINGS)) {
+        const sourcePath = path.join(SOURCE_DIR, sourceFile);
+
+        if (!fs.existsSync(sourcePath)) {
+            stats.notFound++;
+            logResult(sourceFile, '(not in source)', 'NOT_FOUND', 'file missing');
+            continue;
+        }
+
+        const originalFileSize = getFileSize(sourcePath);
+
+        for (const mapping of mappings) {
+            const destPath = path.join(PROJECT_ROOT, mapping.dest);
+            const result = await processImage(sourcePath, destPath, mapping);
+
+            if (result.success) {
+                stats.optimized++;
+                const optimizedFileSize = getFileSize(destPath);
+                const savings = originalFileSize - optimizedFileSize;
+                logResult(
+                    sourceFile,
+                    mapping.dest,
+                    'OPTIMIZED',
+                    `${formatBytes(originalFileSize)} → ${formatBytes(optimizedFileSize)} (${Math.round((savings / originalFileSize) * 100)
+                    }% saving)`
+                );
+            } else {
+                stats.failed++;
+                logResult(sourceFile, mapping.dest, 'FAIL', `Optimization failed: ${result.error}`);
+            }
+        }
+    }
+
     // Process renamed mappings
     console.log('');
     log('─── Renamed Mappings ────────────────────────────────────────────', colors.dim);
@@ -259,6 +332,7 @@ function main() {
 
     const mappedFiles = new Set([
         ...Object.keys(FILE_MAPPINGS),
+        ...Object.keys(OPTIMIZED_MAPPINGS), // Include optimized files
         ...Object.keys(RENAMED_MAPPINGS),
     ]);
 
@@ -284,6 +358,7 @@ function main() {
     log(`  ${colors.red}✗ Failed:${colors.reset}     ${stats.failed} file(s)`);
     log(`  ${colors.magenta}? Not Found:${colors.reset}  ${stats.notFound} source file(s) missing`);
     log(`  ${colors.yellow}○ Skipped:${colors.reset}    ${stats.skipped} unmapped file(s)`);
+    log(`  ${colors.blue}✨ Optimized:${colors.reset}  ${stats.optimized} file(s) processed`);
     console.log('');
 
     if (stats.failed > 0) {

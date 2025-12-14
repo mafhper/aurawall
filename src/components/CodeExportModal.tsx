@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, Copy, Check } from 'lucide-react';
 import { WallpaperConfig } from '../types';
 import { generateReactCode, generateHtmlCssCode } from '../utils/codeGenerators';
@@ -13,20 +13,18 @@ interface CodeExportModalProps {
 const CodeExportModal: React.FC<CodeExportModalProps> = ({ svgContent, config, onClose }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'svg' | 'react' | 'html'>('svg');
-  const [code, setCode] = useState('');
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
+  const code = React.useMemo(() => {
     switch (activeTab) {
       case 'svg':
-        setCode(svgContent);
-        break;
+        return svgContent;
       case 'react':
-        setCode(generateReactCode(config));
-        break;
+        return generateReactCode(config);
       case 'html':
-        setCode(generateHtmlCssCode(config));
-        break;
+        return generateHtmlCssCode(config);
+      default:
+        return '';
     }
   }, [activeTab, svgContent, config]);
 

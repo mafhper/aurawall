@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { PRESETS } from '../../../src/constants';
+import HeroBackground from '../components/HeroBackground';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import CodeWindow from '../components/CodeWindow';
 import { getAppUrl } from '../utils/appUrl';
@@ -18,20 +19,18 @@ export default function CreationBoreal() {
       
       {/* Hero with Boreal background */}
       <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${import.meta.env.BASE_URL}bg-boreal.svg)`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
+        <HeroBackground 
+            config={{
+                ...PRESETS.find(p => p.id === 'angel-aura')?.config || PRESETS[0].config,
+                animation: { enabled: true, speed: 1.5, flow: 2, pulse: 0, rotate: 0, noiseAnim: 0, colorCycle: false, colorCycleSpeed: 0 }
+            }}
+            opacity={0.6}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black" />
         
-        <div className="relative text-center px-6">
+        <div className="relative text-center px-6 pointer-events-none">
           <Link 
             to="/creation" 
-            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors"
+            className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors pointer-events-auto"
           >
             <ArrowLeft size={16} />
             {t('nav.creation')}

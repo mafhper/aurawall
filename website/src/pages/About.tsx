@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Github, ExternalLink, Newspaper, FileText, Server, Rss, PenTool, Database } from 'lucide-react';
+import { Github, ExternalLink, Rss, PenTool, Database } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { PRESETS } from '../../../src/constants';
 
