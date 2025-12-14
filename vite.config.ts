@@ -22,7 +22,7 @@ export default defineConfig(({ command, mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['react', 'react-dom', 'framer-motion'],
+            vendor: ['react', 'react-dom'],
             ui: ['lucide-react']
           }
         }
