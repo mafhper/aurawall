@@ -301,11 +301,6 @@ export default function App() {
                 <option value="en" className="bg-zinc-900">EN</option>
                 <option value="pt-BR" className="bg-zinc-900">PT</option>
                 <option value="es" className="bg-zinc-900">ES</option>
-                <option value="fr" className="bg-zinc-900">FR</option>
-                <option value="de" className="bg-zinc-900">DE</option>
-                <option value="it" className="bg-zinc-900">IT</option>
-                <option value="ja" className="bg-zinc-900">JA</option>
-                <option value="zh" className="bg-zinc-900">ZH</option>
               </select>
 
               <a href={getAppUrl()} className="bg-white text-black hover:bg-zinc-200 px-5 py-2 rounded-full text-xs font-bold transition-all transform hover:scale-105 shadow-lg shadow-white/10 whitespace-nowrap hidden sm:block">

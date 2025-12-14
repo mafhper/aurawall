@@ -33,11 +33,6 @@ const PreferencesMenu: React.FC<PreferencesMenuProps> = ({ onClose, preferences,
     { code: 'pt-BR', name: 'Português (Brasil)' },
     { code: 'en', name: 'English' },
     { code: 'es', name: 'Español' },
-    { code: 'fr', name: 'Français' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'it', name: 'Italiano' },
-    { code: 'ja', name: '日本語' }, // Japanese
-    { code: 'zh', name: '中文' },   // Chinese
   ];
 
   return (
