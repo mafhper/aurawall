@@ -145,7 +145,7 @@ export default function Creation() {
   return (
     <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 relative overflow-hidden">
       <HeroBackground config={getPresetConfig('angel-aura')} opacity={0.4} />
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 relative z-10">
         
         {/* Hero */}
         <div className="max-w-4xl mx-auto text-center mb-32">
