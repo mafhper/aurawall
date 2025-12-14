@@ -78,8 +78,8 @@ export default function Home() {
       animation: {
         ...randomPreset.config.animation,
         enabled: true,
-        speed: Math.random() * 1.5 + 0.5,
-        flow: Math.random() * 1.5 + 0.5
+        speed: Math.random() * 1.5 + 1.0, // Min 1.0
+        flow: Math.random() * 1.5 + 1.0   // Min 1.0
       }
     });
 
@@ -111,13 +111,15 @@ export default function Home() {
 
   return (
     <>
-      <div className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30">
+      <div 
+        className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30"
+        onMouseEnter={() => setIsHeroHovered(true)}
+        onMouseLeave={() => setIsHeroHovered(false)}
+      >
         
         {/* Dynamic Hero Background */}
         <div 
           className="absolute inset-0 w-full h-screen overflow-hidden transition-opacity duration-1000"
-          onMouseEnter={() => setIsHeroHovered(true)}
-          onMouseLeave={() => setIsHeroHovered(false)}
         >
            <WallpaperRenderer 
              config={heroConfig}

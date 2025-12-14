@@ -2,7 +2,7 @@
  * i18n Configuration
  * 
  * Configuração de internacionalização usando i18next
- * Suporta 8 idiomas: en, pt-BR, es, fr, de, it, ja, zh
+ * Suporta 3 idiomas: en, pt-BR, es
  * 
  * @module i18n
  */
@@ -289,7 +289,7 @@ const resources = {
         cta_secondary: "Explorar Estilos"
       },
       features: {
-        title: "Por que AuraWall?",
+        title: "Por Que AuraWall?",
         feat_1_title: "Latência Zero",
         feat_1_desc: "Renderização SVG acelerada por GPU significa feedback instantâneo. Sem spinners de carregamento, sem filas de servidor.",
         feat_2_title: "Resolução Infinita",
