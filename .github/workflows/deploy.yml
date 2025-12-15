@@ -33,6 +33,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Organize Dist Structure
+        run: |
+          if [ -d "dist/client" ]; then
+            cp -r dist/client/* dist/
+            rm -rf dist/client
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
