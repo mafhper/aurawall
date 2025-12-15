@@ -251,6 +251,22 @@ export default function App() {
     localStorage.setItem('i18nextLng', lng);
   };
 
+  // Switch to user's language AFTER hydration (SSG requires 'en' for initial render)
+  React.useEffect(() => {
+    const detected = (() => {
+      const saved = localStorage.getItem('i18nextLng');
+      if (saved && ['en', 'pt-BR', 'es'].includes(saved)) return saved;
+      const browserLng = navigator.language;
+      if (browserLng.startsWith('pt')) return 'pt-BR';
+      if (browserLng.startsWith('es')) return 'es';
+      return 'en';
+    })();
+    
+    if (detected !== i18n.language) {
+      i18n.changeLanguage(detected);
+    }
+  }, []); // Empty deps = run once after mount
+
   const creationItems = [
     { to: '/creation/engines', label: 'Motores de Criação', icon: Sparkles, key: 'engines' },
     { to: '/creation/animation', label: t('creation.anim_title', 'Animação'), icon: Play, key: 'animation' },

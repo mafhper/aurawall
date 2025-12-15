@@ -798,9 +798,9 @@ const resources = {
   }
 };
 
-// Synchronous language detection BEFORE init (prevents flash)
-function getInitialLanguage(): string {
-  if (typeof window === 'undefined') return 'en'; // SSR/SSG
+// Detect user's preferred language (for use AFTER hydration)
+export function detectUserLanguage(): string {
+  if (typeof window === 'undefined') return 'en';
 
   const saved = localStorage.getItem('i18nextLng');
   if (saved && ['en', 'pt-BR', 'es'].includes(saved)) {
@@ -817,7 +817,7 @@ function getInitialLanguage(): string {
 i18n
   .use(initReactI18next)
   .init({
-    lng: getInitialLanguage(),
+    lng: 'en', // ALWAYS 'en' to match SSG pre-rendered HTML
     resources,
     fallbackLng: 'en',
     interpolation: { escapeValue: false }
