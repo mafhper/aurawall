@@ -1,0 +1,48 @@
+{
+    "navigation": {
+        "mobile": {
+            "lcp": {
+                "failAbove": 2500,
+                "warnAbove": 1800
+            },
+            "fcp": {
+                "failAbove": 1800,
+                "warnAbove": 1000
+            },
+            "cls": {
+                "failAbove": 0.1,
+                "warnAbove": 0.05
+            },
+            "tbt": {
+                "failAbove": 300,
+                "warnAbove": 200
+            },
+            "si": {
+                "failAbove": 3000,
+                "warnAbove": 2000
+            }
+        },
+        "desktop": {
+            "lcp": {
+                "failAbove": 2000,
+                "warnAbove": 1200
+            },
+            "fcp": {
+                "failAbove": 1200,
+                "warnAbove": 800
+            },
+            "cls": {
+                "failAbove": 0.1,
+                "warnAbove": 0.05
+            },
+            "tbt": {
+                "failAbove": 200,
+                "warnAbove": 100
+            },
+            "si": {
+                "failAbove": 2000,
+                "warnAbove": 1500
+            }
+        }
+    }
+}

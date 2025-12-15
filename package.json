@@ -33,7 +33,9 @@
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "test:lint": "node scripts/test-lint.cjs",
         "test:perf": "node scripts/test-perf.cjs",
-        "test:contrast": "node scripts/check-contrast.cjs"
+        "test:contrast": "node scripts/check-contrast.cjs",
+        "perf:gate": "node scripts/performance-gate/run.cjs",
+        "perf:analyze": "node scripts/performance-gate/analyze-batch.cjs"
     },
     "dependencies": {
         "i18next": "^25.7.2",

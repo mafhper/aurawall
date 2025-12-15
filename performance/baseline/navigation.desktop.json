@@ -1,0 +1,21 @@
+{
+    "fetchTime": "2025-12-14T22:16:27.000Z",
+    "formFactor": "desktop",
+    "metrics": {
+        "lcp": {
+            "value": 600
+        },
+        "fcp": {
+            "value": 400
+        },
+        "cls": {
+            "value": 0
+        },
+        "tbt": {
+            "value": 50
+        },
+        "si": {
+            "value": 1000
+        }
+    }
+}

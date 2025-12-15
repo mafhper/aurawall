@@ -1,0 +1,21 @@
+{
+    "fetchTime": "2025-12-14T22:16:27.000Z",
+    "formFactor": "mobile",
+    "metrics": {
+        "lcp": {
+            "value": 2200
+        },
+        "fcp": {
+            "value": 1500
+        },
+        "cls": {
+            "value": 0.303
+        },
+        "tbt": {
+            "value": 640
+        },
+        "si": {
+            "value": 2500
+        }
+    }
+}
