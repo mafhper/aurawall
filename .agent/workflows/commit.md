@@ -1,76 +1,68 @@
 ---
-description: Commit com atualização automática de documentação
+description: Workflow de Commit em 7 Etapas (Qualidade & Segurança)
 ---
 
-# Workflow: Commit Inteligente
+# Workflow: Commit Seven Steps
 
-Quando o usuário pedir para fazer commit (ex: "faça o commit", "/commit", "commit das mudanças"):
+Este fluxo garante que nenhum código quebrado ou de baixa qualidade seja versionado. Deve ser seguido antes de qualquer commit significativo.
 
-## 1. Verificar Estado do Repositório
-// turbo
+## 1. Análise de Estado
+Verifique o que foi alterado para entender o escopo.
 ```powershell
 git status --short
 ```
 
-## 2. Analisar Mudanças Significativas
-- Revisar arquivos modificados
-- Identificar se há mudanças que impactam:
-  - Funcionalidades do usuário
-  - APIs públicas
-  - Configurações importantes
-  - Breaking changes
+## 2. Verificação de Saúde (Health Check)
+Execute o script de saúde rápida para garantir que builds e estrutura estão íntegros.
+```powershell
+npm run health:fast
+```
+*Se falhar: Corrija os erros antes de prosseguir.*
 
-## 3. Atualizar Documentação (se necessário)
+## 3. Auditoria de Qualidade (Lint & Tests)
+Garanta que o código segue os padrões do projeto.
+```powershell
+npm run test:lint
+```
+*(Opcional: Se for alteração de performance, rodar `npm run audit:app`)*
+
+## 4. Documentação Ativa
+Atualize a memória do projeto.
 
 ### `/docs/change.log`
-// turbo
-Adicionar nova entrada NO TOPO do arquivo:
+Adicione a entrada no topo:
 ```
-[YYYY/MM/DD - Título descritivo]
-Descrição curta das mudanças
+[YYYY/MM/DD - tipo: Título]
+- Detalhe 1
+- Detalhe 2
 ```
 
-### `README.md` / `README.pt-BR.md`
-Atualizar se houver:
-- Novas funcionalidades
-- Mudanças de uso
-- Novos comandos/configurações
+### Outros (Se necessário)
+- `README.md` (Novas features)
+- `docs/TECHNICAL_GUIDE.md` (Mudanças arquiteturais)
 
-### `/docs/knowledge.md`
-Atualizar se houver:
-- Novas decisões técnicas
-- Padrões adotados
-- Referências importantes
-
-## 4. Preparar Commit
-// turbo
+## 5. Preparação (Staging)
 ```powershell
 git add .
 ```
 
-## 5. Criar Mensagem de Commit Semântica
-Usar formato conventional commits:
+## 6. Commit Semântico
+Use o padrão Conventional Commits:
 - `feat:` nova funcionalidade
 - `fix:` correção de bug
-- `docs:` apenas documentação
-- `refactor:` refatoração sem mudança de comportamento
-- `style:` formatação, espaços
-- `chore:` manutenção, dependências
+- `docs:` documentação
+- `style:` formatação
+- `refactor:` refatoração de código
+- `perf:` melhoria de performance
+- `test:` adição/correção de testes
+- `chore:` tarefas de build/ferramentas
 
-// turbo
 ```powershell
-git commit -m "tipo: descrição concisa"
+git commit -m "tipo: descrição clara e objetiva"
 ```
 
-## 6. (Opcional) Push
-Perguntar ao usuário se deseja fazer push:
+## 7. Sincronização (Push)
+Confirme com o usuário antes de enviar.
 ```powershell
 git push
 ```
-
----
-
-## Notas
-- Sempre verificar se há arquivos não rastreados importantes
-- Não fazer commit de arquivos de build (`dist/`, `node_modules/`)
-- Preferir commits atômicos (uma mudança lógica por commit)

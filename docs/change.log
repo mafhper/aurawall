@@ -1,3 +1,7 @@
+[2025/12/15 - docs: Update Commit Workflow]
+- Standardized commit process in .agent/workflows/commit.md to "Seven Steps"
+- Integrated mandatory health checks and linting before commits
+
 [2025/12/15 - perf: Mobile TBT & Layout Shift Optimizations]
 - Implemented Lazy Loading for WallpaperRenderer to reduce initial bundle size
 - Disabled expensive SVG filters (feTurbulence) on mobile devices to prevent TBT spikes
