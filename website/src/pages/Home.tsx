@@ -117,14 +117,15 @@ export default function Home() {
         <link rel="canonical" href="https://mafhper.github.io/aurawall/" />
       </Helmet>
       <div 
-        className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30"
+        className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30 min-h-screen"
         onMouseEnter={() => setIsHeroHovered(true)}
         onMouseLeave={() => setIsHeroHovered(false)}
       >
         
-        {/* Dynamic Hero Background */}
+        {/* Dynamic Hero Background - Fixed dimensions to prevent CLS */}
         <div 
-          className="absolute inset-0 w-full h-screen overflow-hidden transition-opacity duration-1000"
+          className="absolute inset-0 w-full h-full overflow-hidden"
+          style={{ minHeight: '100vh' }}
         >
            <WallpaperRenderer 
              config={heroConfig}

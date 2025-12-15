@@ -360,7 +360,7 @@ export default function App() {
       </div>
       
       <footer className="border-t border-white/10 py-12 text-center">
-        <div className="flex justify-center gap-6 mb-8 text-zinc-500 flex-wrap px-6">
+        <div className="flex justify-center gap-6 mb-8 text-zinc-400 flex-wrap px-6">
            <Link to="/creation" className="hover:text-white transition-colors">{t('nav.creation')}</Link>
            <Link to="/architecture" className="hover:text-white transition-colors">{t('nav.arch')}</Link>
            <a href="https://github.com/mafhper/aurawall" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>

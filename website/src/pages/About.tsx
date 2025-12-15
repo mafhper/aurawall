@@ -67,8 +67,8 @@ export default function About() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Sobre{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-rose-400">o Projeto</span>
+            {t('about.title').split(' ')[0]}{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-rose-400">{t('about.title').split(' ').slice(1).join(' ').replace(' | AuraWall', '')}</span>
           </h1>
           <p className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
             {t('about.subtitle')}
