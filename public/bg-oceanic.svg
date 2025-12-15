@@ -1,1 +1,181 @@
-<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color:#0a1929" viewBox="0 0 1920 1080"><defs><filter id="noiseFilter"><feTurbulence baseFrequency=".002" numOctaves="3" stitchTiles="stitch" type="fractalNoise"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA slope=".15" type="linear"/></feComponentTransfer></filter><filter id="blur-ocean-1765523115260-0" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="40"/></filter><filter id="blur-ocean-1765523115260-1" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="40"/></filter><filter id="blur-ocean-1765523115260-2" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="40"/></filter><filter id="blur-ocean-1765523115260-3" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="40"/></filter><filter id="blur-ocean-1765523115260-4" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="40"/></filter><filter id="blur-ocean-1765523115260-5" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="40"/></filter><style>@keyframes noise-shift{0%,to{transform:translate(0,0)}25%{transform:translate(-1%,1%)}50%{transform:translate(1%,-1%)}75%{transform:translate(-1%,-1%)}}@keyframes move-ocean-1765523115260-0{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-14%,-10%) scale(1.04) rotate(9deg)}66%{transform:translate(10%,-16%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-ocean-1765523115260-1{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-14%,10%) scale(1.04) rotate(-9deg)}66%{transform:translate(10%,16%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-ocean-1765523115260-2{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(14%,10%) scale(1.04) rotate(9deg)}66%{transform:translate(-10%,16%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-ocean-1765523115260-3{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(14%,10%) scale(1.04) rotate(-9deg)}66%{transform:translate(-10%,16%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-ocean-1765523115260-4{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-14%,10%) scale(1.04) rotate(9deg)}66%{transform:translate(10%,16%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-ocean-1765523115260-5{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-14%,-10%) scale(1.04) rotate(-9deg)}66%{transform:translate(10%,-16%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}</style></defs><rect width="100%" height="100%" fill="hsl(210.66517809148266, 60%, 10%)"/><path fill="hsl(224.75999863865718, 61.034999686653%, 24.524420762076904%)" d="M2215.03 1343.943c-7.351 350.339-48.416 852.192-286.335 1012.82-237.92 160.627-854.843 119.75-1141.183-49.053-286.34-168.804-584.252-655.316-576.859-963.767 7.393-308.45 327.525-705.403 621.216-886.938 293.691-181.536 910.405-350.098 1140.932-202.275 230.526 147.823 249.58 738.874 242.229 1089.213" opacity=".6" style="transform-origin:8.625984294684685% 57.141127446070676%;filter:hue-rotate(0deg);animation:move-ocean-1765523115260-0 10.666666666666668s ease-in-out infinite alternate,hue-rotate 24s linear infinite;animation-delay:0s,0s;mix-blend-mode:overlay;transform-box:fill-box;transform:translate(-1178.3241472824805px,-726.8188693228632px)"><animate attributeName="fill" begin="0s" dur="24s" repeatCount="indefinite" values="hsl(224.75999863865718, 61.034999686653%, 24.524420762076904%);hsl(284.7599986386572, 61%, 24%);hsl(344.7599986386572, 61%, 24%);hsl(224.75999863865718, 61.034999686653%, 24.524420762076904%)"/></path><path fill="hsl(202.4232439736368, 74.94922714890782%, 42.64271088357098%)" d="M1808.987 1035.136c-20.795 235.069-221.878 461.648-429.086 597.151-207.208 135.504-651.027 315.395-814.163 215.87-163.137-99.525-168.297-548.32-164.657-813.021 3.64-264.702 2.567-639.646 186.499-775.19 183.932-135.543 713.525-167.27 917.092-38.071 203.568 129.198 325.11 578.192 304.315 813.26" opacity=".6" style="transform-origin:54.93448245568957% 79.40979608633073%;filter:hue-rotate(0deg);animation:move-ocean-1765523115260-1 12.266666666666667s ease-in-out infinite alternate,hue-rotate 32.400000000000006s linear infinite;animation-delay:-9s,-1.5s;mix-blend-mode:screen;transform-box:fill-box;transform:translate(19.606261698412936px,-177.51000371845498px)"><animate attributeName="fill" begin="-1.5s" dur="32.400000000000006s" repeatCount="indefinite" values="hsl(202.4232439736368, 74.94922714890782%, 42.64271088357098%);hsl(262.4232439736368, 74%, 42%);hsl(322.4232439736368, 74%, 42%);hsl(202.4232439736368, 74.94922714890782%, 42.64271088357098%)"/></path><path fill="hsl(218.7182832764174, 78.0070910236984%, 44.948829217982585%)" d="M1368.201 764.77c0 213.74-399.726 591.083-603.43 591.083-203.705 0-618.797-377.343-618.797-591.082 0-213.74 415.092-691.355 618.797-691.355 203.704 0 603.43 477.615 603.43 691.355" opacity=".6" style="transform-origin:3.0241967049373875% 68.03421026622651%;filter:hue-rotate(0deg);animation:move-ocean-1765523115260-2 13.866666666666667s ease-in-out infinite alternate,hue-rotate 28.8s linear infinite;animation-delay:-8s,-3s;mix-blend-mode:overlay;transform-box:fill-box;transform:translate(-706.7062937584632px,-30.001399618014602px)"><animate attributeName="fill" begin="-3s" dur="28.8s" repeatCount="indefinite" values="hsl(218.7182832764174, 78.0070910236984%, 44.948829217982585%);hsl(278.7182832764174, 78%, 44%);hsl(338.7182832764174, 78%, 44%);hsl(218.7182832764174, 78.0070910236984%, 44.948829217982585%)"/></path><path fill="hsl(200.77029090024567, 81.01841819661348%, 26.450428268817774%)" d="M850.31 508.841c.002 128.463-115.162 353.305-216.245 385.397-101.084 32.093-308.711-84.526-390.255-192.84S79.762 340.675 144.803 244.352c65.042-96.322 371.67-164.97 489.255-120.888S850.31 380.379 850.311 508.84" opacity=".6" style="transform-origin:61.192035987474355% 71.31404943219609%;filter:hue-rotate(0deg);animation:move-ocean-1765523115260-3 15.466666666666669s ease-in-out infinite alternate,hue-rotate 25.200000000000003s linear infinite;animation-delay:-7s,-4.5s;mix-blend-mode:screen;transform-box:fill-box;transform:translate(666.0456625898281px,261.350305498038px)"><animate attributeName="fill" begin="-4.5s" dur="25.200000000000003s" repeatCount="indefinite" values="hsl(200.77029090024567, 81.01841819661348%, 26.450428268817774%);hsl(260.77029090024564, 81%, 26%);hsl(320.77029090024564, 81%, 26%);hsl(200.77029090024567, 81.01841819661348%, 26.450428268817774%)"/></path><path fill="hsl(203.28912864328552, 84.04890782359877%, 22.782685983973316%)" d="M1750.48 913.7c-5.339 238.865-381.846 595.618-619.963 667.293-238.116 71.676-653.193-39.268-808.736-237.237-155.542-197.97-264.646-751.253-124.517-950.577 140.128-199.324 706.42-332.122 965.29-245.368 258.87 86.753 593.266 527.026 587.926 765.89" opacity=".6" style="transform-origin:74.7730897542451% 53.406093279263104%;filter:hue-rotate(0deg);animation:move-ocean-1765523115260-4 11.733333333333336s ease-in-out infinite alternate,hue-rotate 33.6s linear infinite;animation-delay:-6s,-1s;mix-blend-mode:overlay;transform-box:fill-box;transform:translate(521.9423823008023px,-336.91513356466214px)"><animate attributeName="fill" begin="-1s" dur="33.6s" repeatCount="indefinite" values="hsl(203.28912864328552, 84.04890782359877%, 22.782685983973316%);hsl(263.2891286432855, 84%, 22%);hsl(323.2891286432855, 84%, 22%);hsl(203.28912864328552, 84.04890782359877%, 22.782685983973316%)"/></path><path fill="hsl(197.00167890247928, 85.03855527552909%, 48.885818831244656%)" d="M2097.616 1104.38c-14.165 216.46-434.641 470.76-660.811 575.776s-524.16 150.28-696.21 54.318-326.313-403.128-336.09-630.094 91.212-611.205 277.427-731.702 603.914-113.229 839.861 8.722c235.948 121.95 589.988 506.52 575.823 722.98" opacity=".6" style="transform-origin:91.97233347326947% 80.00043465465369%;filter:hue-rotate(0deg);animation:move-ocean-1765523115260-5 13.333333333333334s ease-in-out infinite alternate,hue-rotate 30s linear infinite;animation-delay:-5s,-2.5s;mix-blend-mode:screen;transform-box:fill-box;transform:translate(661.4885893893784px,-240.37551902713574px)"><animate attributeName="fill" begin="-2.5s" dur="30s" repeatCount="indefinite" values="hsl(197.00167890247928, 85.03855527552909%, 48.885818831244656%);hsl(257.0016789024793, 85%, 48%);hsl(317.0016789024793, 85%, 48%);hsl(197.00167890247928, 85.03855527552909%, 48.885818831244656%)"/></path><rect width="100%" height="100%" filter="url(#noiseFilter)" style="mix-blend-mode:overlay"/></svg>
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: hsl(228.82920680508786, 60%, 10%)">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-ocean-1765828708759-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, -10%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(10%, -16%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-ocean-1765828708759-0 {
+          transform-origin: 87.83698422091526% 91.51865192136407%;
+          animation: move-ocean-1765828708759-0 10.666666666666668s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765828708759-0 10.666666666666668s ease-in-out infinite alternate, hue-rotate 24s linear infinite; animation-delay: 0s, 0s;
+        }
+      
+        @keyframes move-ocean-1765828708759-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, 10%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(10%, 16%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-ocean-1765828708759-1 {
+          transform-origin: 21.1588942762289% 61.905646224698984%;
+          animation: move-ocean-1765828708759-1 12.266666666666667s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765828708759-1 12.266666666666667s ease-in-out infinite alternate, hue-rotate 32.400000000000006s linear infinite; animation-delay: -9s, -1.5s;
+        }
+      
+        @keyframes move-ocean-1765828708759-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(14%, 10%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-10%, 16%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-ocean-1765828708759-2 {
+          transform-origin: 56.74199151139068% 83.80783585049299%;
+          animation: move-ocean-1765828708759-2 13.866666666666667s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765828708759-2 13.866666666666667s ease-in-out infinite alternate, hue-rotate 28.8s linear infinite; animation-delay: -8s, -3s;
+        }
+      
+        @keyframes move-ocean-1765828708759-3 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(14%, 10%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-10%, 16%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-ocean-1765828708759-3 {
+          transform-origin: 28.950358535594756% 33.213480139486684%;
+          animation: move-ocean-1765828708759-3 15.466666666666669s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765828708759-3 15.466666666666669s ease-in-out infinite alternate, hue-rotate 25.200000000000003s linear infinite; animation-delay: -7s, -4.5s;
+        }
+      
+        @keyframes move-ocean-1765828708759-4 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, 10%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(10%, 16%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-ocean-1765828708759-4 {
+          transform-origin: 26.53946667720748% 33.04051115187011%;
+          animation: move-ocean-1765828708759-4 11.733333333333336s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          filter: hue-rotate(0deg); animation: move-ocean-1765828708759-4 11.733333333333336s ease-in-out infinite alternate, hue-rotate 33.6s linear infinite; animation-delay: -6s, -1s;
+        }
+      
+        @keyframes move-foam-1765828708760 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-14%, -10%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(10%, -16%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-foam-1765828708760 {
+          transform-origin: 91.71010471740138% 25.839890090654972%;
+          animation: move-foam-1765828708760 13.333333333333334s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          filter: hue-rotate(0deg); animation: move-foam-1765828708760 13.333333333333334s ease-in-out infinite alternate, hue-rotate 30s linear infinite; animation-delay: -5s, -2.5s;
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.0015" numOctaves="3" stitchTiles="stitch">
+                
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.15" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-ocean-1765828708759-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765828708759-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765828708759-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765828708759-3" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-ocean-1765828708759-4" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="40" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-foam-1765828708760" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="20" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="hsl(228.82920680508786, 60%, 10%)" />
+    <g><path id="shape-ocean-1765828708759-0" d="M 1447.9699949124665 871.5878017654136 C 1435.2559956252178 1097.5830603847 1369.5621277262005 1399.3019708395075 1224.88107410194 1483.509699424545 C 1080.2000204776793 1567.7174280095826 777.9733389034149 1478.8211562188276 579.8836731669035 1376.834173275639 C 381.79400743039207 1274.8471903324503 42.445244529932744 1050.5725184867588 36.34307968287192 871.5878017654137 C 30.240914835811093 692.6030850440686 332.4670190607785 426.9341486236662 543.2706840845385 302.92587294756834 C 754.0743491082985 178.91759727147047 1150.3818513541107 32.76115957251908 1301.165069825432 127.53814770882661 C 1451.9482882967534 222.31513584513414 1460.6839941997152 645.5925431461272 1447.9699949124665 871.5878017654136 Z" fill="hsl(215.10360336307994, 78.72639767007864%, 28.453753030731512%)" opacity="0.6" filter="url(#blur-ocean-1765828708759-0)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(814.8822952761593px, 116.81363898531833px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(215.10360336307994, 78.72639767007864%, 28.453753030731512%);hsl(275.10360336307997, 78%, 28%);hsl(335.10360336307997, 78%, 28%);hsl(215.10360336307994, 78.72639767007864%, 28.453753030731512%)"
+                dur="24s"
+                begin="0s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765828708759-1" d="M 2603.996693252865 1415.2883476117258 C 2599.180456687072 1808.2501090795008 2162.941671572551 2418.2437971244976 1783.882686416118 2549.7050760460015 C 1404.823701259685 2681.1663549675054 543.9355170275691 2504.1850173043454 329.64278231426783 2204.05602114075 C 115.35004760096663 1903.9270249771548 250.93672422020936 1084.2846847146625 498.1262781363108 748.9310990644295 C 745.3158320524122 413.5775134141965 1461.8017032914508 80.87496581480274 1812.7801058108766 191.93450723935211 C 2163.7585083303024 302.9940486639015 2608.812929818658 1022.3265861439509 2603.996693252865 1415.2883476117258 Z" fill="hsl(236.9387722327844, 68.65738509330636%, 52.09430797736887%)" opacity="0.6" filter="url(#blur-ocean-1765828708759-1)" style="mix-blend-mode: overlay; transform-box: fill-box; transform: translate(-1009.037577508131px, -746.7073683849768px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(236.9387722327844, 68.65738509330636%, 52.09430797736887%);hsl(296.9387722327844, 68%, 52%);hsl(356.9387722327844, 68%, 52%);hsl(236.9387722327844, 68.65738509330636%, 52.09430797736887%)"
+                dur="32.400000000000006s"
+                begin="-1.5s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765828708759-2" d="M 2226.5044948509967 1137.2971282148824 C 2244.202714162088 1416.5445682873676 1917.4531494634346 1959.8642754836972 1674.0625402372455 2067.002093583257 C 1430.6719310110564 2174.139911682817 1040.8721358431164 1935.0748643736383 766.1608394938618 1780.1240368122426 C 491.44954314460716 1625.1732092508469 57.08579164862492 1405.7704173411028 25.794762141717683 1137.2971282148826 C -5.496267365189549 868.8238390886625 321.40158541425484 293.58091456601153 578.4146624524184 169.28430205492214 C 835.4277394905819 44.987689543832744 1293.1915856376024 230.18198212168622 1567.8732243706988 391.51745314834625 C 1842.5548631037952 552.8529241750063 2208.8062755399055 858.0496881423971 2226.5044948509967 1137.2971282148824 Z" fill="hsl(234.22982016959827, 73.84487802186501%, 54.08635166617267%)" opacity="0.6" filter="url(#blur-ocean-1765828708759-2)" style="mix-blend-mode: overlay; transform-box: fill-box; transform: translate(-47.850891196181465px, -232.17250102955802px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(234.22982016959827, 73.84487802186501%, 54.08635166617267%);hsl(294.22982016959827, 73%, 54%);hsl(354.22982016959827, 73%, 54%);hsl(234.22982016959827, 73.84487802186501%, 54.08635166617267%)"
+                dur="28.8s"
+                begin="-3s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765828708759-3" d="M 1906.8926524322621 1089.41399701063 C 1921.788272836766 1366.561253472103 1648.223854568093 1980.1211737346523 1404.2526653678772 2058.3877834799086 C 1160.2814761676614 2136.6543932251648 605.0654273670201 1800.0851638035838 443.06551723096777 1559.013655482168 C 281.06560709491544 1317.942147160752 286.9509669332489 805.8769686799296 432.2532045515633 611.9587335514135 C 577.5554421698777 418.0404984228974 1069.1057016274042 315.92836746786827 1314.878942940854 395.504244711071 C 1560.6521842543036 475.08012195427375 1891.9970320277582 812.266740549157 1906.8926524322621 1089.41399701063 Z" fill="hsl(224.35373815552126, 87.82758030869391%, 47.6540243405361%)" opacity="0.6" filter="url(#blur-ocean-1765828708759-3)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-533.5671131272107px, -730.7084115041739px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(224.35373815552126, 87.82758030869391%, 47.6540243405361%);hsl(284.3537381555212, 87%, 47%);hsl(344.3537381555212, 87%, 47%);hsl(224.35373815552126, 87.82758030869391%, 47.6540243405361%)"
+                dur="25.200000000000003s"
+                begin="-4.5s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-ocean-1765828708759-4" d="M 1550.40602530314 787.3873023822689 C 1542.9930869631207 1006.8458994927923 1201.553488059038 1308.067966538726 979.0677494887641 1377.3190588403208 C 756.5820109184901 1446.5701511419156 317.32932692719686 1351.9945935132125 215.49159388149633 1202.8938561918374 C 113.6538608357958 1053.7931188704622 233.3657202733303 673.1023649145127 368.0413512145609 482.7146349120698 C 502.71698215579147 292.32690490962693 826.4846005141168 9.788698265480122 1023.54537952888 60.56747617717997 C 1220.6061585436432 111.34625408887982 1557.8189636431593 567.9287052717455 1550.40602530314 787.3873023822689 Z" fill="hsl(225.70884923363252, 68.59255857296354%, 53.99095052620151%)" opacity="0.6" filter="url(#blur-ocean-1765828708759-4)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-277.82954217988527px, -430.5497819420717px)">
+            <animate 
+                attributeName="fill"
+                values="hsl(225.70884923363252, 68.59255857296354%, 53.99095052620151%);hsl(285.7088492336325, 68%, 53%);hsl(345.7088492336325, 68%, 53%);hsl(225.70884923363252, 68.59255857296354%, 53.99095052620151%)"
+                dur="33.6s"
+                begin="-1s"
+                repeatCount="indefinite"
+            /></path>
+<path id="shape-foam-1765828708760" d="M 759.492431473732 384 C 751.0571627408267 471.2327267690005 594.6412646651269 563.288432113118 509.78570864796643 601.8672382443336 C 424.930152630806 640.4460443755493 316.5684740036727 651.7840431613496 250.35909537076958 615.472836787294 C 184.14971673786647 579.1616304132384 120.14255231916907 474.3439150579719 112.52943685054777 384.00000000000006 C 104.91632138192647 293.6560849420282 130.03575519323329 124.3308668344076 204.6804025590418 73.4093464394627 C 279.3250499248503 22.487826044517796 467.928649559617 26.705768703574456 560.3973210453987 78.47087763033068 C 652.8659925311804 130.2359865570869 767.9277002066374 296.7672732309995 759.492431473732 384 Z" fill="#ffffff" opacity="0.3" filter="url(#blur-foam-1765828708760)" style="mix-blend-mode: overlay; transform-box: fill-box; transform: translate(1376.8340105741063px, -104.92918702092629px)">
+            <animate 
+                attributeName="fill"
+                values="#ffffff;hsl(60, 0%, 100%);hsl(120, 0%, 100%);#ffffff"
+                dur="30s"
+                begin="-2.5s"
+                repeatCount="indefinite"
+            /></path></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

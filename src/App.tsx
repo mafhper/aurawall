@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import WallpaperRenderer from './components/WallpaperRenderer';
+const WallpaperRenderer = React.lazy(() => import('./components/WallpaperRenderer'));
 // import { Controls } from './components/Controls'; // Converted to lazy
 // Type needs to match so we import type or just rely on fallback
 const Controls = React.lazy(() => import('./components/Controls').then(module => ({ default: module.Controls })));
@@ -66,7 +66,16 @@ export default function App() {
   const [isGrainLocked, setIsGrainLocked] = useState(false);
   const [isZenMode, setIsZenMode] = useState(false); // New state for Zen Mode
   
-  const [zoom, setZoom] = useState(0.4); // Preview scale
+  // Initialize zoom based on screen width to prevent CLS
+  const [zoom, setZoom] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768 ? 0.2 : 0.45;
+    }
+    return 0.4;
+  });
+  
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  
   const [isFullscreen, setIsFullscreen] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -296,7 +305,9 @@ export default function App() {
           className="relative shadow-2xl shadow-black/50 transition-transform duration-200 ease-out origin-center"
           style={{ width: config.width, height: config.height, transform: `scale(${zoom})` }}
         >
-          <WallpaperRenderer ref={svgRef} config={config} className="w-full h-full block" />
+          <React.Suspense fallback={<div className="w-full h-full" style={{ backgroundColor: typeof config.baseColor === 'string' ? config.baseColor : '#000000' }} />}>
+            <WallpaperRenderer ref={svgRef} config={config} className="w-full h-full block" lowQuality={isMobile} />
+          </React.Suspense>
         </div>
 
         <div className="hidden md:block absolute bottom-6 left-6 text-zinc-500 text-xs font-mono">
@@ -353,10 +364,12 @@ export default function App() {
                 <X size={24} />
               </button>
               <div className="w-full h-full p-0 flex items-center justify-center bg-zinc-950">
+                <React.Suspense fallback={<div className="w-full h-full animate-pulse bg-zinc-900" />}>
                  <WallpaperRenderer 
                   config={config}
                   style={{ width: '100%', height: '100%', objectFit: 'contain', maxHeight: '100vh', maxWidth: '100vw' }} 
                 />
+                </React.Suspense>
               </div>
             </div>
           )}

@@ -10,7 +10,7 @@
  * 
  * Usage:
  *   node scripts/performance-gate/analyze-batch.cjs <directory> [--output <path>]
- *   node scripts/performance-gate/analyze-batch.cjs _desenvolvimento/lighthouse-reports-live/dados
+ *   node scripts/performance-gate/analyze-batch.cjs performance-reports/manual
  */
 const fs = require('fs');
 const path = require('path');
@@ -326,8 +326,9 @@ function main() {
     }
 
     // Generate and save Markdown report
-    const defaultOutputDir = path.resolve(path.dirname(absolutePath), 'resultado-analise-relatorios');
-    const finalOutputDir = outputDir ? path.resolve(outputDir) : defaultOutputDir;
+    const projectRoot = path.resolve(__dirname, '../../');
+    const defaultOutputDir = path.join(projectRoot, 'performance-reports', 'analysis');
+    const finalOutputDir = outputArg !== -1 ? path.resolve(process.argv[outputArg + 1]) : defaultOutputDir;
 
     if (!fs.existsSync(finalOutputDir)) {
         fs.mkdirSync(finalOutputDir, { recursive: true });

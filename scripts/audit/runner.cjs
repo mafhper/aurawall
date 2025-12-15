@@ -14,8 +14,8 @@
  * @requires ./core/run-audit.cjs
  */
 
-const config = require('./config/audit.config.cjs');
-const { runAudit } = require('./core/run-audit.cjs');
+const config = require('../config/audit.config.cjs');
+const { runAudit } = require('../core/run-audit.cjs');
 
 /**
  * Função principal que orquestra a execução das auditorias

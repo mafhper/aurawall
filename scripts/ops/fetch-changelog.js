@@ -19,7 +19,7 @@ let REPO_OWNER = 'mafhper';
 let REPO_NAME = 'aurawall';
 
 try {
-    const pkg = require('../package.json');
+    const pkg = require('../../package.json');
     if (pkg.repository) {
         const repoUrl = typeof pkg.repository === 'string' ? pkg.repository : pkg.repository.url;
         // Parse: https://github.com/owner/repo or git@github.com:owner/repo.git
@@ -33,8 +33,8 @@ try {
     // Use defaults if package.json not found
 }
 
-const OUTPUT_PATH = path.join(__dirname, '..', 'website', 'public', 'changelog.json');
-const CACHE_PATH = path.join(__dirname, '..', 'website', 'public', 'changelog-cache.json');
+const OUTPUT_PATH = path.join(__dirname, '../..', 'website', 'public', 'changelog.json');
+const CACHE_PATH = path.join(__dirname, '../..', 'website', 'public', 'changelog-cache.json');
 
 // Conventional commit types mapping
 const COMMIT_TYPES = {

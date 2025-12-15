@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Zap } from 'lucide-react';
@@ -46,7 +46,7 @@ const PresetCard = ({ preset }: { preset: typeof PRESETS[0] }) => {
 };
 
 // Preview Card Component with hover-to-play (for sidebar)
-const PreviewCard = React.memo(({ preset, engineId }: { preset: typeof PRESETS[0] | null, engineId: string }) => {
+const PreviewCard = React.memo(({ preset }: { preset: typeof PRESETS[0] | null }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   // useMemo must be called before any early return
@@ -97,16 +97,20 @@ export default function CreationEngineDetail() {
   
   const firstPreset = enginePresets[0] || null;
   
-  // State for random hero preset - starts null (SSR-safe)
-  const [heroPresetId, setHeroPresetId] = useState<string | null>(null);
-  
-  // Select random preset from engine's collection on mount (client-side only)
-  useEffect(() => {
-    if (enginePresets.length > 0) {
-      const randomIndex = Math.floor(Math.random() * enginePresets.length);
-      setHeroPresetId(enginePresets[randomIndex].id);
+  // Deterministic preset selection based on engine ID (Stable for SSR & hydration)
+  const activeHeroPresetId = useMemo(() => {
+    if (enginePresets.length === 0) return firstPreset?.id || 'soul-glow';
+    
+    // Simple hash from string id
+    let hash = 0;
+    for (let i = 0; i < (id || '').length; i++) {
+        hash = ((hash << 5) - hash) + (id || '').charCodeAt(i);
+        hash |= 0;
     }
-  }, [enginePresets]);
+    const randomIndex = Math.abs(hash) % enginePresets.length;
+    
+    return enginePresets[randomIndex].id;
+  }, [enginePresets, id, firstPreset]);
 
   if (!engineMeta) {
     return (
@@ -122,9 +126,6 @@ export default function CreationEngineDetail() {
   // Find current and next engine indices for navigation
   const currentIndex = ENGINES.findIndex(e => e.id === id);
   const nextEngine = ENGINES[(currentIndex + 1) % ENGINES.length];
-  
-  // Use random preset from engine collection, fallback to first preset or 'soul-glow'
-  const activeHeroPresetId = heroPresetId || firstPreset?.id || 'soul-glow';
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -201,7 +202,7 @@ export default function CreationEngineDetail() {
             </div>
 
             {/* Sidebar preview with hover-to-play - using first preset */}
-            <PreviewCard preset={firstPreset} engineId={engineMeta.id} />
+            <PreviewCard preset={firstPreset} />
 
          </div>
 

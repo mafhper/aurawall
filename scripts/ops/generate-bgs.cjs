@@ -432,7 +432,7 @@ const renderConfigToSVG = (config) => {
 
 // --- 4. MAIN LOOP ---
 
-const outputDir = path.join(__dirname, '../public');
+const outputDir = path.join(__dirname, '../../public');
 const DEFAULT_CONFIG = {
     width: 1920,
     height: 1080,

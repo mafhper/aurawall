@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const toAbsolute = (p) => path.resolve(__dirname, '../', p);
+const toAbsolute = (p) => path.resolve(__dirname, '../../', p);
 
 const template = fs.readFileSync(toAbsolute('dist/client/index.html'), 'utf-8');
 

@@ -16,13 +16,13 @@ const path = require('path');
 // Configuration
 const CONFIG = {
     app: {
-        path: path.join(__dirname, '../src/i18n.ts'),
-        srcRoot: path.join(__dirname, '../src'),
+        path: path.join(__dirname, '../../src/i18n.ts'),
+        srcRoot: path.join(__dirname, '../../src'),
         name: 'Main Application'
     },
     promo: {
-        path: path.join(__dirname, '../website/src/i18n.ts'),
-        srcRoot: path.join(__dirname, '../website/src'),
+        path: path.join(__dirname, '../../website/src/i18n.ts'),
+        srcRoot: path.join(__dirname, '../../website/src'),
         name: 'Promo Site'
     }
 };

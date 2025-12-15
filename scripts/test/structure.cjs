@@ -24,7 +24,7 @@ let hasError = false;
 console.log('Checking File Structure...\n');
 
 REQUIRED_FILES.forEach(file => {
-    if (!fs.existsSync(path.join(__dirname, '..', file))) {
+    if (!fs.existsSync(path.join(__dirname, '../../', file))) {
         console.error(`❌ Missing File: ${file}`);
         hasError = true;
     } else {
@@ -33,7 +33,7 @@ REQUIRED_FILES.forEach(file => {
 });
 
 REQUIRED_DIRS.forEach(dir => {
-    if (!fs.existsSync(path.join(__dirname, '..', dir))) {
+    if (!fs.existsSync(path.join(__dirname, '../../', dir))) {
         console.error(`❌ Missing Directory: ${dir}`);
         hasError = true;
     } else {

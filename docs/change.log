@@ -1,3 +1,11 @@
+[2025/12/15 - perf: Mobile TBT & Layout Shift Optimizations]
+- Implemented Lazy Loading for WallpaperRenderer to reduce initial bundle size
+- Disabled expensive SVG filters (feTurbulence) on mobile devices to prevent TBT spikes
+- Fixed Layout Shift (CLS) by initializing zoom state based on window width
+- Fixed dependency conflict (react-helmet-async) restoring clean npm install
+- Reorganized scripts/ folder for better maintainability (audit/test/ops)
+- Fixed CreationEngineDetail.tsx: Replaced setState-in-effect with deterministic useMemo
+
 [2025/12/15 - fix: Comprehensive i18n Audit Phase 2]
 - Fixed all hardcoded texts across 11 TSX files to use i18n translations
 - Added ~115 new translation keys for EN, pt-BR, and ES (now 368 keys total)

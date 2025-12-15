@@ -1,1 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color:#091415" viewBox="0 0 1920 1080"><defs><filter id="noiseFilter"><feTurbulence baseFrequency=".002" numOctaves="3" stitchTiles="stitch" type="fractalNoise"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA slope=".34" type="linear"/></feComponentTransfer></filter><filter id="blur-rand-b-1765523114057-0" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="69.117"/></filter><filter id="blur-rand-b-1765523114057-1" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="90.524"/></filter><filter id="blur-rand-b-1765523114057-2" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="74.238"/></filter><filter id="blur-rand-b-1765523114057-3" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="80.114"/></filter><filter id="blur-rand-b-1765523114057-4" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="89.348"/></filter><style>@keyframes noise-shift{0%,to{transform:translate(0,0)}25%{transform:translate(-1%,1%)}50%{transform:translate(1%,-1%)}75%{transform:translate(-1%,-1%)}}@keyframes move-rand-b-1765523114057-0{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-rand-b-1765523114057-1{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-rand-b-1765523114057-2{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-rand-b-1765523114057-3{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-rand-b-1765523114057-4{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}</style></defs><rect width="100%" height="100%" fill="hsl(185, 40%, 6%)"/><circle cx="85.998%" cy="93.087%" r="35.426%" fill="hsl(185, 83.0234962531921%, 63.18701898102978%)" filter="url(#blur-rand-b-1765523114057-0)" opacity=".542" style="transform-origin:85.99810691329124% 93.08715656610363%;animation:move-rand-b-1765523114057-0 3.2s ease-in-out infinite alternate;animation-delay:0s;mix-blend-mode:normal"/><path fill="hsl(225, 91.2549193526485%, 87.95009106165102%)" d="M1546.074 810.776c0 222.523-515.864 600.795-735.298 600.795s-581.302-378.272-581.302-600.795S591.343 76.434 810.776 76.434c219.434 0 735.298 511.82 735.298 734.342" filter="url(#blur-rand-b-1765523114057-1)" opacity=".552" style="transform-origin:29.220132672092824% 20.750160745499112%;animation:move-rand-b-1765523114057-1 3.68s ease-in-out infinite alternate;animation-delay:-9s;mix-blend-mode:color-dodge;transform-box:fill-box;transform:translate(-249.74956295197774px,-586.6743742047696px)"/><path fill="hsl(265, 79.24421874828009%, 71.3136523288035%)" d="M1663.552 889.554c2.244 251.751-318.951 722.27-521.868 775.974s-571.826-264.997-695.635-453.749c-123.809-188.75-160.914-502.63-47.22-678.757 113.696-176.126 518.602-437.422 729.39-378 210.786 59.422 533.088 482.781 535.333 734.532" filter="url(#blur-rand-b-1765523114057-2)" opacity=".68" style="transform-origin:32.401466609288% 76.50610574467326%;animation:move-rand-b-1765523114057-2 4.16s ease-in-out infinite alternate;animation-delay:-8s;mix-blend-mode:lighten;transform-box:fill-box;transform:translate(-267.4461296118077px,-63.288346467665974px)"/><circle cx="18.946%" cy="89.433%" r="37.091%" fill="hsl(305, 90.4483627796478%, 66.81494616688259%)" filter="url(#blur-rand-b-1765523114057-3)" opacity=".649" style="transform-origin:18.94633556074943% 89.43299489920634%;animation:move-rand-b-1765523114057-3 4.640000000000001s ease-in-out infinite alternate;animation-delay:-7s;mix-blend-mode:normal"/><circle cx="99.848%" cy="42.525%" r="58.237%" fill="hsl(345, 61.53663691647134%, 67.68105461526949%)" filter="url(#blur-rand-b-1765523114057-4)" opacity=".826" style="transform-origin:99.84804467284634% 42.52516095436594%;animation:move-rand-b-1765523114057-4 3.5200000000000005s ease-in-out infinite alternate;animation-delay:-6s;mix-blend-mode:lighten"/><rect width="100%" height="100%" filter="url(#noiseFilter)" style="mix-blend-mode:overlay"/></svg>
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: hsl(346, 20%, 95%)">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-rand-b-1765828708704-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-rand-b-1765828708704-0 {
+          transform-origin: 45.59546664151944% 70.31648434830333%;
+          animation: move-rand-b-1765828708704-0 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-rand-b-1765828708704-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-rand-b-1765828708704-1 {
+          transform-origin: 27.780390952008283% 54.12605307871108%;
+          animation: move-rand-b-1765828708704-1 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-rand-b-1765828708704-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-rand-b-1765828708704-2 {
+          transform-origin: 62.74780461684326% 70.70371436003431%;
+          animation: move-rand-b-1765828708704-2 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      
+        @keyframes move-rand-b-1765828708704-3 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-rand-b-1765828708704-3 {
+          transform-origin: 76.55261312199653% 69.55408084621091%;
+          animation: move-rand-b-1765828708704-3 4.640000000000001s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.0015" numOctaves="3" stitchTiles="stitch">
+                
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.28" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-rand-b-1765828708704-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="95.71220352400842" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-rand-b-1765828708704-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="77.98108575928549" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-rand-b-1765828708704-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="67.25267584245798" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-rand-b-1765828708704-3" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="61.00805846062419" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="hsl(346, 20%, 95%)" />
+    <g><path id="shape-rand-b-1765828708704-0" d="M 2372.890141042374 1321.5238238184552 C 2375.9711223969134 1666.4969462200954 2195.352488353037 2213.368724736815 1928.2777431273914 2372.4524397530795 C 1661.2029979017457 2531.536154769344 1064.2559193504412 2451.1808832384804 770.4416696884989 2276.026113916043 C 476.62742002655654 2100.8713445936055 164.55148279455707 1638.2350107243287 165.39224515573733 1321.5238238184554 C 166.23300751691758 1004.8126369125821 484.75297554817735 545.5773455600063 775.4862438555804 375.7589924808034 C 1066.2195121629834 205.94063940160052 1643.5578721356899 144.98623345362952 1909.7918550001555 302.61370534323817 C 2176.0258378646213 460.2411772328468 2369.809159687835 976.550701416815 2372.890141042374 1321.5238238184552 Z" fill="hsl(346, 68.28676536410325%, 28.96726173704563%)" opacity="0.7241186506923781" filter="url(#blur-rand-b-1765828708704-0)" style="mix-blend-mode: difference; transform-box: fill-box; transform: translate(-446.09086430128195px, -562.1057928567792px)"></path>
+<circle id="shape-rand-b-1765828708704-1" cx="27.780390952008283%" cy="54.12605307871108%" r="42.07514049090008%" fill="hsl(26, 84.69695966783988%, 48.86198478715161%)" opacity="0.8978792774396775" filter="url(#blur-rand-b-1765828708704-1)" style="mix-blend-mode: overlay"></circle>
+<circle id="shape-rand-b-1765828708704-2" cx="62.74780461684326%" cy="70.70371436003431%" r="35.56047540538394%" fill="hsl(66, 71.52336689031812%, 34.810403687834615%)" opacity="0.7734287367034589" filter="url(#blur-rand-b-1765828708704-2)" style="mix-blend-mode: overlay"></circle>
+<circle id="shape-rand-b-1765828708704-3" cx="76.55261312199653%" cy="69.55408084621091%" r="41.41758547905553%" fill="hsl(106, 80.8375757978338%, 15.36604934913111%)" opacity="0.707736754405458" filter="url(#blur-rand-b-1765828708704-3)" style="mix-blend-mode: multiply"></circle></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

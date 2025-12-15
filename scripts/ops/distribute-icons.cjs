@@ -3,7 +3,7 @@ const path = require('path');
 const sharp = require('sharp'); // Import sharp
 
 // Configuration
-const PROJECT_ROOT = path.join(__dirname, '..');
+const PROJECT_ROOT = path.join(__dirname, '../..');
 const SOURCE_DIR = path.join(PROJECT_ROOT, '_desenvolvimento', 'img', 'icon-forge-assets');
 
 // Color codes for terminal output

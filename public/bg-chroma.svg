@@ -1,1 +1,82 @@
-<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color:#0c0e0b" viewBox="0 0 1920 1080"><defs><filter id="noiseFilter"><feTurbulence baseFrequency=".004" numOctaves="3" stitchTiles="stitch" type="fractalNoise"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA slope=".48" type="linear"/></feComponentTransfer></filter><filter id="blur-rand-c-1765523114094-0" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="19.638"/></filter><filter id="blur-rand-c-1765523114094-1" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="12.855"/></filter><filter id="blur-rand-c-1765523114094-2" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="34.518"/></filter><style>@keyframes noise-shift{0%,to{transform:translate(0,0)}25%{transform:translate(-1%,1%)}50%{transform:translate(1%,-1%)}75%{transform:translate(-1%,-1%)}}@keyframes move-rand-c-1765523114094-0{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-rand-c-1765523114094-1{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-rand-c-1765523114094-2{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}</style></defs><rect width="100%" height="100%" fill="hsl(114, 10%, 5%)"/><circle cx="52.652%" cy="62.814%" r="54.46%" fill="hsl(223.94755205812936, 100%, 50%)" filter="url(#blur-rand-c-1765523114094-0)" opacity=".866" style="transform-origin:52.65215239864233% 62.81359089908005%;animation:move-rand-c-1765523114094-0 3.2s ease-in-out infinite alternate;animation-delay:0s;mix-blend-mode:exclusion"/><path fill="hsl(24.97168454816731, 100%, 50%)" d="M1806.41 978.8c-16.384 198.797-228.68 383.403-401.16 534.752s-435.274 401.13-633.717 373.342-469.473-329.966-556.94-540.072c-87.466-210.107-63.258-519.158 32.139-720.568s330.773-436.973 540.244-487.887c209.472-50.914 546.679 42.331 716.585 182.403 169.905 140.072 319.235 459.233 302.85 658.03" filter="url(#blur-rand-c-1765523114094-1)" opacity=".984" style="transform-origin:29.906201147990803% 85.25991064149757%;animation:move-rand-c-1765523114094-1 3.68s ease-in-out infinite alternate;animation-delay:-9s;mix-blend-mode:color-dodge;transform-box:fill-box;transform:translate(-404.6005241326143px,-57.99255124586398px)"/><path fill="hsl(159.4413709191227, 100%, 50%)" d="M1187.112 639.167c-10.747 121.035-68.657 265-147.453 336.053s-221.793 82.568-325.321 90.263-222.915 4.974-295.848-44.094-84.243-152.288-141.75-250.31C219.233 673.06 46.3 512.852 73.448 433.262s253.694-70.868 366.172-139.72C552.098 224.687 637.563 27.566 748.317 20.144s282.691 125.692 355.824 228.862c73.132 103.17 93.718 269.124 82.97 390.16" filter="url(#blur-rand-c-1765523114094-2)" opacity=".559" style="transform-origin:30.72981809890635% 54.85608128853045%;animation:move-rand-c-1765523114094-2 4.16s ease-in-out infinite alternate;animation-delay:-8s;mix-blend-mode:hard-light;transform-box:fill-box;transform:translate(-49.1541991589703px,-46.721028741843384px)"/><rect width="100%" height="100%" filter="url(#noiseFilter)" style="mix-blend-mode:overlay"/></svg>
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: hsl(176, 10%, 5%)">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-rand-c-1765828708711-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-rand-c-1765828708711-0 {
+          transform-origin: 26.528867482538914% 32.72083634769294%;
+          animation: move-rand-c-1765828708711-0 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-rand-c-1765828708711-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-rand-c-1765828708711-1 {
+          transform-origin: 18.19569362437326% 22.880060842008643%;
+          animation: move-rand-c-1765828708711-1 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-rand-c-1765828708711-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-rand-c-1765828708711-2 {
+          transform-origin: 37.458230594395104% 86.34599377119002%;
+          animation: move-rand-c-1765828708711-2 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.0035867908404713504" numOctaves="3" stitchTiles="stitch">
+                
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.54" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-rand-c-1765828708711-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="37.694789026641175" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-rand-c-1765828708711-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="46.32632033742445" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-rand-c-1765828708711-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="31.80381513619583" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="hsl(176, 10%, 5%)" />
+    <g><circle id="shape-rand-c-1765828708711-0" cx="26.528867482538914%" cy="32.72083634769294%" r="72.59412147088437%" fill="hsl(103.88088761623624, 100%, 50%)" opacity="0.7396011803567915" filter="url(#blur-rand-c-1765828708711-0)" style="mix-blend-mode: color-dodge"></circle>
+<path id="shape-rand-c-1765828708711-1" d="M 1458.6143613414192 812.34002153579 C 1468.6060190360147 978.1687326749592 1447.5135180046886 1226.884488199189 1339.8011280370838 1339.8011280370838 C 1232.088738069479 1452.7177678749786 984.0038802644749 1493.9963706682388 812.34002153579 1489.8398605631592 C 640.6761628071051 1485.6833504580795 421.70098311232454 1427.7787072445003 309.81797566497454 1314.8620674066055 C 197.93496821762454 1201.9454275687108 142.52013947081352 981.3255327785188 141.04197685169004 812.3400215357901 C 139.56381423256656 643.3545102930615 189.06599250288366 395.88106928175574 300.94899995023366 300.9489999502338 C 412.83200739758365 206.0169306187119 649.189657882577 235.43429533801952 812.3400215357899 242.74760554665863 C 975.4903851890028 250.06091575529774 1172.1387919019064 249.89679187054662 1279.8511818695113 344.82886120206854 C 1387.5635718371161 439.76093053359045 1448.6227036468238 646.5113103966208 1458.6143613414192 812.34002153579 Z" fill="hsl(245.01501031599216, 100%, 50%)" opacity="0.9253828917599939" filter="url(#blur-rand-c-1765828708711-1)" style="mix-blend-mode: difference; transform-box: fill-box; transform: translate(-462.98270394782344px, -565.2353644420966px)"></path>
+<circle id="shape-rand-c-1765828708711-2" cx="37.458230594395104%" cy="86.34599377119002%" r="63.72441886559421%" fill="hsl(158.09600781294827, 100%, 50%)" opacity="0.6219972997169333" filter="url(#blur-rand-c-1765828708711-2)" style="mix-blend-mode: hard-light"></circle></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

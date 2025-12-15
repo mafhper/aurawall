@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DIST_DIR = path.join(__dirname, '../dist');
+const DIST_DIR = path.join(__dirname, '../../dist');
 const WARNING_THRESHOLD_MB = 5; // Total build size warning
 const ERROR_THRESHOLD_MB = 10;  // Total build size error
 

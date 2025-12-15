@@ -1,1 +1,272 @@
-<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color:#050505" viewBox="0 0 1920 1080"><defs><filter id="noiseFilter"><feTurbulence baseFrequency=".004" numOctaves="3" stitchTiles="stitch" type="fractalNoise"><animate attributeName="seed" dur="1.25s" repeatCount="indefinite" values="0;100;0"/></feTurbulence><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA slope=".6" type="linear"/></feComponentTransfer></filter><filter id="blur-glitch-0-r" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-0-g" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-0-b" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-1-r" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-1-g" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-1-b" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-2-r" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-2-g" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-glitch-2-b" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><style>@keyframes noise-shift{0%,to{transform:translate(0,0)}25%{transform:translate(-1%,1%)}50%{transform:translate(1%,-1%)}75%{transform:translate(-1%,-1%)}}@keyframes move-glitch-0-r{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-glitch-0-g{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-glitch-0-b{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-glitch-1-r{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-glitch-1-g{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-glitch-1-b{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-glitch-2-r{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-glitch-2-g{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-glitch-2-b{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}</style></defs><rect width="100%" height="100%" fill="#050505"/><circle cx="51.653%" cy="43.33%" r="25.865%" fill="red" filter="url(#blur-glitch-0-r)" opacity=".8" style="transform-origin:51.653444207754355% 43.32960771611445%;animation:move-glitch-0-r 3.2s ease-in-out infinite alternate;animation-delay:0s;mix-blend-mode:screen"/><circle cx="56.467%" cy="38.516%" r="25.865%" fill="#0f0" filter="url(#blur-glitch-0-g)" opacity=".8" style="transform-origin:56.46655423019433% 38.516497693674474%;animation:move-glitch-0-g 3.68s ease-in-out infinite alternate;animation-delay:-9s;mix-blend-mode:screen"/><circle cx="61.28%" cy="43.33%" r="25.865%" fill="#00f" filter="url(#blur-glitch-0-b)" opacity=".8" style="transform-origin:61.27966425263431% 43.32960771611445%;animation:move-glitch-0-b 4.16s ease-in-out infinite alternate;animation-delay:-8s;mix-blend-mode:screen"/><circle cx="91.857%" cy="87.259%" r="19.835%" fill="red" filter="url(#blur-glitch-1-r)" opacity=".8" style="transform-origin:91.8569180441514% 87.25926401652085%;animation:move-glitch-1-r 4.640000000000001s ease-in-out infinite alternate;animation-delay:-7s;mix-blend-mode:screen"/><circle cx="95.733%" cy="83.383%" r="19.835%" fill="#0f0" filter="url(#blur-glitch-1-g)" opacity=".8" style="transform-origin:95.73310247896441% 83.38307958170783%;animation:move-glitch-1-g 3.5200000000000005s ease-in-out infinite alternate;animation-delay:-6s;mix-blend-mode:screen"/><circle cx="99.609%" cy="87.259%" r="19.835%" fill="#00f" filter="url(#blur-glitch-1-b)" opacity=".8" style="transform-origin:99.60928691377742% 87.25926401652085%;animation:move-glitch-1-b 4s ease-in-out infinite alternate;animation-delay:-5s;mix-blend-mode:screen"/><circle cx="61.311%" cy="23.472%" r="13.491%" fill="red" filter="url(#blur-glitch-2-r)" opacity=".8" style="transform-origin:61.31096855753569% 23.471792480790743%;animation:move-glitch-2-r 4.48s ease-in-out infinite alternate;animation-delay:-4s;mix-blend-mode:screen"/><circle cx="64.064%" cy="20.719%" r="13.491%" fill="#0f0" filter="url(#blur-glitch-2-g)" opacity=".8" style="transform-origin:64.06411144122275% 20.718649597103678%;animation:move-glitch-2-g 3.3600000000000003s ease-in-out infinite alternate;animation-delay:-3s;mix-blend-mode:screen"/><circle cx="66.817%" cy="23.472%" r="13.491%" fill="#00f" filter="url(#blur-glitch-2-b)" opacity=".8" style="transform-origin:66.81725432490981% 23.471792480790743%;animation:move-glitch-2-b 3.8400000000000003s ease-in-out infinite alternate;animation-delay:-2s;mix-blend-mode:screen"/><rect width="100%" height="100%" filter="url(#noiseFilter)" style="mix-blend-mode:overlay"/></svg>
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: #050505">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-glitch-0-r {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-0-r {
+          transform-origin: 93.43547255502934% 17.079363817366165%;
+          animation: move-glitch-0-r 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-glitch-0-g {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-0-g {
+          transform-origin: 97.23394480810606% 13.28089156428944%;
+          animation: move-glitch-0-g 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-glitch-0-b {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-0-b {
+          transform-origin: 100% 17.079363817366165%;
+          animation: move-glitch-0-b 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      
+        @keyframes move-artifact-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-artifact-0 {
+          transform-origin: 6.540648651108927% 89.79791657674919%;
+          animation: move-artifact-0 4.640000000000001s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          
+        }
+      
+        @keyframes move-glitch-1-r {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-1-r {
+          transform-origin: 23.32791311423515% 55.963221779013715%;
+          animation: move-glitch-1-r 3.5200000000000005s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          
+        }
+      
+        @keyframes move-glitch-1-g {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-1-g {
+          transform-origin: 28.134228579534604% 51.15690631371426%;
+          animation: move-glitch-1-g 4s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          
+        }
+      
+        @keyframes move-glitch-1-b {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-1-b {
+          transform-origin: 32.940544044834056% 55.963221779013715%;
+          animation: move-glitch-1-b 4.48s ease-in-out infinite alternate;
+          animation-delay: -4s;
+          
+        }
+      
+        @keyframes move-glitch-2-r {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-2-r {
+          transform-origin: 85.74694275337443% 1.5387012595788452%;
+          animation: move-glitch-2-r 3.3600000000000003s ease-in-out infinite alternate;
+          animation-delay: -3s;
+          
+        }
+      
+        @keyframes move-glitch-2-g {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-2-g {
+          transform-origin: 88.90007052580424% 0%;
+          animation: move-glitch-2-g 3.8400000000000003s ease-in-out infinite alternate;
+          animation-delay: -2s;
+          
+        }
+      
+        @keyframes move-glitch-2-b {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-2-b {
+          transform-origin: 92.05319829823405% 1.5387012595788452%;
+          animation: move-glitch-2-b 4.32s ease-in-out infinite alternate;
+          animation-delay: -1s;
+          
+        }
+      
+        @keyframes move-glitch-3-r {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-3-r {
+          transform-origin: 81.85040267278879% 45.40748653831685%;
+          animation: move-glitch-3-r 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-glitch-3-g {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-glitch-3-g {
+          transform-origin: 82.87950686980727% 44.37838234129837%;
+          animation: move-glitch-3-g 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-glitch-3-b {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-glitch-3-b {
+          transform-origin: 83.90861106682576% 45.40748653831685%;
+          animation: move-glitch-3-b 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.004" numOctaves="3" stitchTiles="stitch">
+                <animate attributeName="seed" values="0;100;0" dur="1.25s" repeatCount="indefinite" />
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.6" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-glitch-0-r" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-0-g" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-0-b" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-artifact-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-1-r" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-1-g" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-1-b" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-2-r" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-2-g" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-2-b" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-3-r" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-3-g" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-glitch-3-b" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="#050505" />
+    <g><circle id="shape-glitch-0-r" cx="93.43547255502934%" cy="17.079363817366165%" r="10.281185792693204%" fill="#ff0000" opacity="0.8" filter="url(#blur-glitch-0-r)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-0-g" cx="97.23394480810606%" cy="13.28089156428944%" r="10.281185792693204%" fill="#00ff00" opacity="0.8" filter="url(#blur-glitch-0-g)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-0-b" cx="100%" cy="17.079363817366165%" r="10.281185792693204%" fill="#0000ff" opacity="0.8" filter="url(#blur-glitch-0-b)" style="mix-blend-mode: screen"></circle>
+<path id="shape-artifact-0" d="M 344.0593231399024 205.3386896053932 C 339.86457082552397 235.58768397189556 330.40901101815064 255.0331469632809 317.6569395377227 286.94267485236577 C 304.9048680572947 318.85220274145064 292.6769786528062 390.66741223947463 267.54689425733466 396.7958569399025 C 242.41680986186307 402.9243016403303 198.08673345289182 340.48007818471825 166.87643316489323 323.7133430549329 C 135.66613287689464 306.9466079251476 102.9714848878483 315.924555069447 80.28509252934317 296.19544616119043 C 57.59870017083804 276.46633725293384 26.981274752217583 232.8802662079554 30.75807901386247 205.33868960539323 C 34.534883275507354 177.79711300283105 81.56733778703324 154.70012705877062 102.94591809921249 130.9459865458174 C 124.32449841139174 107.19184603286416 133.3718491901206 76.85928837690837 159.02956088693796 62.81384652767383 C 184.68727258375532 48.7684046784393 226.25953952394087 39.56752509613059 256.8921882801167 46.67333545041021 C 287.5248370362926 53.779145804689826 328.29759761402886 79.00448296085436 342.82545342399317 105.44870865335153 C 357.3533092339575 131.8929343458487 348.25407545428084 175.08969523889084 344.0593231399024 205.3386896053932 Z" fill="#ffffff" opacity="1" filter="url(#blur-artifact-0)" style="mix-blend-mode: difference; transform-box: fill-box; transform: translate(-79.7582355041018px, 764.478809423498px)"></path>
+<circle id="shape-glitch-1-r" cx="23.32791311423515%" cy="55.963221779013715%" r="15.538428051755849%" fill="#ff0000" opacity="0.8" filter="url(#blur-glitch-1-r)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-1-g" cx="28.134228579534604%" cy="51.15690631371426%" r="15.538428051755849%" fill="#00ff00" opacity="0.8" filter="url(#blur-glitch-1-g)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-1-b" cx="32.940544044834056%" cy="55.963221779013715%" r="15.538428051755849%" fill="#0000ff" opacity="0.8" filter="url(#blur-glitch-1-b)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-2-r" cx="85.74694275337443%" cy="1.5387012595788452%" r="23.448878412129126%" fill="#ff0000" opacity="0.8" filter="url(#blur-glitch-2-r)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-2-g" cx="88.90007052580424%" cy="0%" r="23.448878412129126%" fill="#00ff00" opacity="0.8" filter="url(#blur-glitch-2-g)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-2-b" cx="92.05319829823405%" cy="1.5387012595788452%" r="23.448878412129126%" fill="#0000ff" opacity="0.8" filter="url(#blur-glitch-2-b)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-3-r" cx="81.85040267278879%" cy="45.40748653831685%" r="19.957136582087145%" fill="#ff0000" opacity="0.8" filter="url(#blur-glitch-3-r)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-3-g" cx="82.87950686980727%" cy="44.37838234129837%" r="19.957136582087145%" fill="#00ff00" opacity="0.8" filter="url(#blur-glitch-3-g)" style="mix-blend-mode: screen"></circle>
+<circle id="shape-glitch-3-b" cx="83.90861106682576%" cy="45.40748653831685%" r="19.957136582087145%" fill="#0000ff" opacity="0.8" filter="url(#blur-glitch-3-b)" style="mix-blend-mode: screen"></circle></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>

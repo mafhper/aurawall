@@ -1,1 +1,367 @@
-<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color:#08070d" viewBox="0 0 1920 1080"><defs><filter id="noiseFilter"><feTurbulence baseFrequency=".001" numOctaves="3" stitchTiles="stitch" type="fractalNoise"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA slope=".1" type="linear"/></feComponentTransfer></filter><filter id="blur-nebula-0" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="100"/></filter><filter id="blur-nebula-1" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="100"/></filter><filter id="blur-nebula-2" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="100"/></filter><filter id="blur-star-0" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-1" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-2" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-3" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-4" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-5" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-6" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-7" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-star-8" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-9" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur" stdDeviation="2"/></filter><filter id="blur-star-10" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-11" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-12" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-13" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><filter id="blur-star-14" width="300%" height="300%" x="-100%" y="-100%"><feGaussianBlur result="coloredBlur"/></filter><style>@keyframes noise-shift{0%,to{transform:translate(0,0)}25%{transform:translate(-1%,1%)}50%{transform:translate(1%,-1%)}75%{transform:translate(-1%,-1%)}}@keyframes move-nebula-0{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-nebula-1{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-nebula-2{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-0{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-star-1{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-2{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-star-3{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-4{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-star-5{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-6{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,-5%) scale(1.04) rotate(-9deg)}66%{transform:translate(-5%,-8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-star-7{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-8{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-star-9{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-10{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,5%) scale(1.04) rotate(-9deg)}66%{transform:translate(-5%,8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-star-11{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,5%) scale(1.04) rotate(9deg)}66%{transform:translate(5%,8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-12{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}@keyframes move-star-13{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(7%,-5%) scale(1.04) rotate(9deg)}66%{transform:translate(-5%,-8%) scale(.96) rotate(18deg)}to{transform:translate(0,0) scale(1) rotate(30deg)}}@keyframes move-star-14{0%{transform:translate(0,0) scale(1) rotate(0deg)}33%{transform:translate(-7%,-5%) scale(1.04) rotate(-9deg)}66%{transform:translate(5%,-8%) scale(.96) rotate(-18deg)}to{transform:translate(0,0) scale(1) rotate(-30deg)}}</style></defs><rect width="100%" height="100%" fill="hsl(245.8134291290923, 30%, 4%)"/><path fill="hsl(292.1822194093078, 60%, 20%)" d="M2734.874 1440c-12.585 399.073-553.062 954.05-943.63 1081.018-390.568 126.967-1192.736-31.153-1399.777-319.214S303.119 1138.522 549 792.65c245.882-345.87 953.444-773.963 1317.756-666.071C2231.07 234.47 2747.46 1040.927 2734.874 1440" filter="url(#blur-nebula-0)" opacity=".3" style="transform-origin:22.082371897250663% 85.67918273145416%;animation:move-nebula-0 3.2s ease-in-out infinite alternate;animation-delay:0s;mix-blend-mode:screen;transform-box:fill-box;transform:translate(-1016.0184595727873px,-514.664826500295px)"/><path fill="hsl(277.88098530189006, 60%, 20%)" d="M2487.947 1440c-6.428 393.425-339.365 997.615-683.738 1120.92s-1135.654-59.03-1382.498-381.09C174.868 1857.77 86.305 958.47 323.15 628.56 559.994 298.65 1481.981 65.13 1842.78 200.37s651.596 846.205 645.167 1239.63" filter="url(#blur-nebula-1)" opacity=".3" style="transform-origin:84.38115011342697% 55.91792747705671%;animation:move-nebula-1 3.68s ease-in-out infinite alternate;animation-delay:-9s;mix-blend-mode:screen;transform-box:fill-box;transform:translate(180.118082177798px,-836.0863832477876px)"/><path fill="hsl(299.99072458097874, 60%, 20%)" d="M2643.429 1440c-.054 368.51-520.109 1015.158-844.382 1105.033S943.619 2298.548 697.79 1979.247 140.474 903.442 324.07 629.23c183.597-274.213 1088.74-430.386 1475.3-295.258S2643.483 1071.49 2643.43 1440" filter="url(#blur-nebula-2)" opacity=".3" style="transform-origin:88.02501750733221% 95.80894501365047%;animation:move-nebula-2 4.16s ease-in-out infinite alternate;animation-delay:-8s;mix-blend-mode:screen;transform-box:fill-box;transform:translate(250.0803361407784px,-405.26339385257484px)"/><circle cx="86.421%" cy="36.298%" r="1.419%" fill="#fff" filter="url(#blur-star-0)" opacity=".981" style="transform-origin:86.4206891274298% 36.29832855243351%;animation:move-star-0 4.640000000000001s ease-in-out infinite alternate;animation-delay:-7s;mix-blend-mode:normal"/><circle cx="97.142%" cy="83.074%" r="1.026%" fill="#fff" filter="url(#blur-star-1)" opacity=".666" style="transform-origin:97.14249141327109% 83.07398467417346%;animation:move-star-1 3.5200000000000005s ease-in-out infinite alternate;animation-delay:-6s;mix-blend-mode:normal"/><circle cx="34.92%" cy="78.092%" r=".523%" fill="#fff" filter="url(#blur-star-2)" opacity=".589" style="transform-origin:34.92021164604644% 78.0919291553688%;animation:move-star-2 4s ease-in-out infinite alternate;animation-delay:-5s;mix-blend-mode:normal"/><circle cx="20.551%" cy="53.684%" r="1.344%" fill="#fff" filter="url(#blur-star-3)" opacity=".536" style="transform-origin:20.551093262935517% 53.684353989997206%;animation:move-star-3 4.48s ease-in-out infinite alternate;animation-delay:-4s;mix-blend-mode:normal"/><circle cx="28.8%" cy="88.983%" r=".977%" fill="#fff" filter="url(#blur-star-4)" opacity=".882" style="transform-origin:28.800481152761968% 88.98267178467508%;animation:move-star-4 3.3600000000000003s ease-in-out infinite alternate;animation-delay:-3s;mix-blend-mode:normal"/><circle cx="15.268%" cy="31.666%" r=".788%" fill="#fff" filter="url(#blur-star-5)" opacity=".714" style="transform-origin:15.268317070465965% 31.665978865367062%;animation:move-star-5 3.8400000000000003s ease-in-out infinite alternate;animation-delay:-2s;mix-blend-mode:normal"/><circle cx="51.996%" cy="28.607%" r=".981%" fill="#fff" filter="url(#blur-star-6)" opacity=".716" style="transform-origin:51.99631208655562% 28.607403481122915%;animation:move-star-6 4.32s ease-in-out infinite alternate;animation-delay:-1s;mix-blend-mode:normal"/><circle cx="74.108%" cy="60.523%" r=".779%" fill="#fff" filter="url(#blur-star-7)" opacity=".83" style="transform-origin:74.1082634583991% 60.52285745113992%;animation:move-star-7 3.2s ease-in-out infinite alternate;animation-delay:0s;mix-blend-mode:normal"/><circle cx="3.263%" cy="21.165%" r=".945%" fill="#fff" filter="url(#blur-star-8)" opacity=".794" style="transform-origin:3.2627135942846497% 21.165333598374914%;animation:move-star-8 3.68s ease-in-out infinite alternate;animation-delay:-9s;mix-blend-mode:normal"/><circle cx="46.937%" cy="98.903%" r="1.348%" fill="#fff" filter="url(#blur-star-9)" opacity=".855" style="transform-origin:46.936682798454065% 98.90324175138763%;animation:move-star-9 4.16s ease-in-out infinite alternate;animation-delay:-8s;mix-blend-mode:normal"/><circle cx="42.168%" cy="90.116%" r=".922%" fill="#fff" filter="url(#blur-star-10)" opacity=".856" style="transform-origin:42.16774792081006% 90.11566938462646%;animation:move-star-10 4.640000000000001s ease-in-out infinite alternate;animation-delay:-7s;mix-blend-mode:normal"/><circle cx="85.277%" cy="59.66%" r="1.327%" fill="#fff" filter="url(#blur-star-11)" opacity=".924" style="transform-origin:85.2769355241228% 59.660243765089696%;animation:move-star-11 3.5200000000000005s ease-in-out infinite alternate;animation-delay:-6s;mix-blend-mode:normal"/><circle cx="88.65%" cy="90.341%" r=".934%" fill="#fff" filter="url(#blur-star-12)" opacity=".973" style="transform-origin:88.64952389597597% 90.34066441367263%;animation:move-star-12 4s ease-in-out infinite alternate;animation-delay:-5s;mix-blend-mode:normal"/><circle cx="14.013%" cy="76.508%" r="1.043%" fill="#fff" filter="url(#blur-star-13)" opacity=".771" style="transform-origin:14.013103944592054% 76.50846737306034%;animation:move-star-13 4.48s ease-in-out infinite alternate;animation-delay:-4s;mix-blend-mode:normal"/><circle cx="21.408%" cy="70.545%" r=".806%" fill="#fff" filter="url(#blur-star-14)" opacity=".54" style="transform-origin:21.408486373328817% 70.54546169406449%;animation:move-star-14 3.3600000000000003s ease-in-out infinite alternate;animation-delay:-3s;mix-blend-mode:normal"/><rect width="100%" height="100%" filter="url(#noiseFilter)" style="mix-blend-mode:overlay"/></svg>
+
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="background-color: hsl(276.38015482939755, 30%, 4%)">
+    <defs>
+        <style>
+      @keyframes noise-shift {
+        0% { transform: translate(0,0); }
+        25% { transform: translate(-1%, 1%); }
+        50% { transform: translate(1%, -1%); }
+        75% { transform: translate(-1%, -1%); }
+        100% { transform: translate(0,0); }
+      }
+    
+        @keyframes move-nebula-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-nebula-0 {
+          transform-origin: 95.82736671697978% 38.0956111479539%;
+          animation: move-nebula-0 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-nebula-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-nebula-1 {
+          transform-origin: 34.56496439843355% 89.90863383669068%;
+          animation: move-nebula-1 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-nebula-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-nebula-2 {
+          transform-origin: 22.87935444815037% 77.86800961582259%;
+          animation: move-nebula-2 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      
+        @keyframes move-star-0 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-0 {
+          transform-origin: 5.611113897508013% 36.17489052249887%;
+          animation: move-star-0 4.640000000000001s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          
+        }
+      
+        @keyframes move-star-1 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-1 {
+          transform-origin: 98.91026697791317% 91.78089934887528%;
+          animation: move-star-1 3.5200000000000005s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          
+        }
+      
+        @keyframes move-star-2 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-2 {
+          transform-origin: 47.57381365657374% 97.19760430645164%;
+          animation: move-star-2 4s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          
+        }
+      
+        @keyframes move-star-3 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-3 {
+          transform-origin: 92.14798927219734% 93.55000473711692%;
+          animation: move-star-3 4.48s ease-in-out infinite alternate;
+          animation-delay: -4s;
+          
+        }
+      
+        @keyframes move-star-4 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-4 {
+          transform-origin: 8.281283346273094% 96.47192024013884%;
+          animation: move-star-4 3.3600000000000003s ease-in-out infinite alternate;
+          animation-delay: -3s;
+          
+        }
+      
+        @keyframes move-star-5 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-5 {
+          transform-origin: 70.653040447399% 55.50451694441381%;
+          animation: move-star-5 3.8400000000000003s ease-in-out infinite alternate;
+          animation-delay: -2s;
+          
+        }
+      
+        @keyframes move-star-6 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-6 {
+          transform-origin: 47.60122777034361% 30.5722744832281%;
+          animation: move-star-6 4.32s ease-in-out infinite alternate;
+          animation-delay: -1s;
+          
+        }
+      
+        @keyframes move-star-7 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-7 {
+          transform-origin: 88.17618606936237% 94.00409944940837%;
+          animation: move-star-7 3.2s ease-in-out infinite alternate;
+          animation-delay: 0s;
+          
+        }
+      
+        @keyframes move-star-8 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-8 {
+          transform-origin: 29.02332333874096% 47.71618603231127%;
+          animation: move-star-8 3.68s ease-in-out infinite alternate;
+          animation-delay: -9s;
+          
+        }
+      
+        @keyframes move-star-9 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-9 {
+          transform-origin: 20.644539582821352% 6.2406166900324855%;
+          animation: move-star-9 4.16s ease-in-out infinite alternate;
+          animation-delay: -8s;
+          
+        }
+      
+        @keyframes move-star-10 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, 5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(-5%, 8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-10 {
+          transform-origin: 1.8824287922657446% 23.659040217489256%;
+          animation: move-star-10 4.640000000000001s ease-in-out infinite alternate;
+          animation-delay: -7s;
+          
+        }
+      
+        @keyframes move-star-11 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, 5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(5%, 8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-11 {
+          transform-origin: 89.36405770977632% 62.90470489199138%;
+          animation: move-star-11 3.5200000000000005s ease-in-out infinite alternate;
+          animation-delay: -6s;
+          
+        }
+      
+        @keyframes move-star-12 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-12 {
+          transform-origin: 58.64743323775774% 96.36913154152155%;
+          animation: move-star-12 4s ease-in-out infinite alternate;
+          animation-delay: -5s;
+          
+        }
+      
+        @keyframes move-star-13 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(7%, -5%) scale(1.04) rotate(9deg); }
+          66% { transform: translate(-5%, -8%) scale(0.96) rotate(18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(30deg); }
+        }
+        #shape-star-13 {
+          transform-origin: 96.24726487772624% 71.01438803397653%;
+          animation: move-star-13 4.48s ease-in-out infinite alternate;
+          animation-delay: -4s;
+          
+        }
+      
+        @keyframes move-star-14 {
+          0% { transform: translate(0%, 0%) scale(1) rotate(0deg); }
+          33% { transform: translate(-7%, -5%) scale(1.04) rotate(-9deg); }
+          66% { transform: translate(5%, -8%) scale(0.96) rotate(-18deg); }
+          100% { transform: translate(0%, 0%) scale(1) rotate(-30deg); }
+        }
+        #shape-star-14 {
+          transform-origin: 13.299576036985616% 13.654148713540648%;
+          animation: move-star-14 3.3600000000000003s ease-in-out infinite alternate;
+          animation-delay: -3s;
+          
+        }
+      </style>
+        
+        
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.001" numOctaves="3" stitchTiles="stitch">
+                
+            </feTurbulence>
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.1" /></feComponentTransfer>
+        </filter>
+        
+        <filter id="blur-nebula-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="100" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-nebula-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="100" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-nebula-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="100" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-0" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-1" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-2" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-3" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-4" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-5" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-6" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-7" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-8" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-9" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-10" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-11" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-12" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-13" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+
+        <filter id="blur-star-14" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="0" result="coloredBlur" />
+        </filter>
+    
+    </defs>
+    <rect width="100%" height="100%" fill="hsl(276.38015482939755, 30%, 4%)" />
+    <g><path id="shape-nebula-0" d="M 2734.8741929233074 1440 C 2722.2887926258013 1839.07327082548 2181.811956323101 2394.0508762172267 1791.2440969013433 2521.018174563253 C 1400.676237479585 2647.9854729092795 598.5077040763618 2489.8650402505205 391.4670363927585 2201.8037900761587 C 184.42636870915507 1913.7425399017973 303.1185137507857 1138.521546928048 549.0000907997228 792.6506735170838 C 794.8816678486598 446.77980010611947 1502.44414833245 18.686995196553497 1866.7564986863806 126.57854961037287 C 2231.0688490403113 234.47010402419227 2747.4595932208135 1040.92672917452 2734.8741929233074 1440 Z" fill="hsl(240.47641694959276, 60%, 20%)" opacity="0.3" filter="url(#blur-nebula-0)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(399.88544096601163px, -1028.5673996020978px)"></path>
+<path id="shape-nebula-1" d="M 2487.947372943163 1440 C 2481.5188209776275 1833.4252136021405 2148.5818100320525 2437.6154987443697 1804.2091467853152 2560.9204951498095 C 1459.8364835385776 2684.2254915552494 668.5546923310845 2501.8899763005857 421.7113934627379 2179.829978432639 C 174.86809459439118 1857.7699805646926 86.30450938927001 958.4706354247421 323.14935357523495 628.5605079421299 C 559.9941977611999 298.65038045951775 1481.9807886838728 65.12929819398795 1842.7804585785275 200.3692135369663 C 2203.580128473182 335.60912887994465 2494.3759249086984 1046.5747863978595 2487.947372943163 1440 Z" fill="hsl(252.81102924574867, 60%, 20%)" opacity="0.3" filter="url(#blur-nebula-1)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-776.3526835500759px, -468.98675456374053px)"></path>
+<path id="shape-nebula-2" d="M 2643.428746327758 1440 C 2643.374854944502 1808.5100497072724 2123.319978805509 2455.158039576061 1799.0468460792138 2545.0325672526933 C 1474.7737133529183 2634.9070949293255 943.6193576005822 2298.547646009445 697.7899499699853 1979.2471660597926 C 451.9605423393883 1659.94668611014 140.4736928941717 903.4421703965671 324.070400295632 629.2296875547783 C 507.6671076970923 355.0172047129894 1412.8104700400593 198.84388360152238 1799.3701943787469 333.97226900905935 C 2185.9299187174347 469.1006544165963 2643.4826377110135 1071.4899502927276 2643.428746327758 1440 Z" fill="hsl(256.3989559477783, 60%, 20%)" opacity="0.3" filter="url(#blur-nebula-2)" style="mix-blend-mode: screen; transform-box: fill-box; transform: translate(-1000.716394595513px, -599.0254961491161px)"></path>
+<circle id="shape-star-0" cx="5.611113897508013%" cy="36.17489052249887%" r="1.2093920592965441%" fill="#ffffff" opacity="0.826169509439639" filter="url(#blur-star-0)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-1" cx="98.91026697791317%" cy="91.78089934887528%" r="1.4826567081313058%" fill="#ffffff" opacity="0.6394701204429093" filter="url(#blur-star-1)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-2" cx="47.57381365657374%" cy="97.19760430645164%" r="1.2572989765404634%" fill="#ffffff" opacity="0.6729026067874633" filter="url(#blur-star-2)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-3" cx="92.14798927219734%" cy="93.55000473711692%" r="1.2815539597233716%" fill="#ffffff" opacity="0.8346150843988104" filter="url(#blur-star-3)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-4" cx="8.281283346273094%" cy="96.47192024013884%" r="1.078508313682516%" fill="#ffffff" opacity="0.6507827751025828" filter="url(#blur-star-4)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-5" cx="70.653040447399%" cy="55.50451694441381%" r="0.9835388963137195%" fill="#ffffff" opacity="0.7100143801301327" filter="url(#blur-star-5)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-6" cx="47.60122777034361%" cy="30.5722744832281%" r="1.244109933216908%" fill="#ffffff" opacity="0.503447469787262" filter="url(#blur-star-6)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-7" cx="88.17618606936237%" cy="94.00409944940837%" r="0.7740176130240568%" fill="#ffffff" opacity="0.6964670312805002" filter="url(#blur-star-7)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-8" cx="29.02332333874096%" cy="47.71618603231127%" r="0.7497410846498129%" fill="#ffffff" opacity="0.8412210893556374" filter="url(#blur-star-8)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-9" cx="20.644539582821352%" cy="6.2406166900324855%" r="0.8350641051776793%" fill="#ffffff" opacity="0.7756272459229967" filter="url(#blur-star-9)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-10" cx="1.8824287922657446%" cy="23.659040217489256%" r="1.0699008301117068%" fill="#ffffff" opacity="0.8845852859342335" filter="url(#blur-star-10)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-11" cx="89.36405770977632%" cy="62.90470489199138%" r="0.6916528292287076%" fill="#ffffff" opacity="0.5583989354774337" filter="url(#blur-star-11)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-12" cx="58.64743323775774%" cy="96.36913154152155%" r="0.6115632329309808%" fill="#ffffff" opacity="0.9178414941312176" filter="url(#blur-star-12)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-13" cx="96.24726487772624%" cy="71.01438803397653%" r="0.6068501886726347%" fill="#ffffff" opacity="0.7123114918697028" filter="url(#blur-star-13)" style="mix-blend-mode: normal"></circle>
+<circle id="shape-star-14" cx="13.299576036985616%" cy="13.654148713540648%" r="0.7493441399081218%" fill="#ffffff" opacity="0.8790459556504663" filter="url(#blur-star-14)" style="mix-blend-mode: normal"></circle></g>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="1" style="mix-blend-mode: overlay" />
+</svg>
