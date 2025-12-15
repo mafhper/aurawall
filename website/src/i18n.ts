@@ -798,10 +798,26 @@ const resources = {
   }
 };
 
+// Synchronous language detection BEFORE init (prevents flash)
+function getInitialLanguage(): string {
+  if (typeof window === 'undefined') return 'en'; // SSR/SSG
+
+  const saved = localStorage.getItem('i18nextLng');
+  if (saved && ['en', 'pt-BR', 'es'].includes(saved)) {
+    return saved;
+  }
+
+  const browserLng = navigator.language;
+  if (browserLng.startsWith('pt')) return 'pt-BR';
+  if (browserLng.startsWith('es')) return 'es';
+
+  return 'en';
+}
+
 i18n
   .use(initReactI18next)
   .init({
-    lng: 'en', // Force English to match SSG. Detection handled in App.tsx useEffect.
+    lng: getInitialLanguage(),
     resources,
     fallbackLng: 'en',
     interpolation: { escapeValue: false }

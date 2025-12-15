@@ -248,29 +248,8 @@ export default function App() {
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
-    localStorage.setItem('i18nextLng', lng); // Manually save to localStorage
+    localStorage.setItem('i18nextLng', lng);
   };
-
-  // Hydration Fix: Handle language detection client-side only after mount
-  React.useEffect(() => {
-    const savedLng = localStorage.getItem('i18nextLng');
-    const browserLng = navigator.language;
-    
-    // Determine target language
-    let targetLng = 'en';
-    if (savedLng && ['en', 'pt-BR', 'es'].includes(savedLng)) {
-      targetLng = savedLng;
-    } else if (browserLng.startsWith('pt')) {
-      targetLng = 'pt-BR';
-    } else if (browserLng.startsWith('es')) {
-      targetLng = 'es';
-    }
-
-    // Only switch if different from current (which is 'en' by default)
-    if (targetLng !== i18n.language) {
-      i18n.changeLanguage(targetLng);
-    }
-  }, [i18n]);
 
   const creationItems = [
     { to: '/creation/engines', label: 'Motores de Criação', icon: Sparkles, key: 'engines' },
