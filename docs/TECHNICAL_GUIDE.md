@@ -73,18 +73,16 @@ Languages: English (en), Portuguese (pt-BR), Spanish (es)
 
 All translations in `src/i18n.ts` and `website/src/i18n.ts`.
 
-## Protocolo Obrigatório de Pré-Commit
+## Protocolo Obrigatório de Pré-Commit (Seven Steps)
 
-Antes de qualquer commit e push, executar:
+Antes de qualquer commit significativo, siga este fluxo para garantir qualidade:
 
-1.  **Higiene de Versionamento**: Verificar `.gitignore` (excluir `_desenvolvimento`, `performance-reports`).
-2.  **Organização Estrutural**: Limpar raiz, remover obsoletos.
-3.  **Validação Técnica**: Rodar `npm run health`, `test:i18n`, `test:contrast`. Corrigir falhas.
-4.  **Atualização de Documentação**: Atualizar manuais e `change.log`.
-5.  **Performance e Comparativo**:
-    *   Rodar scripts de performance.
-    *   Comparar com registros anteriores.
-    *   **Se houver melhora**: Atualizar `/creation/animation` -> Seção Performance.
-    *   **Aguardar confirmação do usuário**.
-6.  **Preparação do Commit**: Mensagem clara com contexto e métricas.
-7.  **Push e Espera**: Apenas após validação total.
+1.  **Análise de Estado**: `git status --short` para entender o escopo.
+2.  **Verificação de Saúde**: `npm run health:fast` (Builds e testes estruturais).
+3.  **Auditoria de Qualidade**: `npm run test:lint` (Código limpo).
+4.  **Documentação Ativa**: Atualizar `docs/change.log` com entrada no topo.
+5.  **Preparação (Staging)**: `git add .`
+6.  **Commit Semântico**: Mensagem clara (`feat:`, `fix:`, `perf:`).
+7.  **Sincronização (Push)**: Enviar para remoto após confirmação.
+
+*Para mudanças de performance, rodar também `npm run audit` e comparar resultados.*

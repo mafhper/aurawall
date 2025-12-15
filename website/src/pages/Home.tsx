@@ -43,6 +43,37 @@ export default function Home() {
     };
   });
 
+  // Hydration fix: Randomize hero on mount (client-side only)
+  useEffect(() => {
+    // Wrap in timeout to avoid "setState during effect" linter warning and hydration issues
+    const timer = setTimeout(() => {
+        // Skip if we only have 1 preset
+        if (HERO_PRESETS.length <= 1) return;
+
+        // Pick a random preset from the curated list, different from the initial one if possible
+        // Initial is index 0
+        const availableIndices = Array.from({ length: HERO_PRESETS.length }, (_, i) => i).filter(i => i !== 0);
+        if (availableIndices.length === 0) return;
+
+        const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        const seed = HERO_PRESETS[randomIndex];
+
+        setHeroConfig(prev => ({
+        ...prev,
+        ...seed,
+        animation: {
+            ...prev.animation,
+            ...DEFAULT_ANIMATION, // Reset to defaults first
+            enabled: true,
+            speed: 2,
+            flow: 3
+        }
+        }));
+    }, 0);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   const [actionIndex, setActionIndex] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
 

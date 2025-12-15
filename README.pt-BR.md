@@ -138,6 +138,28 @@ npm run preview
 
 ---
 
+## Desenvolvimento e Qualidade
+
+AuraWall inclui um conjunto abrangente de scripts para garantir a qualidade, performance e estabilidade do código.
+
+### Verificações de Saúde
+- `npm run health`: Verificação completa do sistema (limpeza, instalação, build, teste).
+- `npm run health:fast`: Verificação rápida (validação do build + testes de lint/estrutura).
+
+### Testes
+- `npm run test:lint`: Executa análise estática (ESLint).
+- `npm run test:structure`: Verifica a integridade da estrutura de arquivos/pastas.
+- `npm run test:i18n`: Valida a paridade das chaves de tradução.
+- `npm run test:contrast`: Verifica a conformidade do contraste de cores (WCAG AA).
+
+### Auditorias de Performance
+- `npm run audit`: Executa auditorias Lighthouse no App e no site Promocional.
+- `npm run perf:analyze`: Analisa tendências de performance a partir dos relatórios.
+
+Consulte [scripts/README.md](scripts/README.md) para documentação detalhada sobre os scripts de automação.
+
+---
+
 ## Uso
 
 ### Início Rápido

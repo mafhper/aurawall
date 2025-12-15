@@ -129,6 +129,28 @@ npm run preview
 
 ---
 
+## Development & Quality
+
+AuraWall includes a comprehensive suite of scripts to ensure code quality, performance, and stability.
+
+### Health Checks
+- `npm run health`: Full system check (clean, install, build, test).
+- `npm run health:fast`: Quick check (build validation + lint/structure tests).
+
+### Testing
+- `npm run test:lint`: Run ESLint static analysis.
+- `npm run test:structure`: Verify file/folder structure integrity.
+- `npm run test:i18n`: Validate translation keys parity.
+- `npm run test:contrast`: Check color contrast compliance (WCAG AA).
+
+### Performance Audits
+- `npm run audit`: Run Lighthouse audits on both App and Promo site.
+- `npm run perf:analyze`: Analyze performance trends from reports.
+
+See [scripts/README.md](scripts/README.md) for detailed documentation on automation scripts.
+
+---
+
 ## Usage
 
 ### Quick Start

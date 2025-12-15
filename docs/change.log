@@ -1,6 +1,12 @@
 [2025/12/15 - docs: Update Commit Workflow]
 - Standardized commit process in .agent/workflows/commit.md to "Seven Steps"
 - Integrated mandatory health checks and linting before commits
+- Updated all project documentation (READMEs, scripts/README, TECHNICAL_GUIDE)
+
+[2025/12/15 - fix: Hero Randomization Logic]
+- Fixed static hero background on reload by adding client-side randomization effect
+- Ensured deterministic SSR render to prevent hydration mismatches
+- Used setTimeout to avoid synchronous state updates in effects
 
 [2025/12/15 - perf: Mobile TBT & Layout Shift Optimizations]
 - Implemented Lazy Loading for WallpaperRenderer to reduce initial bundle size
