@@ -799,16 +799,12 @@ const resources = {
 };
 
 i18n
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    lng: 'en', // Force English to match SSG. Detection handled in App.tsx useEffect.
     resources,
     fallbackLng: 'en',
-    interpolation: { escapeValue: false },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage']
-    }
+    interpolation: { escapeValue: false }
   });
 
 export default i18n;
