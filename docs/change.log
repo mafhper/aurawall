@@ -1,3 +1,6 @@
+[2025/12/15 - fix: Zen Mode Icon]
+- Changed Zen Mode icon from 'Play' to 'MonitorPlay' in App.tsx to avoid confusion.
+
 [2025/12/15 - docs: Update Commit Workflow]
 - Standardized commit process in .agent/workflows/commit.md to "Seven Steps"
 - Integrated mandatory health checks and linting before commits

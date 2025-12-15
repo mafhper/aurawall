@@ -7,7 +7,7 @@ import { WallpaperConfig, CollectionId, AppPreferences } from './types';
 import { DEFAULT_CONFIG, PRESETS, DEFAULT_PREFERENCES } from './constants';
 import { generateVariations } from './services/variationService';
 import { getEngine } from './engines';
-import { ZoomIn, ZoomOut, Maximize, X, Play } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize, X, MonitorPlay } from 'lucide-react';
 const CodeExportModal = React.lazy(() => import('./components/CodeExportModal'));
 import { useTranslation } from 'react-i18next';
 import { useHistory } from './hooks/useHistory';
@@ -297,7 +297,7 @@ export default function App() {
             <Maximize size={20} />
           </button>
           <button onClick={() => setIsZenMode(true)} className="p-2 md:p-3 text-zinc-400 hover:text-white rounded hover:bg-white/10 transition-colors" title="Modo Zen" aria-label="Modo Zen">
-            <Play size={20} />
+            <MonitorPlay size={20} />
           </button>
         </div>
 
