@@ -48,7 +48,7 @@ export default function About() {
       <Helmet>
         <title>{t('about.title', 'Sobre o Projeto | AuraWall')}</title>
         <meta name="description" content={t('about.subtitle', 'AuraWall é uma ferramenta open source para geração de wallpapers abstratos.')} />
-        <link rel="canonical" href={import.meta.env.BASE_URL + 'about'} />
+        <link rel="canonical" href="https://mafhper.github.io/aurawall/about" />
       </Helmet>
       
       {/* Hero Section - Standardized like other pages */}

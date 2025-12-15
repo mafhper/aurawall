@@ -114,7 +114,7 @@ export default function Home() {
       <Helmet>
         <title>{t('seo.home_title', 'AuraWall - Abstract Wallpaper Engine')}</title>
         <meta name="description" content={t('seo.home_desc', 'Create stunning abstract wallpapers with AuraWall\'s procedural generation engine. 9 unique engines, infinite variations.')} />
-        <link rel="canonical" href={import.meta.env.BASE_URL} />
+        <link rel="canonical" href="https://mafhper.github.io/aurawall/" />
       </Helmet>
       <div 
         className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30"

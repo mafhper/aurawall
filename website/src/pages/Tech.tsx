@@ -99,7 +99,7 @@ export default function Tech() {
       <Helmet>
         <title>{t('tech.title', 'Arquitetura & Stack | AuraWall')}</title>
         <meta name="description" content={t('tech.subtitle', 'Explore a tecnologia por trás do AuraWall: React 19, Tailwind v4, geração procedural e renderização SVG/Canvas.')} />
-        <link rel="canonical" href={import.meta.env.BASE_URL + 'architecture'} />
+        <link rel="canonical" href="https://mafhper.github.io/aurawall/architecture" />
       </Helmet>
       
       {/* Hero Section */}
