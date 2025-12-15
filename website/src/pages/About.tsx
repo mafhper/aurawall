@@ -111,33 +111,13 @@ export default function About() {
 
         {/* Motivation - Why AuraWall? */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">Por que AuraWall?</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center">{t('about.why_title')}</h2>
           <div className="glass-panel rounded-3xl p-10">
             <div className="max-w-3xl mx-auto space-y-6 text-zinc-400 leading-relaxed">
-              <p>
-                Gradientes, transições e texturas sempre foram parte essencial do meu processo de design. 
-                Em praticamente todo projeto que desenvolvo, esses elementos visuais ajudam a criar atmosfera 
-                e identidade. Mas havia um problema recorrente: sempre que precisava de um novo background, 
-                era começar do zero.
-              </p>
-              <p>
-                Buscava inspirações, mas elas raramente se encaixavam perfeitamente. Precisava de algo 
-                que fosse <span className="text-white font-medium">meu</span>, gerado sob demanda, com 
-                controle total sobre cores, formas e movimento.
-              </p>
-              <p>
-                Assim nasceu o AuraWall — uma ferramenta que eu mesmo precisava. Mas ao desenvolvê-la, 
-                percebi que poderia ser útil para outros desenvolvedores e designers que enfrentam o 
-                mesmo desafio. Por isso, desde o início, foi pensada para ser{' '}
-                <span className="text-white font-medium">open source</span>: código aberto para ser 
-                estudado, adaptado e melhorado pela comunidade.
-              </p>
-              <p>
-                Hoje, o AuraWall já serve como engine de backgrounds em alguns sites que produzi. 
-                O próximo passo é tornar o acesso ainda mais fácil através de uma 
-                <span className="text-purple-400 font-medium"> API pública</span>, permitindo que 
-                qualquer desenvolvedor possa gerar wallpapers procedurais diretamente de seus projetos.
-              </p>
+              <p>{t('about.why_p1')}</p>
+              <p>{t('about.why_p2')}</p>
+              <p>{t('about.why_p3')}</p>
+              <p>{t('about.why_p4')}</p>
             </div>
           </div>
         </div>
@@ -162,9 +142,9 @@ export default function About() {
                 live: 'bg-green-500/20 text-green-400 border-green-500/30',
                 dev: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
               };
-              const statusLabels = {
-                live: 'Disponível',
-                dev: 'Em Desenvolvimento',
+              const statusLabels: Record<string, string> = {
+                live: t('about.status_live'),
+                dev: t('about.status_dev'),
               };
               
               return (
@@ -182,7 +162,7 @@ export default function About() {
                   </div>
                   <h3 className="text-xl font-bold mb-2">{project.name}</h3>
                   <p className="text-zinc-400 text-sm mb-4 leading-relaxed flex-1">
-                    {project.description}
+                    {t(`about.project_${project.id.replace('-', '_')}_desc`)}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.techs.map((tech) => (

@@ -20,6 +20,7 @@ const getPreviewConfig = (engineId: string) => {
 
 const EngineCard = ({ engine, variant = 'grid' }: { engine: typeof ENGINES[0], variant?: 'hero' | 'secondary' | 'grid' }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useTranslation();
   
   // Generate config once per mount to avoid jitter on re-renders, 
   // but we want it fresh on page load.
@@ -80,13 +81,13 @@ const EngineCard = ({ engine, variant = 'grid' }: { engine: typeof ENGINES[0], v
          
          {variant !== 'grid' && (
              <p className={`text-zinc-300 font-medium ${variant === 'hero' ? 'text-xl' : 'text-sm'} italic mb-4 max-w-2xl`}>
-                {engine.tagline}
+                {t(`engines.${engine.id}_tagline`)}
              </p>
          )}
          
          {variant === 'hero' && (
              <span className="inline-flex items-center gap-2 text-white font-bold mt-4 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 duration-500">
-                Explorar Tema <ArrowRight size={20} />
+                {t('engines.explore_theme')} <ArrowRight size={20} />
              </span>
          )}
       </div>
@@ -139,16 +140,16 @@ export default function CreationEngines() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Nossos <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Motores</span>
+            {t('engines.our_engines').split(' ')[0]} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">{t('engines.our_engines').split(' ')[1] || 'Engines'}</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-zinc-300 leading-relaxed font-light">
-             {t('gallery.hero_subtitle', 'Cada motor possui uma filosofia visual única, gerando infinitas variações baseadas em seus princípios estéticos.')}
+             {t('engines.hero_subtitle')}
           </p>
           
           <div className="mt-10 flex flex-wrap justify-center gap-4">
              <Link to="/creation" className="px-8 py-3 rounded-full bg-white text-black font-bold hover:bg-zinc-200 transition-colors flex items-center gap-2">
-                <ArrowLeft size={18} /> Voltar para Criação
+                <ArrowLeft size={18} /> {t('common.back_to_creation')}
              </Link>
           </div>
         </div>
@@ -170,7 +171,7 @@ export default function CreationEngines() {
         </div>
 
         {/* Grid Section */}
-        <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-4">Mais Motores</h2>
+        <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-4">{t('engines.more_engines')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {grid.map(engine => (
                 <EngineCard key={engine.id} engine={engine} variant="grid" />

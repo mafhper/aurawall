@@ -199,7 +199,7 @@ export default function Changes() {
           
           {loading ? (
             <div className="glass-panel rounded-2xl p-8 text-center">
-              <div className="animate-pulse text-zinc-400">Carregando commits do GitHub...</div>
+              <div className="animate-pulse text-zinc-400">{t('changes.loading_commits')}</div>
             </div>
           ) : commits.length > 0 ? (
             <div className="space-y-4">
@@ -267,7 +267,7 @@ export default function Changes() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-purple-400 transition-colors"
                 >
-                  Ver todos os commits no GitHub
+                  {t('changes.view_all_github')}
                   <ExternalLink size={14} />
                 </a>
               </div>

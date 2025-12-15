@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { Home, ArrowLeft, Sparkles } from 'lucide-react';
 
 export default function NotFound() {
+  const { t } = useTranslation();
 
   return (
     <>
       <Helmet>
-        <title>404 - Página não encontrada | AuraWall</title>
+        <title>{t('notfound.title')}</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       
@@ -28,12 +30,11 @@ export default function NotFound() {
           </div>
 
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-            Página não encontrada
+            {t('notfound.heading')}
           </h1>
           
           <p className="text-zinc-400 text-lg mb-10 leading-relaxed">
-            A página que você procura não existe ou foi movida. 
-            Que tal explorar nossas criações?
+            {t('notfound.description')}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -42,7 +43,7 @@ export default function NotFound() {
               className="inline-flex items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-zinc-200 transition-all transform hover:scale-105 shadow-lg"
             >
               <Home size={20} />
-              Ir para Home
+              {t('notfound.go_home')}
             </Link>
             
             <Link 
@@ -50,7 +51,7 @@ export default function NotFound() {
               className="inline-flex items-center justify-center gap-2 bg-zinc-800 text-white px-8 py-4 rounded-full font-bold hover:bg-zinc-700 transition-all border border-white/10"
             >
               <Sparkles size={20} />
-              Ver Motores
+              {t('notfound.view_engines')}
             </Link>
           </div>
 
@@ -59,10 +60,11 @@ export default function NotFound() {
             className="mt-8 inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
           >
             <ArrowLeft size={16} />
-            <span>Voltar à página anterior</span>
+            <span>{t('notfound.go_back')}</span>
           </button>
         </div>
       </div>
     </>
   );
 }
+

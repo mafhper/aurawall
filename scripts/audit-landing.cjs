@@ -1,5 +1,8 @@
 /**
  * Script de Análise de Desempenho Web (CommonJS)
+ * 
+ * @deprecated Este script é LEGADO. Use `npm run audit:promo` (audit-runner.cjs) em vez disso.
+ * Este arquivo será removido em versões futuras.
  *
  * Automatiza a análise de desempenho de aplicações web utilizando Lighthouse
  * e outras ferramentas de auditoria. Gera relatórios detalhados sobre:
@@ -20,6 +23,9 @@
  * - Suporte a múltiplos formatos de relatório
  * - Gestão assíncrona de operações de I/O
  */
+
+console.warn('\n⚠️  AVISO: Este script (audit-landing.cjs) é LEGADO.');
+console.warn('   Use `npm run audit:promo` (audit-runner.cjs) em vez disso.\n');
 
 const { default: lighthouse } = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');

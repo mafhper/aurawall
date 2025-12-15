@@ -14,8 +14,25 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const REPO_OWNER = 'mafhper';
-const REPO_NAME = 'aurawall';
+// Try to read repo info from package.json
+let REPO_OWNER = 'mafhper';
+let REPO_NAME = 'aurawall';
+
+try {
+    const pkg = require('../package.json');
+    if (pkg.repository) {
+        const repoUrl = typeof pkg.repository === 'string' ? pkg.repository : pkg.repository.url;
+        // Parse: https://github.com/owner/repo or git@github.com:owner/repo.git
+        const match = repoUrl.match(/github\.com[/:]([\w-]+)\/([\w-]+)/);
+        if (match) {
+            REPO_OWNER = match[1];
+            REPO_NAME = match[2].replace(/\.git$/, '');
+        }
+    }
+} catch (e) {
+    // Use defaults if package.json not found
+}
+
 const OUTPUT_PATH = path.join(__dirname, '..', 'website', 'public', 'changelog.json');
 const CACHE_PATH = path.join(__dirname, '..', 'website', 'public', 'changelog-cache.json');
 

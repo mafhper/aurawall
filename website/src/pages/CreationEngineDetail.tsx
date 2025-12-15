@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Zap } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { ENGINES } from '../data/engines';
@@ -82,38 +83,37 @@ const PreviewCard = React.memo(({ preset, engineId }: { preset: typeof PRESETS[0
   );
 });
 
-// Map engine IDs to deterministic presets for hero backgrounds
-const ENGINE_HERO_PRESETS: Record<string, string> = {
-  'boreal': 'soul-glow',
-  'chroma': 'oil-slick',
-  'lava': 'magma-lamp',
-  'midnight': 'nebula-cloud',
-  'geometrica': 'system-error',
-  'glitch': 'thermal-vision',
-  'sakura': 'phoenix-rise',
-  'ember': 'pacific-drift',
-  'oceanic': 'the-abyss',
-};
-
 export default function CreationEngineDetail() {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
   const engineMeta = ENGINES.find(e => e.id === id);
   
-  // Get first preset for this engine's collection - deterministic
+  // Get all presets for this engine's collection
   const enginePresets = useMemo(() => 
     PRESETS.filter(p => p.collection === id),
     [id]
   );
   
   const firstPreset = enginePresets[0] || null;
+  
+  // State for random hero preset - starts null (SSR-safe)
+  const [heroPresetId, setHeroPresetId] = useState<string | null>(null);
+  
+  // Select random preset from engine's collection on mount (client-side only)
+  useEffect(() => {
+    if (enginePresets.length > 0) {
+      const randomIndex = Math.floor(Math.random() * enginePresets.length);
+      setHeroPresetId(enginePresets[randomIndex].id);
+    }
+  }, [enginePresets]);
 
   if (!engineMeta) {
     return (
         <div className="min-h-screen bg-black text-white flex items-center justify-center">
             <div className="text-center">
-                <h1 className="text-4xl font-bold mb-4">Motor não encontrado</h1>
-                <Link to="/creation/engines" className="text-purple-400 hover:text-white transition-colors">Voltar para a lista</Link>
+                <h1 className="text-4xl font-bold mb-4">{t('engines.not_found')}</h1>
+                <Link to="/creation/engines" className="text-purple-400 hover:text-white transition-colors">{t('engines.back_to_list')}</Link>
             </div>
         </div>
     );
@@ -123,15 +123,15 @@ export default function CreationEngineDetail() {
   const currentIndex = ENGINES.findIndex(e => e.id === id);
   const nextEngine = ENGINES[(currentIndex + 1) % ENGINES.length];
   
-  // Use deterministic preset for hero based on engine ID
-  const heroPresetId = ENGINE_HERO_PRESETS[id || ''] || 'soul-glow';
+  // Use random preset from engine collection, fallback to first preset or 'soul-glow'
+  const activeHeroPresetId = heroPresetId || firstPreset?.id || 'soul-glow';
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Hero Section - Using deterministic preset */}
+      {/* Hero Section - Random preset from engine collection, hover to play */}
       <div className="relative h-[70vh] min-h-[500px] flex items-end overflow-hidden">
         <HeroBackground 
-          presetId={heroPresetId}
+          presetId={activeHeroPresetId}
           className="absolute inset-0"
           overlayOpacity={50}
         />
@@ -139,13 +139,13 @@ export default function CreationEngineDetail() {
         <div className="relative z-10 container mx-auto px-6 pb-20">
           <div className="flex justify-between items-center mb-6">
             <Link to="/creation/engines" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
-              <ArrowLeft size={20} /> Voltar para Motores
+              <ArrowLeft size={20} /> {t('engines.back_to_engines')}
             </Link>
             <Link 
               to={`/creation/engine/${nextEngine.id}`} 
               className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
             >
-              Próximo: {nextEngine.name} <ArrowRight size={20} />
+              {t('engines.next_engine', { name: nextEngine.name })} <ArrowRight size={20} />
             </Link>
           </div>
           
@@ -153,7 +153,7 @@ export default function CreationEngineDetail() {
             Engine // {engineMeta.id}
           </span>
           <h1 className="text-5xl md:text-7xl font-bold mb-6">{engineMeta.name}</h1>
-          <p className="text-xl md:text-2xl text-zinc-300 max-w-2xl font-light italic">"{engineMeta.tagline}"</p>
+          <p className="text-xl md:text-2xl text-zinc-300 max-w-2xl font-light italic">"{t(`engines.${engineMeta.id}_tagline`)}"</p>
         </div>
       </div>
 
@@ -163,28 +163,28 @@ export default function CreationEngineDetail() {
             {/* Description */}
             <div className="space-y-8">
                 <div>
-                    <h2 className="text-3xl font-bold mb-6">Filosofia Visual</h2>
+                    <h2 className="text-3xl font-bold mb-6">{t('engines.visual_philosophy')}</h2>
                     <p className="text-zinc-400 text-lg leading-relaxed">
-                        {engineMeta.description}
+                        {t(`engines.${engineMeta.id}_desc`)}
                     </p>
                 </div>
 
                 <div className="p-6 rounded-2xl bg-zinc-900/50 border border-white/10">
                     <h3 className="font-bold text-white mb-4 flex items-center gap-2">
-                        <Zap size={18} className="text-yellow-500" /> Características Chave
+                        <Zap size={18} className="text-yellow-500" /> {t('engines.key_characteristics')}
                     </h3>
                     <ul className="space-y-3 text-zinc-400">
                         <li className="flex items-start gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-white mt-2" />
-                            Geração procedural determinística
+                            {t('engines.char_1')}
                         </li>
                         <li className="flex items-start gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-white mt-2" />
-                            Paletas de cores adaptativas
+                            {t('engines.char_2')}
                         </li>
                         <li className="flex items-start gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-white mt-2" />
-                            Renderização vetorial infinita
+                            {t('engines.char_3')}
                         </li>
                     </ul>
                 </div>
@@ -194,7 +194,7 @@ export default function CreationEngineDetail() {
                       href={`${getAppUrl()}/?collection=${engineMeta.id}`} 
                       className="inline-flex items-center gap-3 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full text-lg font-bold transition-all shadow-lg hover:shadow-white/20"
                     >
-                      Criar com {engineMeta.name}
+                      {t('gallery.create_with', { name: engineMeta.name })}
                       <ArrowRight size={20} />
                     </a>
                 </div>
@@ -208,7 +208,7 @@ export default function CreationEngineDetail() {
          {/* Presets Grid Section */}
          {enginePresets.length > 0 && (
            <section className="mt-20">
-             <h2 className="text-3xl font-bold mb-8">Estilos do Motor {engineMeta.name}</h2>
+             <h2 className="text-3xl font-bold mb-8">{t('engines.engine_styles', { name: engineMeta.name })}</h2>
              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                {enginePresets.map(preset => (
                  <PresetCard key={preset.id} preset={preset} />

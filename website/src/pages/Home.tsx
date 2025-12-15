@@ -194,7 +194,7 @@ export default function Home() {
           <div className="container mx-auto px-6">
             <h2 className="text-4xl font-bold text-center mb-4">{t('features.title')}</h2>
             <p className="text-zinc-400 text-center mb-16 max-w-2xl mx-auto">
-              Combinando matemática com estética para criar arte visual única.
+              {t('features_extra.subtitle')}
             </p>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -322,9 +322,9 @@ export default function Home() {
         <div className="py-24 bg-gradient-to-b from-black via-zinc-950/50 to-black">
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4">Coleção Expandida</h2>
+              <h2 className="text-4xl font-bold mb-4">{t('home_gallery.expanded_collection')}</h2>
               <p className="text-zinc-400 max-w-xl mx-auto">
-                Explore 9 motores de geração distintos, de ondas oceânicas a falhas digitais e estética Bauhaus.
+                {t('home_gallery.expanded_desc')}
               </p>
             </div>
             
@@ -344,7 +344,7 @@ export default function Home() {
                 to="/creation/engines" 
                 className="inline-flex items-center gap-3 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
               >
-                Ver Todos os Motores
+                {t('home_gallery.view_all_engines')}
                 <ArrowRight size={20} />
               </Link>
             </div>
@@ -395,15 +395,15 @@ export default function Home() {
                   <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm text-zinc-400">
                     <span className="flex items-center gap-2">
                       <span className="w-2 h-2 bg-green-500 rounded-full" />
-                      100% Gratuito
+                      {t('home_cta.feature_free')}
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-2 h-2 bg-blue-500 rounded-full" />
-                      Sem Registro
+                      {t('home_cta.feature_no_signup')}
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="w-2 h-2 bg-purple-500 rounded-full" />
-                      Exportação Ilimitada
+                      {t('home_cta.feature_unlimited')}
                     </span>
                   </div>
                   

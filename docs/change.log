@@ -1,0 +1,116 @@
+[2025/12/15 - fix: Comprehensive i18n Audit Phase 2]
+- Fixed all hardcoded texts across 11 TSX files to use i18n translations
+- Added ~115 new translation keys for EN, pt-BR, and ES (now 368 keys total)
+- CodeWindow: Added CSS text wrapping to prevent code overflow (white-space: pre-wrap)
+- Files corrected: App.tsx, CreationEngines.tsx, CreationEngineDetail.tsx, NotFound.tsx, Home.tsx, Creation.tsx, Changes.tsx, Tech.tsx, CreationAnimation.tsx, About.tsx, CreationProcedural.tsx
+- New sections: animation_page (full page i18n), about.why_* (motivation section), engines.*_tagline/desc (9 engines)
+- Tech.tsx: Pipeline cards now use translated names/descriptions
+- About.tsx: "Por que AuraWall?" section fully internationalized
+- CreationAnimation.tsx: All motion types, performance metrics, optimizations translated
+- CreationEngines/Detail: Engine taglines and descriptions now use i18n
+- Enhanced test-i18n.cjs with more PT-BR detection keywords
+
+[2025/12/15 - fix: Audit Scripts Reliability]
+- Added 120s timeout to Lighthouse preventing infinite hangs
+- Implemented Chrome cleanup on error/timeout
+- Added target validation (id, name, type required)
+- Added --verbose mode and timestamps in logs
+- Exit code 1 on invalid filter for CI compatibility
+
+[2025/12/15 - fix: Website Overflow and PWA Issues]
+- Fixed hero background overflow by restructuring to self-contained section
+- Created proper 404.html page with NotFound component (prerendered)
+- Fixed PWA manifest: start_url and icon paths now use /aurawall/ base
+- Improved footer: reduced size, added GitHub icon, better styling
+- Mobile navigation: title now always visible
+- Added overflow-hidden to all WallpaperRenderer containers
+
+[2025/12/15 - feat: Performance Gate System]
+- New tool: `npm run perf:gate -- <report.json>` for single report analysis
+- New tool: `npm run perf:analyze -- <directory>` for batch analysis
+- Auto-generates Markdown reports with statistics, trends, and attention points
+- Thresholds for mobile/desktop with fail/warn levels
+- Baseline comparison with 5% tolerance for regression detection
+
+[2025/12/15 - fix: Lighthouse Audit Issues Round 2]
+- Fixed CLS: Added min-h-screen to hero containers to prevent layout shift
+- Fixed A11y: Footer links contrast improved (zinc-500 → zinc-400)
+- Fixed i18n: About page h1 now uses translation keys (was hardcoded Portuguese)
+- Fixed SEO: All canonical URLs now use absolute paths (https://...)
+- Fixed Hydration: i18n inits with 'en' to match SSG, switches post-mount
+
+[2025/12/15 - perf: Recover Lighthouse Performance Score]
+- Moved i18n language detection to synchronous function in i18n.ts
+- Eliminated useEffect flash that increased Speed Index by 70%
+- Language now detected BEFORE React hydration (localStorage/navigator)
+
+[2025/12/14 - fix: Hydration Mismatch (#418)]
+- Removed i18next LanguageDetector to prevent server/client language mismatch
+- Language detection now handled client-side in App.tsx useEffect after hydration
+
+[2025/12/14 - Lighthouse Final Polish]
+- Removed static canonical tag to avoid duplication
+- Enhanced footer contrast (zinc-400) for accessibility audit
+- Fixed hydration mismatch in Home/Tech by forcing deterministic initial state
+
+[2025/12/14 - SEO & Performance]
+- implemented `React Helmet` in Home, Tech, About pages for per-page meta tags
+- Fixed CLS issues by adding explicit aspect-ratios/dimensions to images
+- Improved text contrast (zinc-500 -> zinc-400) on dark backgrounds to meet WCAG AA
+- Optimized caching scripts and verified .gitignore
+- Updated health check scripts to handle fast execution mode correctly
+
+[2025/12/14 - Melhorias Visuais e Acessibilidade]
+- Padronizado títulos de heroes com gradiente (primeira palavra branca, demais com gradiente colorido)
+- Corrigido contraste em cards do Pipeline de Renderização (text-zinc-300)
+- Refatorado PipelineCard para estilo visual igual ao GalleryCard (aspect-[3/4], scale-105, gradiente)
+- Cards da Coleção Expandida aumentados para aspect-[3/4] evitando corte de conteúdo
+- Seção Performance em /creation/animation expandida com benchmarks mobile e otimizações técnicas
+- Corrigido erro de hidratação no hero da página Architecture (useState + useEffect)
+- Adicionado script de verificação de contraste WCAG (npm run test:contrast)
+- Removida página /gallery não utilizada
+- Criado docs/TECHNICAL_GUIDE.md
+
+[2025/12/13 - Implementação do Google Analytics] - Removido
+Adicionada a tag do Google Analytics (G-1VVRNFZHT1) ao <head> de `index.html` e `website/index.html` para rastreamento de acessos.
+
+# Change Log
+
+[2025/12/12 - Internacionalização: Nomes Próprios]
+Corrigido o comportamento de tradução de nomes próprios de motores (Boreal, Chroma, etc.). Nomes de engines agora permanecem em sua forma original (inglês) em todas as traduções, garantindo a consistência como nomes próprios.
+
+[2025/12/12 - Correção de Internacionalização]
+Adicionadas chaves de tradução faltantes (`gallery.create_with`, `gallery.full_collection`, etc.) em `i18n.ts` para resolver textos não traduzidos na nova Galeria.
+Atualizado `Gallery.tsx` para usar todas as chaves de tradução.
+
+[2025/12/12 - Correção na Extração de Paletas]
+Correção de bug crítico no parser HSL (`colorUtils.ts`) que falhava ao processar porcentagens decimais (ex: 55.5%), resultando em cores pretas na ferramenta de paleta.
+Ajuste para suportar regex com ponto flutuante em todos os canais de cor.
+
+[2025/12/12 - Refatoração do Site Promocional]
+Refatoração completa da seção "Criação" do site promocional.
+Consolidação dos menus "Boreal" e "Chroma" em "Motores de Criação".
+Nova página de hub para os 9 motores de geração.
+Página de detalhes dinâmica para cada motor (`/creation/engine/:id`).
+Nova Galeria com modal interativo e previews animados on-hover.
+Atualização da documentação (READMEs) e assets (SVGs animados).
+
+[2025/12/12 - Refatoração dos Motores de Criação]
+Refatoração da arquitetura de criação (Boreal/Chroma) para sistema modular baseado em definições de motor (EngineDefinition).
+Centralização da lógica de randomização e variações em arquivos dedicados (`src/engines/`).
+Criação de `src/utils/engineUtils.ts` para funções compartilhadas.
+Atualização de App.tsx e Controls.tsx para carregar motores dinamicamente.
+
+[2025/12/11 - Fix de Paths de Imagem no GitHub Pages]
+Correção de caminhos absolutos para imagens de fundo (CreationBoreal, CreationChroma e Home) usando import.meta.env.BASE_
+URL para compatibilidade com subdiretórios (/aurawall).
+
+[2024/12/10 - Promo Site V2 Documentation]
+Updated Tech.tsx share section with V2 compact encoder documentation.
+Added size comparison chart and supported formats list.
+
+[2024/12/10 - URL Shortening System]
+Implemented compact URL encoder (V2) with array notation for shapes.
+Reduces shareable URLs from ~1100 chars to ~400 chars.
+Added support for HSL colors and backward compatibility with legacy format.
+Fixed Open Graph meta tags for social media sharing.

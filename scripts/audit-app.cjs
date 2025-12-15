@@ -1,9 +1,15 @@
 /**
  * Performance Audit Tool - Universal v1.3.0
+ * 
+ * @deprecated Este script é LEGADO. Use `npm run audit:app` (audit-runner.cjs) em vez disso.
+ * Este arquivo será removido em versões futuras.
  *
  * Ferramenta agnóstica para análise de desempenho de aplicações web.
  * Funciona com React, Vue, Angular, Next.js, Vite, etc.
  */
+
+console.warn('\n⚠️  AVISO: Este script (audit-app.cjs) é LEGADO.');
+console.warn('   Use `npm run audit:app` (audit-runner.cjs) em vez disso.\n');
 
 
 // lighthouse is ESM-only, will be imported dynamically

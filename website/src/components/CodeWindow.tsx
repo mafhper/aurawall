@@ -19,7 +19,7 @@ export default function CodeWindow({ filename, children, className = '' }: CodeW
         <div className="w-3 h-3 rounded-full bg-green-500/50"/>
         {filename && <span className="ml-4 text-xs text-zinc-600">{filename}</span>}
       </div>
-      <div className="p-6 overflow-x-auto">
+      <div className="p-6 overflow-x-auto [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_code]:whitespace-pre-wrap [&_code]:break-words">
         {children}
       </div>
     </div>

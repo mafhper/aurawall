@@ -43,7 +43,7 @@ const CreationModeItem = ({ mode, hoveredMode, setHoveredMode }: {
   }), [mode.config, mode.id]);
 
   // Custom Title/Desc handling because of key changes
-  const title = mode.id === 'engines' ? 'Motores de Criação' : t(mode.titleKey);
+  const title = mode.id === 'engines' ? t('engines.creation_engines') : t(mode.titleKey);
   const desc = mode.id === 'engines' ? mode.descKey : t('showcase.animation_desc'); // Quick fallback for animation desc
 
   return (
@@ -161,8 +161,7 @@ export default function Creation() {
         {/* Hero Content */}
         <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Modo{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">Criação</span>
+            {t('creation.mode_creation')}
           </h1>
           <p className="text-xl text-zinc-400 leading-relaxed max-w-2xl mx-auto">
             {t('creation.subtitle')}
@@ -344,35 +343,33 @@ export default function Creation() {
                     <span>Engine Core</span>
                   </div>
                   
-                  <h2 className="text-4xl md:text-5xl font-bold">Customização Profunda</h2>
+                  <h2 className="text-4xl md:text-5xl font-bold">{t('creation.custom_title')}</h2>
                   
                   <div className="space-y-6 text-lg text-zinc-400 leading-relaxed">
                     <p>
-                      O AuraWall não oferece apenas imagens estáticas. Cada preset é um ponto de partida para 
-                      uma exploração visual infinita. Através do nosso editor, você tem controle granular sobre 
-                      cada aspecto da geração.
+                      {t('creation.custom_desc_full')}
                     </p>
                     
                     <ul className="space-y-4">
                        <li className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-colors">
                           <span className="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-1 font-bold">1</span>
                           <div>
-                            <strong className="text-white block mb-1">Paletas de Cores</strong>
-                            <span className="text-sm">Defina cores base, secundárias e acentos com precisão HSL.</span>
+                            <strong className="text-white block mb-1">{t('creation.custom_colors')}</strong>
+                            <span className="text-sm">{t('creation.custom_colors_desc')}</span>
                           </div>
                        </li>
                        <li className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-purple-500/30 transition-colors">
                           <span className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 mt-1 font-bold">2</span>
                           <div>
-                            <strong className="text-white block mb-1">Geometria & Escala</strong>
-                            <span className="text-sm">Ajuste densidade de partículas, espessura de linhas e distribuição espacial.</span>
+                            <strong className="text-white block mb-1">{t('creation.custom_geometry')}</strong>
+                            <span className="text-sm">{t('creation.custom_geometry_desc')}</span>
                           </div>
                        </li>
                        <li className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-pink-500/30 transition-colors">
                           <span className="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0 mt-1 font-bold">3</span>
                           <div>
-                            <strong className="text-white block mb-1">Física e Movimento</strong>
-                            <span className="text-sm">Controle velocidade global, "flow fields" e turbulência do ruído Perlin.</span>
+                            <strong className="text-white block mb-1">{t('creation.custom_physics')}</strong>
+                            <span className="text-sm">{t('creation.custom_physics_desc')}</span>
                           </div>
                        </li>
                     </ul>
@@ -395,10 +392,10 @@ export default function Creation() {
                        
                        <div className="space-y-6">
                          {[
-                           { label: 'Densidade de Partículas', val: '75%', color: 'bg-blue-500' },
-                           { label: 'Velocidade de Animação', val: '30%', color: 'bg-purple-500' },
-                           { label: 'Escala de Ruído', val: '60%', color: 'bg-pink-500' },
-                           { label: 'Turbulência', val: '45%', color: 'bg-cyan-500' }
+                           { label: t('creation.slider_density'), val: '75%', color: 'bg-blue-500' },
+                           { label: t('creation.slider_speed'), val: '30%', color: 'bg-purple-500' },
+                           { label: t('creation.slider_noise'), val: '60%', color: 'bg-pink-500' },
+                           { label: t('creation.slider_turbulence'), val: '45%', color: 'bg-cyan-500' }
                          ].map((s, i) => (
                             <div key={i} className="space-y-3">
                                <div className="flex justify-between text-sm font-medium text-zinc-300">
@@ -419,7 +416,7 @@ export default function Creation() {
                              #2F1A45
                           </div>
                           <div className="h-12 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center text-purple-300 font-bold text-sm">
-                             Gerar Novo
+                             {t('creation.generate_new')}
                           </div>
                        </div>
                     </div>
@@ -432,7 +429,7 @@ export default function Creation() {
                     to="/creation/procedural" 
                     className="inline-flex items-center gap-3 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full text-lg font-bold transition-all shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-105"
                   >
-                    Explorar Sistema Procedural <ArrowRight size={20} />
+                    {t('creation.explore_procedural')} <ArrowRight size={20} />
                   </Link>
                </div>
             </section>

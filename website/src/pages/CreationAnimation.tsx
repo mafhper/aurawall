@@ -68,7 +68,7 @@ export default function CreationAnimation() {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">Engine</span>
           </h1>
           <p className="text-xl text-zinc-300 max-w-2xl mx-auto">
-            Sistema de animação performático usando CSS Keyframes nativos.
+            {t('animation_page.hero_subtitle')}
           </p>
         </div>
       </div>
@@ -77,24 +77,20 @@ export default function CreationAnimation() {
         
         {/* Why CSS over JS */}
         <section className="mb-32">
-          <h2 className="text-3xl font-bold mb-6">Por que CSS ao invés de JavaScript?</h2>
+          <h2 className="text-3xl font-bold mb-6">{t('animation_page.why_css_title')}</h2>
           <div className="glass-panel rounded-2xl p-8">
             <p className="text-zinc-400 text-lg leading-relaxed mb-6">
-              Muitas ferramentas de arte generativa usam um loop <code className="bg-zinc-800 px-2 py-1 rounded">requestAnimationFrame</code> em 
-              JavaScript para atualizar posições. Isso consome ciclos de CPU na thread principal.
+              {t('animation_page.why_css_p1')}
             </p>
             <p className="text-zinc-400 text-lg leading-relaxed">
-              O AuraWall gera um bloco <code className="bg-zinc-800 px-2 py-1 rounded">&lt;style&gt;</code> estático 
-              com <code className="bg-zinc-800 px-2 py-1 rounded">@keyframes</code> únicos para cada forma. 
-              Uma vez injetado, a GPU do navegador assume o controle. Isso garante <strong className="text-white">60fps 
-              mesmo em dispositivos móveis</strong> enquanto mantém a thread JS livre para interações de UI.
+              {t('animation_page.why_css_p2')}
             </p>
           </div>
         </section>
 
         {/* Motion Types */}
         <section className="mb-32">
-          <h2 className="text-3xl font-bold mb-8">Tipos de Movimento</h2>
+          <h2 className="text-3xl font-bold mb-8">{t('animation_page.motion_types_title')}</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             {motionTypes.map((motion) => {
@@ -106,18 +102,18 @@ export default function CreationAnimation() {
                 pink: 'border-pink-500/30 text-pink-400',
               };
               
-              const titles: Record<string, string> = {
-                flow: 'Drift & Flow',
-                pulse: 'Pulse & Breathe',
-                rotate: 'Slow Rotation',
-                noise: 'Noise Animation',
+              const titleKeys: Record<string, string> = {
+                flow: 'animation_page.motion_flow_title',
+                pulse: 'animation_page.motion_pulse_title',
+                rotate: 'animation_page.motion_rotate_title',
+                noise: 'animation_page.motion_noise_title',
               };
               
-              const descriptions: Record<string, string> = {
-                flow: 'Cada forma recebe um vetor de trajetória aleatório. Usando CSS transform: translate(), elementos flutuam organicamente pelo canvas.',
-                pulse: 'Transformações de escala são aplicadas em ritmo sinusoidal. Deslocando o delay de animação para cada camada, criamos um efeito de "respiração".',
-                rotate: 'Rotação lenta em torno do centro da forma. Cria movimento sutil sem distração do conteúdo principal.',
-                noise: 'Animação do atributo seed do filtro de turbulência para criar um efeito de "TV estática" dinâmica.',
+              const descKeys: Record<string, string> = {
+                flow: 'animation_page.motion_flow_desc',
+                pulse: 'animation_page.motion_pulse_desc',
+                rotate: 'animation_page.motion_rotate_desc',
+                noise: 'animation_page.motion_noise_desc',
               };
               
               return (
@@ -127,9 +123,9 @@ export default function CreationAnimation() {
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <Icon size={24} className={colorClasses[motion.color as keyof typeof colorClasses]} />
-                    <h3 className="text-xl font-bold">{titles[motion.id]}</h3>
+                    <h3 className="text-xl font-bold">{t(titleKeys[motion.id])}</h3>
                   </div>
-                  <p className="text-zinc-400 mb-4">{descriptions[motion.id]}</p>
+                  <p className="text-zinc-400 mb-4">{t(descKeys[motion.id])}</p>
                   <code className="text-xs bg-zinc-900 px-2 py-1 rounded text-zinc-400">
                     {motion.cssProperty}
                   </code>
@@ -141,7 +137,7 @@ export default function CreationAnimation() {
 
         {/* Animation Settings Code */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold mb-6">Estrutura AnimationSettings</h2>
+          <h2 className="text-3xl font-bold mb-6">{t('animation_page.settings_title')}</h2>
           <CodeWindow filename="AnimationSettings.ts">
 <pre>{`interface AnimationSettings {
   enabled: boolean;
@@ -174,57 +170,56 @@ export default function CreationAnimation() {
 
         {/* Performance */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold mb-4">Performance</h2>
+          <h2 className="text-3xl font-bold mb-4">{t('animation_page.performance_title')}</h2>
           <p className="text-zinc-400 mb-8 max-w-3xl">
-            Otimizado para máxima fluidez. Todas as animações rodam na GPU via CSS Compositor, 
-            liberando a main thread para interatividade.
+            {t('animation_page.performance_desc')}
           </p>
           
           {/* Main Metrics */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <div className="bg-zinc-900/50 border border-blue-500/20 rounded-2xl p-6 text-center">
               <div className="text-5xl font-bold text-blue-400 mb-2">60</div>
-              <div className="text-blue-400 text-sm font-medium mb-1">FPS</div>
-              <p className="text-zinc-400 text-xs">Frame rate consistente em todas animações</p>
+              <div className="text-blue-400 text-sm font-medium mb-1">{t('animation_page.fps_label')}</div>
+              <p className="text-zinc-400 text-xs">{t('animation_page.fps_desc')}</p>
             </div>
             <div className="bg-zinc-900/50 border border-purple-500/20 rounded-2xl p-6 text-center">
               <div className="text-5xl font-bold text-purple-400 mb-2">&lt;1%</div>
-              <div className="text-purple-400 text-sm font-medium mb-1">CPU</div>
-              <p className="text-zinc-400 text-xs">Uso mínimo da main thread JavaScript</p>
+              <div className="text-purple-400 text-sm font-medium mb-1">{t('animation_page.cpu_label')}</div>
+              <p className="text-zinc-400 text-xs">{t('animation_page.cpu_desc')}</p>
             </div>
             <div className="bg-zinc-900/50 border border-green-500/20 rounded-2xl p-6 text-center">
               <div className="text-5xl font-bold text-green-400 mb-2">100</div>
-              <div className="text-green-400 text-sm font-medium mb-1">Lighthouse</div>
-              <p className="text-zinc-400 text-xs">Score perfeito em Performance</p>
+              <div className="text-green-400 text-sm font-medium mb-1">{t('animation_page.lighthouse_label')}</div>
+              <p className="text-zinc-400 text-xs">{t('animation_page.lighthouse_desc')}</p>
             </div>
           </div>
           
           {/* Technical Details */}
           <div className="grid md:grid-cols-2 gap-6">
             <div className="glass-panel rounded-2xl p-6 border border-white/5">
-              <h3 className="font-bold text-lg mb-4 text-white">Otimizações Aplicadas</h3>
+              <h3 className="font-bold text-lg mb-4 text-white">{t('animation_page.optimizations_title')}</h3>
               <ul className="space-y-3 text-zinc-400 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0" />
-                  <span><code className="text-green-400">will-change: transform</code> pré-promove layers para GPU</span>
+                  <span>{t('animation_page.opt_1')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0" />
-                  <span><code className="text-green-400">transform3d</code> força aceleração de hardware</span>
+                  <span>{t('animation_page.opt_2')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0" />
-                  <span>Keyframes únicos por shape evitam reflows</span>
+                  <span>{t('animation_page.opt_3')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 mt-1.5 flex-shrink-0" />
-                  <span>Paint containment isola repinturas</span>
+                  <span>{t('animation_page.opt_4')}</span>
                 </li>
               </ul>
             </div>
             
             <div className="glass-panel rounded-2xl p-6 border border-white/5">
-              <h3 className="font-bold text-lg mb-4 text-white">Benchmark Mobile</h3>
+              <h3 className="font-bold text-lg mb-4 text-white">{t('animation_page.benchmark_title')}</h3>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-sm mb-1">
@@ -265,7 +260,7 @@ export default function CreationAnimation() {
             className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-full font-bold transition-colors"
           >
             <Play size={20} />
-            Experimentar Animações
+            {t('animation_page.try_animations')}
           </a>
         </section>
 

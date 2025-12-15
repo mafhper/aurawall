@@ -68,8 +68,7 @@ export default function CreationProcedural() {
               <span>CORE.LOGIC.MATH</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              Inteligência{' '}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">Procedural</span>
+              {t('procedural.title')}
             </h1>
             <p className="text-xl text-zinc-400 leading-relaxed">
               {t('procedural.subtitle')}

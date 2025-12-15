@@ -117,8 +117,7 @@ export default function Tech() {
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Sob{' '}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-400">o Capô</span>
+            {t('tech.hero_title')}
           </h1>
           <p className="text-xl text-zinc-300 max-w-2xl mx-auto">
             {t('tech.subtitle')}
@@ -178,11 +177,9 @@ export default function Tech() {
 
         {/* SSG and Performance Optimization */}
         <section className="mb-32">
-          <h2 className="text-3xl font-bold mb-6">SSG e Otimização de Performance</h2>
+          <h2 className="text-3xl font-bold mb-6">{t('tech.ssg_title')}</h2>
           <p className="text-zinc-400 mb-8">
-            O site promocional utiliza Static Site Generation (SSG) para máxima performance: 
-            páginas pré-renderizadas em build time, zero JavaScript para first paint, 
-            TTI (Time to Interactive) abaixo de 1s, e scripts centralizados para monitoramento contínuo.
+            {t('tech.ssg_desc')}
           </p>
           
           <div className="grid md:grid-cols-2 gap-6">
@@ -190,13 +187,13 @@ export default function Tech() {
             <div className="p-6 rounded-2xl border border-green-500/30 bg-green-500/5">
               <div className="flex items-center gap-3 mb-4">
                 <Zap size={20} className="text-green-400" />
-                <span className="font-bold">Static Site Generation</span>
+                <span className="font-bold">{t('tech.ssg_static_title')}</span>
               </div>
               <ul className="text-zinc-400 text-sm space-y-2">
-                <li>• Pré-rendering de todas as rotas em build time</li>
-                <li>• Carregamento instantâneo sem hydration delay</li>
-                <li>• SEO otimizado com HTML estático</li>
-                <li>• Cache agressivo no CDN do GitHub Pages</li>
+                <li>• {t('tech.ssg_static_1')}</li>
+                <li>• {t('tech.ssg_static_2')}</li>
+                <li>• {t('tech.ssg_static_3')}</li>
+                <li>• {t('tech.ssg_static_4')}</li>
               </ul>
             </div>
             
@@ -204,13 +201,13 @@ export default function Tech() {
             <div className="p-6 rounded-2xl border border-blue-500/30 bg-blue-500/5">
               <div className="flex items-center gap-3 mb-4">
                 <TestTube2 size={20} className="text-blue-400" />
-                <span className="font-bold">Scripts Centralizados</span>
+                <span className="font-bold">{t('tech.ssg_scripts_title')}</span>
               </div>
               <ul className="text-zinc-400 text-sm space-y-2">
-                <li>• <code className="bg-zinc-800 px-1 rounded">npm run health</code> - Verificação completa do projeto</li>
-                <li>• <code className="bg-zinc-800 px-1 rounded">npm run performance:audit</code> - Métricas de Lighthouse</li>
-                <li>• CI/CD automatizado com GitHub Actions</li>
-                <li>• Relatórios de build e tamanho de bundles</li>
+                <li>• <code className="bg-zinc-800 px-1 rounded">npm run health</code> - {t('tech.ssg_scripts_1')}</li>
+                <li>• <code className="bg-zinc-800 px-1 rounded">npm run performance:audit</code> - {t('tech.ssg_scripts_2')}</li>
+                <li>• {t('tech.ssg_scripts_3')}</li>
+                <li>• {t('tech.ssg_scripts_4')}</li>
               </ul>
             </div>
           </div>
@@ -218,19 +215,19 @@ export default function Tech() {
 
         {/* Architecture Diagram */}
         <section className="mb-32">
-          <h2 className="text-3xl font-bold mb-6">Arquitetura Reativa</h2>
+          <h2 className="text-3xl font-bold mb-6">{t('tech.reactive_title')}</h2>
           <div className="glass-panel rounded-2xl p-8">
             <div className="bg-zinc-900 rounded-xl overflow-hidden">
               <img 
                 src={`${import.meta.env.BASE_URL}architecture-diagram.jpg`}
-                alt="Diagrama de Arquitetura - App.tsx Estado Global"
+                alt="Architecture Diagram - App.tsx Global State"
                 className="w-full h-auto aspect-[16/9] object-cover"
                 width="800"
                 height="450"
               />
             </div>
             <p className="text-zinc-400 text-sm mt-4">
-              Estado unidirecional: todas as mudanças fluem do estado global para os componentes visuais.
+              {t('tech.reactive_desc')}
             </p>
           </div>
         </section>
@@ -291,10 +288,10 @@ interface Shape {
           
           <div className="grid md:grid-cols-4 gap-4">
             {[
-              { layer: 1, name: 'Background', desc: 'Cor sólida ou gradiente linear/radial', color: 'purple', presetId: 'dune-haze' },
-              { layer: 2, name: 'Shapes', desc: 'Círculos e blobs com blur e blend modes', color: 'blue', presetId: 'bauhaus-one' },
-              { layer: 3, name: 'Vignette', desc: 'Máscara radial com gradientTransform', color: 'pink', presetId: 'soul-glow' },
-              { layer: 4, name: 'Noise', desc: 'feTurbulence com mix-blend-mode overlay', color: 'green', presetId: 'cyber-attack' },
+              { layer: 1, nameKey: 'tech.pipeline_bg', descKey: 'tech.pipeline_bg_desc', color: 'purple', presetId: 'dune-haze' },
+              { layer: 2, nameKey: 'tech.pipeline_shapes', descKey: 'tech.pipeline_shapes_desc', color: 'blue', presetId: 'bauhaus-one' },
+              { layer: 3, nameKey: 'tech.pipeline_vignette', descKey: 'tech.pipeline_vignette_desc', color: 'pink', presetId: 'soul-glow' },
+              { layer: 4, nameKey: 'tech.pipeline_noise', descKey: 'tech.pipeline_noise_desc', color: 'green', presetId: 'cyber-attack' },
             ].map((item) => {
               const preset = PRESETS.find(p => p.id === item.presetId);
               const colorClasses: Record<string, string> = {
@@ -307,7 +304,7 @@ interface Shape {
               return (
                 <PipelineCard 
                   key={item.layer} 
-                  item={item} 
+                  item={{...item, name: t(item.nameKey), desc: t(item.descKey)}} 
                   preset={preset}
                   colorClass={colorClasses[item.color]}
                 />
@@ -324,7 +321,7 @@ interface Shape {
           <div className="grid md:grid-cols-2 gap-6">
             {/* Noise Filter */}
             <div>
-              <h3 className="text-xl font-bold text-purple-400 mb-4">Grão de Filme (Noise)</h3>
+              <h3 className="text-xl font-bold text-purple-400 mb-4">{t('tech.filter_noise_title')}</h3>
               <CodeWindow filename="noiseFilter.svg">
 <pre>{`<filter id="noiseFilter">
   <!-- Gera ruído fractal -->
@@ -354,7 +351,7 @@ interface Shape {
             
             {/* Blur Filter */}
             <div>
-              <h3 className="text-xl font-bold text-blue-400 mb-4">Desfoque Atmosférico</h3>
+              <h3 className="text-xl font-bold text-blue-400 mb-4">{t('tech.filter_blur_title')}</h3>
               <CodeWindow filename="blurFilter.svg">
 <pre>{`<!-- Filtro por forma -->
 <filter id="blur-{shape.id}">
@@ -382,41 +379,40 @@ interface Shape {
 
         {/* Contrast Safeguard */}
         <section className="mb-32">
-          <h2 className="text-3xl font-bold mb-4">Guarda-Costas de Contraste</h2>
+          <h2 className="text-3xl font-bold mb-4">{t('tech.safeguard_title')}</h2>
           <p className="text-zinc-400 mb-6">
-            Um sistema de validação automática que garante que todas as formas são visíveis,
-            independentemente da combinação de cores e modos de mistura escolhidos.
+            {t('tech.safeguard_desc')}
           </p>
           
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10">
-                  <th className="text-left py-3 px-4 font-bold">Cenário de Fundo</th>
-                  <th className="text-left py-3 px-4 font-bold">Problema Detectado</th>
-                  <th className="text-left py-3 px-4 font-bold">Ação Corretiva</th>
+                  <th className="text-left py-3 px-4 font-bold">{t('tech.safeguard_scenario')}</th>
+                  <th className="text-left py-3 px-4 font-bold">{t('tech.safeguard_problem')}</th>
+                  <th className="text-left py-3 px-4 font-bold">{t('tech.safeguard_action')}</th>
                 </tr>
               </thead>
               <tbody className="text-zinc-400">
                 <tr className="border-b border-white/5">
                   <td className="py-3 px-4"><span className="bg-zinc-900 px-2 py-1 rounded text-xs">Pitch Black (L &lt; 10%)</span></td>
-                  <td className="py-3 px-4">BlendMode é multiply, overlay ou soft-light</td>
-                  <td className="py-3 px-4 text-green-400">FORÇA screen ou normal</td>
+                  <td className="py-3 px-4">BlendMode: multiply, overlay, soft-light</td>
+                  <td className="py-3 px-4 text-green-400">{t('tech.safeguard_forces')}</td>
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-3 px-4"><span className="bg-zinc-900 px-2 py-1 rounded text-xs">Pitch Black</span></td>
-                  <td className="py-3 px-4">Cor da forma é escura (L &lt; 50%)</td>
-                  <td className="py-3 px-4 text-green-400">IMPULSIONA Lightness para 50-90%</td>
+                  <td className="py-3 px-4">Shape color L &lt; 50%</td>
+                  <td className="py-3 px-4 text-green-400">{t('tech.safeguard_boosts')}</td>
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-3 px-4"><span className="bg-zinc-800 px-2 py-1 rounded text-xs">Dark Mode (L &lt; 40%)</span></td>
-                  <td className="py-3 px-4">BlendMode é multiply</td>
-                  <td className="py-3 px-4 text-green-400">ALTERA para overlay ou screen</td>
+                  <td className="py-3 px-4">BlendMode: multiply</td>
+                  <td className="py-3 px-4 text-green-400">{t('tech.safeguard_changes')}</td>
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-3 px-4"><span className="bg-zinc-300 text-black px-2 py-1 rounded text-xs">Light Mode (L &gt; 60%)</span></td>
-                  <td className="py-3 px-4">BlendMode é screen ou color-dodge</td>
-                  <td className="py-3 px-4 text-green-400">ALTERA para multiply ou normal</td>
+                  <td className="py-3 px-4">BlendMode: screen, color-dodge</td>
+                  <td className="py-3 px-4 text-green-400">{t('tech.safeguard_changes_multiply')}</td>
                 </tr>
               </tbody>
             </table>
@@ -475,10 +471,9 @@ img.src = url;`}</pre>
 
         {/* Deep Linking - V2 Compact System */}
         <section>
-          <h2 className="text-3xl font-bold mb-4">Compartilhamento via URL (V2)</h2>
+          <h2 className="text-3xl font-bold mb-4">{t('tech.share_title')}</h2>
           <p className="text-zinc-400 mb-6">
-            O AuraWall usa um sistema de compactação avançado para gerar links compartilháveis 
-            curtos. A V2 reduz URLs em até 65% usando array notation e códigos numéricos.
+            {t('tech.share_desc')}
           </p>
           
           <div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -602,14 +597,13 @@ type ShapeArray = [
           <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <Share2 size={20} className="text-green-400" />
-              <span className="font-bold">Exemplo de Link V2</span>
+              <span className="font-bold">{t('tech.share_example')}</span>
             </div>
             <code className="text-xs bg-zinc-900 px-3 py-2 rounded-lg block overflow-x-auto text-zinc-400">
               https://mafhper.github.io/aurawall/app/#c=NoRg...DjR3dqBE (~400 chars)
             </code>
             <p className="text-zinc-400 text-sm mt-4">
-              Links V2 são 65% menores que o formato anterior, facilitando compartilhamento 
-              em redes sociais e mensageiros.
+              {t('tech.share_example_desc')}
             </p>
           </div>
         </section>

@@ -78,6 +78,7 @@ async function main() {
 
     const results = [];
     const startTime = Date.now();
+    const AUDIT_TIMEOUT = 180000; // 3 minutes per audit
 
     // Executa sequencialmente para evitar conflitos de porta e esgotamento de recursos
     for (let i = 0; i < targetsToRun.length; i++) {
@@ -86,7 +87,15 @@ async function main() {
         console.log(`\n[${i + 1}/${targetsToRun.length}] [${timestamp}] Executando: ${target.name}...`);
 
         try {
-            const result = await runAudit(target);
+            // Timeout wrapper para evitar travamentos
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error(`Timeout: auditoria excedeu ${AUDIT_TIMEOUT / 1000}s`)), AUDIT_TIMEOUT)
+            );
+
+            const result = await Promise.race([
+                runAudit(target),
+                timeoutPromise
+            ]);
             results.push({ name: target.name, result });
 
             if (verbose && result.success) {
@@ -103,9 +112,7 @@ async function main() {
                 }
             });
 
-            if (verbose) {
-                console.error(`   ✗ Falha: ${errorMessage}`);
-            }
+            console.error(`   ✗ Falha: ${errorMessage}`);
         }
     }
 

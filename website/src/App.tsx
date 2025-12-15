@@ -21,14 +21,17 @@ const CreationProcedural = lazy(() => import('./pages/CreationProcedural'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Loading Component
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-[60vh] text-white">
-    <div className="flex flex-col items-center gap-4">
-      <Loader2 size={48} className="animate-spin text-purple-500" />
-      <span className="text-sm font-medium text-zinc-500 animate-pulse">Carregando...</span>
+const LoadingSpinner = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex items-center justify-center min-h-[60vh] text-white">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 size={48} className="animate-spin text-purple-500" />
+        <span className="text-sm font-medium text-zinc-500 animate-pulse">{t('common.loading')}</span>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ScrollToTop component - scrolls to top on route change
 const ScrollToTop = () => {
@@ -269,9 +272,9 @@ export default function App() {
   }, []); // Empty deps = run once after mount
 
   const creationItems = [
-    { to: '/creation/engines', label: 'Motores de Criação', icon: Sparkles, key: 'engines' },
-    { to: '/creation/animation', label: t('creation.anim_title', 'Animação'), icon: Play, key: 'animation' },
-    { to: '/creation/procedural', label: t('procedural.title', 'Procedural'), icon: Shuffle, key: 'procedural' }
+    { to: '/creation/engines', label: t('engines.creation_engines'), icon: Sparkles, key: 'engines' },
+    { to: '/creation/animation', label: t('creation.anim_title'), icon: Play, key: 'animation' },
+    { to: '/creation/procedural', label: t('procedural.title'), icon: Shuffle, key: 'procedural' }
   ];
 
   return (

@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const glob = require('glob');
 
 const REPORT_DIR = path.join(__dirname, '../performance-reports');
 const RAW_DIR = path.join(REPORT_DIR, 'raw-data');
