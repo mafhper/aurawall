@@ -1,10 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Zap } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { ENGINES } from '../data/engines';
-import { DEFAULT_CONFIG, PRESETS, DEFAULT_ANIMATION } from '../../../src/constants';
+import { PRESETS, DEFAULT_ANIMATION } from '../../../src/constants';
 import { getAppUrl } from '../utils/appUrl';
 import HeroBackground from '../components/HeroBackground';
 
@@ -49,16 +48,20 @@ const PresetCard = ({ preset }: { preset: typeof PRESETS[0] }) => {
 const PreviewCard = React.memo(({ preset, engineId }: { preset: typeof PRESETS[0] | null, engineId: string }) => {
   const [isHovered, setIsHovered] = useState(false);
   
-  if (!preset) return null;
-  
-  const config = useMemo(() => ({
-    ...preset.config,
-    animation: {
-      ...DEFAULT_ANIMATION,
-      ...preset.config.animation,
-      enabled: true,
-    }
-  }), [preset.config]);
+  // useMemo must be called before any early return
+  const config = useMemo(() => {
+    if (!preset) return null;
+    return {
+      ...preset.config,
+      animation: {
+        ...DEFAULT_ANIMATION,
+        ...preset.config.animation,
+        enabled: true,
+      }
+    };
+  }, [preset]);
+
+  if (!preset || !config) return null;
 
   return (
     <div 
@@ -116,10 +119,9 @@ export default function CreationEngineDetail() {
     );
   }
 
-  // Find current, next, and previous engine indices for navigation
+  // Find current and next engine indices for navigation
   const currentIndex = ENGINES.findIndex(e => e.id === id);
   const nextEngine = ENGINES[(currentIndex + 1) % ENGINES.length];
-  const prevEngine = ENGINES[(currentIndex - 1 + ENGINES.length) % ENGINES.length];
   
   // Use deterministic preset for hero based on engine ID
   const heroPresetId = ENGINE_HERO_PRESETS[id || ''] || 'soul-glow';

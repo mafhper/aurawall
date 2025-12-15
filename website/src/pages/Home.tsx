@@ -121,70 +121,70 @@ export default function Home() {
         onMouseEnter={() => setIsHeroHovered(true)}
         onMouseLeave={() => setIsHeroHovered(false)}
       >
-        
-        {/* Dynamic Hero Background - Fixed dimensions to prevent CLS */}
-        <div 
-          className="absolute inset-0 w-full h-full overflow-hidden"
-          style={{ minHeight: '100vh' }}
-        >
-           <WallpaperRenderer 
-             config={heroConfig}
-             className="w-full h-full block scale-110" 
-             lowQuality={false}
-             paused={!isHeroHovered}
-           />
-           {/* Reduced overlay opacity to show colors better (was 60%) */}
-           <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] pointer-events-none" />
-        </div>
-
-        {/* Hero Section */}
-        <div className="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-6 pointer-events-none">
-          <div className="container mx-auto max-w-6xl text-center pointer-events-auto">
-            <span className="inline-block py-2 px-4 rounded-full bg-white/5 border border-white/10 text-purple-300 text-xs font-semibold tracking-wider mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 backdrop-blur-md">
-              {t('hero.badge')}
-            </span>
-            
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight animate-in fade-in slide-in-from-bottom-8 duration-1000 leading-tight drop-shadow-2xl">
-              {t('hero.title_1')} <br className="hidden md:block" />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-                {t('hero.title_2')}
+        {/* Hero Section - Self-contained with its own background */}
+        <div className="relative min-h-screen">
+          {/* Hero Background - Contained within hero only */}
+          <div className="absolute inset-0 z-0 overflow-hidden">
+             <WallpaperRenderer 
+               config={heroConfig}
+               className="w-full h-full block" 
+               style={{ transform: 'scale(1.1)' }}
+               lowQuality={false}
+               paused={!isHeroHovered}
+             />
+             {/* Overlay for better text contrast */}
+             <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+          </div>
+          
+          {/* Hero Content */}
+          <div className="relative z-10 min-h-screen flex items-center justify-center pt-32 pb-20 px-6">
+            <div className="container mx-auto max-w-6xl text-center">
+              <span className="inline-block py-2 px-4 rounded-full bg-white/5 border border-white/10 text-purple-300 text-xs font-semibold tracking-wider mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 backdrop-blur-md">
+                {t('hero.badge')}
               </span>
-            </h1>
-            
-            <p className="mt-4 text-xl text-zinc-300 max-w-3xl mx-auto leading-relaxed mb-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 drop-shadow-md">
-              {t('hero.desc')}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
-               <Link 
-                 to="/creation/engines" 
-                 className="glass-panel hover:bg-white/10 text-white font-bold py-4 px-10 rounded-full transition-colors flex items-center justify-center gap-2 min-w-[180px] backdrop-blur-md border border-white/10"
-                 title={t('hero.cta_secondary')}
-               >
-                 {t('hero.cta_secondary')}
-                 <ArrowRight size={18} />
-               </Link>
+              
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight animate-in fade-in slide-in-from-bottom-8 duration-1000 leading-tight drop-shadow-2xl">
+                {t('hero.title_1')} <br className="hidden md:block" />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+                  {t('hero.title_2')}
+                </span>
+              </h1>
+              
+              <p className="mt-4 text-xl text-zinc-300 max-w-3xl mx-auto leading-relaxed mb-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 drop-shadow-md">
+                {t('hero.desc')}
+              </p>
+              
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+                 <Link 
+                   to="/creation/engines" 
+                   className="glass-panel hover:bg-white/10 text-white font-bold py-4 px-10 rounded-full transition-colors flex items-center justify-center gap-2 min-w-[180px] backdrop-blur-md border border-white/10"
+                   title={t('hero.cta_secondary')}
+                 >
+                   {t('hero.cta_secondary')}
+                   <ArrowRight size={18} />
+                 </Link>
 
-               {/* Randomize Button Restored */}
-               <button
-                 onClick={handleRandomize}
-                 className="group relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-8 rounded-full transition-all transform hover:scale-105 shadow-lg hover:shadow-purple-500/25 flex items-center justify-center gap-3 min-w-[160px]"
-               >
-                 <div className={`transition-transform duration-500 ${isRotating ? 'rotate-180' : ''}`}>
-                   <RefreshCw size={20} className="text-white/90" />
-                 </div>
-                 <span className="relative z-10 w-24 text-left">
-                    {RANDOM_ACTIONS[actionIndex]}
-                 </span>
-                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
-               </button>
+                 {/* Randomize Button Restored */}
+                 <button
+                   onClick={handleRandomize}
+                   className="group relative overflow-hidden bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-8 rounded-full transition-all transform hover:scale-105 shadow-lg hover:shadow-purple-500/25 flex items-center justify-center gap-3 min-w-[160px]"
+                 >
+                   <div className={`transition-transform duration-500 ${isRotating ? 'rotate-180' : ''}`}>
+                     <RefreshCw size={20} className="text-white/90" />
+                   </div>
+                   <span className="relative z-10 w-24 text-left">
+                      {RANDOM_ACTIONS[actionIndex]}
+                   </span>
+                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-full" />
+                 </button>
 
-               <a 
-                 href={launchUrl} 
-                 className="bg-white text-black hover:bg-zinc-200 font-bold py-4 px-10 rounded-full shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all transform hover:scale-105 hover:shadow-white/20 flex items-center justify-center gap-2 min-w-[180px]"
-               >
-                 {t('hero.cta_primary')}
-               </a>
+                 <a 
+                   href={launchUrl} 
+                   className="bg-white text-black hover:bg-zinc-200 font-bold py-4 px-10 rounded-full shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] transition-all transform hover:scale-105 hover:shadow-white/20 flex items-center justify-center gap-2 min-w-[180px]"
+                 >
+                   {t('hero.cta_primary')}
+                 </a>
+              </div>
             </div>
           </div>
         </div>
@@ -270,7 +270,7 @@ export default function Home() {
                  onMouseLeave={() => setIsBorealHovered(false)}
                >
                  {/* Background */}
-                 <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110">
+                 <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110 overflow-hidden">
                     <WallpaperRenderer 
                       config={borealConfig}
                       className="w-full h-full block"
@@ -296,7 +296,7 @@ export default function Home() {
                  onMouseLeave={() => setIsChromaHovered(false)}
                >
                  {/* Background */}
-                 <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110">
+                 <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110 overflow-hidden">
                   <WallpaperRenderer 
                     config={chromaConfig}
                     className="w-full h-full block"
@@ -353,12 +353,12 @@ export default function Home() {
 
         {/* Final CTA - Large Illustrated Section */}
         <div className="py-32 relative overflow-hidden">
-          {/* Decorative Elements */}
-          <div className="absolute inset-0 pointer-events-none">
-            {/* Floating orbs */}
-            <div className="absolute top-1/4 left-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-1/4 right-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl" />
+          {/* Decorative Elements - Contained for performance */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ isolation: 'isolate' }}>
+            {/* Floating orbs - reduced blur for performance */}
+            <div className="absolute top-1/4 left-10 w-64 h-64 bg-purple-500/10 rounded-full blur-2xl" />
+            <div className="absolute bottom-1/4 right-10 w-80 h-80 bg-blue-500/10 rounded-full blur-2xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500/5 rounded-full blur-2xl" />
             
             {/* Grid pattern */}
             <div 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AuraWall - Redirecting...</title>
+    <style>
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background-color: #09090b;
+        color: #f4f4f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .loader {
+        text-align: center;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #27272a;
+        border-top-color: #a855f7;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+    <script>
+      // Single Page App redirect for GitHub Pages
+      // Stores the requested path and redirects to home page
+      // The main app reads this and navigates to the correct route
+      (function() {
+        var redirect = sessionStorage.getItem('spa-redirect');
+        if (redirect === null) {
+          // Store the current path for the SPA to handle
+          var path = window.location.pathname;
+          var query = window.location.search;
+          var hash = window.location.hash;
+          
+          // Only redirect if we're not already on the base path
+          if (path !== '/aurawall/' && path !== '/aurawall') {
+            sessionStorage.setItem('spa-redirect', path + query + hash);
+            window.location.replace('/aurawall/');
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="loader">
+      <div class="spinner"></div>
+      <p>Redirecting...</p>
+    </div>
+  </body>
+</html>

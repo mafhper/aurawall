@@ -61,8 +61,29 @@ const routes = [
         }
     }
 
-    // 404 for GitHub Pages
-    fs.copyFileSync(toAbsolute('dist/client/index.html'), toAbsolute('dist/client/404.html'));
-    console.log('✅ Created 404.html from index.html');
+    // 404 for GitHub Pages - prerender the catch-all route
+    try {
+        const base = '/aurawall';
+        const notFoundUrl = base + '/not-found-page'; // Any non-existent route triggers catch-all
+        const appHtml = await render(notFoundUrl);
+        const { html, helmet } = appHtml;
+
+        let finalHtml = template.replace('<!--app-html-->', html);
+
+        const helmetHead = `
+          ${helmet.title ? helmet.title.toString() : ''}
+          ${helmet.meta ? helmet.meta.toString() : ''}
+          ${helmet.link ? helmet.link.toString() : ''}
+        `;
+        finalHtml = finalHtml.replace('</head>', `${helmetHead}</head>`);
+
+        fs.writeFileSync(toAbsolute('dist/client/404.html'), finalHtml);
+        console.log('✅ Prerendered: 404.html (NotFound page)');
+    } catch (e) {
+        console.error('❌ Failed to render 404.html:', e);
+        // Fallback to copying index.html
+        fs.copyFileSync(toAbsolute('dist/client/index.html'), toAbsolute('dist/client/404.html'));
+        console.log('⚠️  Created 404.html from index.html (fallback)');
+    }
 
 })();

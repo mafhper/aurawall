@@ -153,19 +153,19 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
                   onClick={() => handleDownload('jpg')} 
                   className="w-full px-3 py-2 md:px-4 md:py-3 text-left hover:bg-white/10 flex items-center gap-2 md:gap-3 text-xs md:text-sm text-white"
                >
-                 <ImageIcon size={14} className="text-blue-400"/> JPG <span className="text-zinc-500 text-[10px] md:text-xs ml-auto">Mobile</span>
+                 <ImageIcon size={14} className="text-blue-400"/> JPG <span className="text-zinc-400 text-[10px] md:text-xs ml-auto">Mobile</span>
                </button>
                <button 
                   onClick={() => handleDownload('png')} 
                   className="w-full px-3 py-2 md:px-4 md:py-3 text-left hover:bg-white/10 flex items-center gap-2 md:gap-3 text-xs md:text-sm text-white"
                >
-                 <FileImage size={14} className="text-green-400"/> PNG <span className="text-zinc-500 text-[10px] md:text-xs ml-auto">Lossless</span>
+                 <FileImage size={14} className="text-green-400"/> PNG <span className="text-zinc-400 text-[10px] md:text-xs ml-auto">Lossless</span>
                </button>
                <button 
                   onClick={() => handleDownload('svg')} 
                   className="w-full px-3 py-2 md:px-4 md:py-3 text-left hover:bg-white/10 flex items-center gap-2 md:gap-3 text-xs md:text-sm border-t border-white/5 text-white"
                >
-                 <Code size={14} className="text-yellow-400"/> SVG <span className="text-zinc-500 text-[10px] md:text-xs ml-auto">Vector</span>
+                 <Code size={14} className="text-yellow-400"/> SVG <span className="text-zinc-400 text-[10px] md:text-xs ml-auto">Vector</span>
                </button>
              </div>
            </div>

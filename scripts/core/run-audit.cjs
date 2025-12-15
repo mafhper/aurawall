@@ -73,27 +73,42 @@ function startServer(command, port, timeout = 60000) {
     });
 }
 
-async function runLighthouse(url, thresholds, type) {
+async function runLighthouse(url, thresholds, type, timeout = 120000) {
+    let chrome = null;
     try {
         const lighthouseParams = await import('lighthouse');
         const lighthouse = lighthouseParams.default;
         const chromeLauncher = await import('chrome-launcher');
 
-        const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless', '--no-sandbox'] });
+        // Timeout promise para evitar travamento infinito
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error(`Lighthouse timeout após ${timeout / 1000}s`)), timeout)
+        );
+
+        chrome = await chromeLauncher.launch({ chromeFlags: ['--headless', '--no-sandbox'] });
 
         const options = {
             logLevel: 'error',
             output: 'json',
             onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
-            port: chrome.port
+            port: chrome.port,
+            maxWaitForLoad: 45000 // 45s max para carregar página
         };
 
-        const runnerResult = await lighthouse(url, options);
+        // Race entre Lighthouse e timeout
+        const runnerResult = await Promise.race([
+            lighthouse(url, options),
+            timeoutPromise
+        ]);
         const lhr = runnerResult.lhr;
 
         await chrome.kill();
         return lhr;
     } catch (e) {
+        // Cleanup do Chrome em caso de erro
+        if (chrome) {
+            try { await chrome.kill(); } catch { }
+        }
         throw new Error(`Running Lighthouse failed: ${e.message}`);
     }
 }
@@ -197,10 +212,14 @@ async function runAudit(target) {
     } finally {
         if (didStartServer && serverProcess) {
             log('Parando servidor temporário...', 'dim');
-            if (process.platform === 'win32') {
-                try { execSync(`taskkill /pid ${serverProcess.pid} /T /F`); } catch (e) { }
-            } else {
-                serverProcess.kill();
+            try {
+                if (process.platform === 'win32') {
+                    execSync(`taskkill /pid ${serverProcess.pid} /T /F`, { stdio: 'ignore' });
+                } else {
+                    process.kill(-serverProcess.pid, 'SIGTERM');
+                }
+            } catch (e) {
+                log(`Aviso: não foi possível parar servidor (pid ${serverProcess.pid})`, 'yellow');
             }
         }
     }
