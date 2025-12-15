@@ -72,3 +72,19 @@ Interactive card component with hover-to-play animation.
 Languages: English (en), Portuguese (pt-BR), Spanish (es)
 
 All translations in `src/i18n.ts` and `website/src/i18n.ts`.
+
+## Protocolo Obrigatório de Pré-Commit
+
+Antes de qualquer commit e push, executar:
+
+1.  **Higiene de Versionamento**: Verificar `.gitignore` (excluir `_desenvolvimento`, `performance-reports`).
+2.  **Organização Estrutural**: Limpar raiz, remover obsoletos.
+3.  **Validação Técnica**: Rodar `npm run health`, `test:i18n`, `test:contrast`. Corrigir falhas.
+4.  **Atualização de Documentação**: Atualizar manuais e `change.log`.
+5.  **Performance e Comparativo**:
+    *   Rodar scripts de performance.
+    *   Comparar com registros anteriores.
+    *   **Se houver melhora**: Atualizar `/creation/animation` -> Seção Performance.
+    *   **Aguardar confirmação do usuário**.
+6.  **Preparação do Commit**: Mensagem clara com contexto e métricas.
+7.  **Push e Espera**: Apenas após validação total.

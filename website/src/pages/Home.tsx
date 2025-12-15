@@ -27,10 +27,9 @@ export default function Home() {
   // State for Hero Background
   // Initialize with a curated preset to avoid black/white extremes and ensure determinism
   const [heroConfig, setHeroConfig] = useState(() => {
-     // Deterministic selection based on date or just fixed index 0 for SSR consistency
-     // We can rotate them on reload if we want, but for SSG fixed is better, then hydration can randomize if needed.
-     // Let's pick a random one from the curated list for now, as it's client-side only for this SPA part.
-     const seed = HERO_PRESETS[Math.floor(Math.random() * HERO_PRESETS.length)];
+     // Deterministic selection for SSG consistency (hydration match)
+     // randomize in useEffect if dynamic start is desired
+     const seed = HERO_PRESETS[0];
      
     return {
       ...DEFAULT_CONFIG,

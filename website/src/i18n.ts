@@ -14,6 +14,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
   en: {
     translation: {
+      zoom_in: "Zoom In",
+      zoom_out: "Zoom Out",
+      palette_extraction_title: "Color Palette",
+      copy_hex: "Copy HEX",
       nav: {
         home: "Home",
         creation: "Creation",
@@ -271,6 +275,10 @@ const resources = {
   },
   "pt-BR": {
     translation: {
+      zoom_in: "Aumentar Zoom",
+      zoom_out: "Diminuir Zoom",
+      palette_extraction_title: "Paleta de Cores",
+      copy_hex: "Copiar código HEX",
       nav: {
         home: "Início",
         creation: "Criação",
@@ -528,6 +536,10 @@ const resources = {
   },
   es: {
     translation: {
+      zoom_in: "Acercar",
+      zoom_out: "Alejar",
+      palette_extraction_title: "Paleta de Colores",
+      copy_hex: "Copiar HEX",
       nav: {
         home: "Inicio",
         creation: "Creación",

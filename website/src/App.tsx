@@ -348,7 +348,7 @@ export default function App() {
            <Link to="/architecture" className="hover:text-white transition-colors">{t('nav.arch')}</Link>
            <a href="https://github.com/mafhper/aurawall" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
         </div>
-        <p className="text-zinc-600 text-sm">{t('footer')}</p>
+        <p className="text-zinc-400 text-sm">{t('footer')}</p>
       </footer>
     </div>
   );
