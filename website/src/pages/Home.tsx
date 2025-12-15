@@ -221,7 +221,7 @@ export default function Home() {
         </div>
 
         {/* Features Section - 6 features now */}
-        <div className="py-24 bg-gradient-to-b from-black via-zinc-950 to-black relative z-10">
+        <div className="py-24 bg-gradient-to-b from-black via-zinc-950 to-black relative z-10 [content-visibility:auto] [contain-intrinsic-size:1000px]">
           <div className="container mx-auto px-6">
             <h2 className="text-4xl font-bold text-center mb-4">{t('features.title')}</h2>
             <p className="text-zinc-400 text-center mb-16 max-w-2xl mx-auto">
@@ -286,7 +286,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="py-32 border-t border-white/5 relative z-10">
+        <div className="py-32 border-t border-white/5 relative z-10 [content-visibility:auto] [contain-intrinsic-size:800px]">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-5xl font-bold mb-6 tracking-tight">{t('home_compare.title')}</h2>
@@ -350,7 +350,7 @@ export default function Home() {
         </div>
 
         {/* Gallery Teaser - New section */}
-        <div className="py-24 bg-gradient-to-b from-black via-zinc-950/50 to-black">
+        <div className="py-24 bg-gradient-to-b from-black via-zinc-950/50 to-black [content-visibility:auto] [contain-intrinsic-size:600px]">
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold mb-4">{t('home_gallery.expanded_collection')}</h2>
@@ -383,7 +383,7 @@ export default function Home() {
         </div>
 
         {/* Final CTA - Large Illustrated Section */}
-        <div className="py-32 relative overflow-hidden">
+        <div className="py-32 relative overflow-hidden [content-visibility:auto] [contain-intrinsic-size:500px]">
           {/* Decorative Elements - Contained for performance */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ isolation: 'isolate' }}>
             {/* Floating orbs - reduced blur for performance */}

@@ -339,7 +339,7 @@ export default function App() {
 
       {/* Content, padding managed by individual pages */}
       <ScrollToTop />
-      <div>
+      <div className="min-h-screen">
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<Home />} />

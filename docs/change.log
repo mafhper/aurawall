@@ -1,3 +1,7 @@
+[2025/12/15 - perf: Promo Site Core Web Vitals]
+- Fixed CLS by enforcing min-height on route container to stabilize footer
+- Reduced TBT by applying content-visibility:auto to heavy Home sections (Features, Gallery, Compare)
+
 [2025/12/15 - fix: Zen Mode Icon]
 - Changed Zen Mode icon from 'Play' to 'MonitorPlay' in App.tsx to avoid confusion.
 
