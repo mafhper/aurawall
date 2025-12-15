@@ -121,11 +121,11 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
       {/* Overlay Content - Darker overlay for better contrast as requested */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity" />
       
-      <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-        <span className="text-xs font-bold tracking-wider text-purple-400 uppercase mb-1 block">
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+        <span className="text-[10px] md:text-xs font-bold tracking-wider text-purple-400 uppercase mb-0.5 block">
           {preset.collection} • {preset.category}
         </span>
-        <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-md">{preset.name}</h3>
+        <h3 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-4 drop-shadow-md">{preset.name}</h3>
         
         <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 relative">
           
@@ -133,11 +133,12 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
            <div className="relative flex-1">
              <button 
                onClick={() => setIsOpen(!isOpen)}
-               className="w-full bg-white text-black py-2.5 rounded-lg text-sm font-bold text-center hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 shadow-lg"
+               className="w-full bg-white text-black py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-bold text-center hover:bg-zinc-200 transition-colors flex items-center justify-center gap-1 md:gap-2 shadow-lg"
              >
-               <Download size={16} />
-               {t('gallery.download')}
-               <ChevronDown size={14} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+               <Download size={14} className="md:w-4 md:h-4" />
+               <span className="hidden sm:inline">{t('gallery.download')}</span>
+               <span className="sm:hidden">DL</span>
+               <ChevronDown size={12} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
              </button>
              
              {/* Menu overlay */}
@@ -150,31 +151,32 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
              >
                <button 
                   onClick={() => handleDownload('jpg')} 
-                  className="w-full px-4 py-3 text-left hover:bg-white/10 flex items-center gap-3 text-sm text-white"
+                  className="w-full px-3 py-2 md:px-4 md:py-3 text-left hover:bg-white/10 flex items-center gap-2 md:gap-3 text-xs md:text-sm text-white"
                >
-                 <ImageIcon size={16} className="text-blue-400"/> JPG <span className="text-zinc-500 text-xs ml-auto">Mobile</span>
+                 <ImageIcon size={14} className="text-blue-400"/> JPG <span className="text-zinc-500 text-[10px] md:text-xs ml-auto">Mobile</span>
                </button>
                <button 
                   onClick={() => handleDownload('png')} 
-                  className="w-full px-4 py-3 text-left hover:bg-white/10 flex items-center gap-3 text-sm text-white"
+                  className="w-full px-3 py-2 md:px-4 md:py-3 text-left hover:bg-white/10 flex items-center gap-2 md:gap-3 text-xs md:text-sm text-white"
                >
-                 <FileImage size={16} className="text-green-400"/> PNG <span className="text-zinc-500 text-xs ml-auto">Lossless</span>
+                 <FileImage size={14} className="text-green-400"/> PNG <span className="text-zinc-500 text-[10px] md:text-xs ml-auto">Lossless</span>
                </button>
                <button 
                   onClick={() => handleDownload('svg')} 
-                  className="w-full px-4 py-3 text-left hover:bg-white/10 flex items-center gap-3 text-sm border-t border-white/5 text-white"
+                  className="w-full px-3 py-2 md:px-4 md:py-3 text-left hover:bg-white/10 flex items-center gap-2 md:gap-3 text-xs md:text-sm border-t border-white/5 text-white"
                >
-                 <Code size={16} className="text-yellow-400"/> SVG <span className="text-zinc-500 text-xs ml-auto">Vector</span>
+                 <Code size={14} className="text-yellow-400"/> SVG <span className="text-zinc-500 text-[10px] md:text-xs ml-auto">Vector</span>
                </button>
              </div>
            </div>
 
           <a 
             href={`${getAppUrl()}?preset=${preset.id}`}
-            className="flex-1 bg-zinc-800 text-white py-2.5 rounded-lg text-sm font-bold text-center hover:bg-zinc-700 transition-colors flex items-center justify-center gap-2 border border-white/10 backdrop-blur shadow-lg"
+            className="flex-1 bg-zinc-800 text-white py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-bold text-center hover:bg-zinc-700 transition-colors flex items-center justify-center gap-1 md:gap-2 border border-white/10 backdrop-blur shadow-lg"
           >
-            <ExternalLink size={16} />
-            {t('gallery.open_editor')}
+            <ExternalLink size={14} className="md:w-4 md:h-4" />
+            <span className="hidden sm:inline">{t('gallery.open_editor')}</span>
+            <span className="sm:hidden">Edit</span>
           </a>
         </div>
       </div>

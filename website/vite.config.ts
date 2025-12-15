@@ -28,5 +28,8 @@ export default defineConfig(({ command }) => ({
   build: {
     outDir: '../dist',
     emptyOutDir: true,
+  },
+  ssr: {
+    noExternal: ['react-helmet-async']
   }
 }))

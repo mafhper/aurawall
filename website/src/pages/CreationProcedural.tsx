@@ -42,15 +42,6 @@ const ProceduralSection = ({ icon: Icon, title, desc, delay }: { icon: any, titl
 export default function CreationProcedural() {
   const { t } = useTranslation();
   
-  // Get a config for the hero background
-  const heroConfig = React.useMemo(() => {
-    const base = getPresetConfig('soul-glow');
-    return {
-      ...base,
-      animation: { ...base.animation, enabled: true, speed: 2, flow: 1 }
-    };
-  }, []);
-
   const tags = [
     t('procedural.tag_deterministic', 'Determinístico'),
     t('procedural.tag_seed', 'Baseado em Seed'),
@@ -65,10 +56,10 @@ export default function CreationProcedural() {
       <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         {/* Background Renderer */}
         <HeroBackground 
-          config={heroConfig}
-          opacity={0.4}
+          className="absolute inset-0"
+          presetId="nebula-cloud"
+          overlayOpacity={40}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black" />
         
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
           <div className="text-center max-w-4xl mx-auto">
@@ -76,8 +67,9 @@ export default function CreationProcedural() {
               <Binary size={16} />
               <span>CORE.LOGIC.MATH</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">
-              {t('procedural.title')}
+            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              Inteligência{' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400">Procedural</span>
             </h1>
             <p className="text-xl text-zinc-400 leading-relaxed">
               {t('procedural.subtitle')}
@@ -86,9 +78,9 @@ export default function CreationProcedural() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 max-w-6xl pb-20">
+      <div className="container mx-auto px-6 max-w-6xl py-24">
         {/* Main Math Explanation */}
-        <div className="grid md:grid-cols-2 gap-8 mb-32">
+        <div className="grid md:grid-cols-2 gap-8 mb-40">
             <ProceduralSection 
                 icon={FunctionSquare}
                 title={t('procedural.math_title')}

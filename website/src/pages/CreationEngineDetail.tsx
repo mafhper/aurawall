@@ -1,34 +1,109 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Zap } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
-import { getEngine } from '../../../src/engines';
 import { ENGINES } from '../data/engines';
-import { DEFAULT_CONFIG } from '../../../src/constants';
+import { DEFAULT_CONFIG, PRESETS, DEFAULT_ANIMATION } from '../../../src/constants';
 import { getAppUrl } from '../utils/appUrl';
+import HeroBackground from '../components/HeroBackground';
+
+// Preset Card Component with hover-to-play
+const PresetCard = ({ preset }: { preset: typeof PRESETS[0] }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const config = useMemo(() => ({
+    ...preset.config,
+    animation: {
+      ...DEFAULT_ANIMATION,
+      ...preset.config.animation,
+      enabled: true,
+      speed: preset.config.animation?.speed || 1,
+      flow: preset.config.animation?.flow || 1,
+    }
+  }), [preset.config]);
+
+  return (
+    <a
+      href={`${getAppUrl()}/?preset=${preset.id}`}
+      className="group relative aspect-[4/3] rounded-xl overflow-hidden border border-white/10 hover:border-white/30 transition-all hover:-translate-y-1 hover:shadow-xl block"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <WallpaperRenderer 
+        config={config}
+        className="w-full h-full block"
+        lowQuality={false}
+        paused={!isHovered}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <p className="text-white font-bold text-sm">{preset.name}</p>
+        <p className="text-zinc-400 text-xs">{preset.category}</p>
+      </div>
+    </a>
+  );
+};
+
+// Preview Card Component with hover-to-play (for sidebar)
+const PreviewCard = React.memo(({ preset, engineId }: { preset: typeof PRESETS[0] | null, engineId: string }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  if (!preset) return null;
+  
+  const config = useMemo(() => ({
+    ...preset.config,
+    animation: {
+      ...DEFAULT_ANIMATION,
+      ...preset.config.animation,
+      enabled: true,
+    }
+  }), [preset.config]);
+
+  return (
+    <div 
+      className="relative aspect-square rounded-3xl overflow-hidden border border-white/10 hover:border-white/30 transition-all"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <WallpaperRenderer 
+        config={config}
+        className="w-full h-full block"
+        lowQuality={false}
+        paused={!isHovered}
+      />
+      <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-mono border border-white/10 text-zinc-400">
+        {preset.name}
+      </div>
+    </div>
+  );
+});
+
+// Map engine IDs to deterministic presets for hero backgrounds
+const ENGINE_HERO_PRESETS: Record<string, string> = {
+  'boreal': 'soul-glow',
+  'chroma': 'oil-slick',
+  'lava': 'magma-lamp',
+  'midnight': 'nebula-cloud',
+  'geometrica': 'system-error',
+  'glitch': 'thermal-vision',
+  'sakura': 'phoenix-rise',
+  'ember': 'pacific-drift',
+  'oceanic': 'the-abyss',
+};
 
 export default function CreationEngineDetail() {
   const { id } = useParams<{ id: string }>();
-  // const { t } = useTranslation(); // unused
 
   const engineMeta = ENGINES.find(e => e.id === id);
-  const engineLogic = getEngine(id || '');
-
-  // Generate a fresh config for this view
-  const config = useMemo(() => {
-    if (!engineLogic || !engineLogic.randomizer) return DEFAULT_CONFIG;
-    // Generate a high-quality, animated config
-    const cfg = engineLogic.randomizer(DEFAULT_CONFIG, { isGrainLocked: false });
-    return {
-        ...cfg,
-        animation: {
-            ...cfg.animation,
-            enabled: true, // Force animation for the hero header
-            speed: Math.max(2, (cfg.animation?.speed || 1)) // Ensure decent speed
-        }
-    };
-  }, [engineLogic]);
+  
+  // Get first preset for this engine's collection - deterministic
+  const enginePresets = useMemo(() => 
+    PRESETS.filter(p => p.collection === id),
+    [id]
+  );
+  
+  const firstPreset = enginePresets[0] || null;
 
   if (!engineMeta) {
     return (
@@ -41,29 +116,43 @@ export default function CreationEngineDetail() {
     );
   }
 
+  // Find current, next, and previous engine indices for navigation
+  const currentIndex = ENGINES.findIndex(e => e.id === id);
+  const nextEngine = ENGINES[(currentIndex + 1) % ENGINES.length];
+  const prevEngine = ENGINES[(currentIndex - 1 + ENGINES.length) % ENGINES.length];
+  
+  // Use deterministic preset for hero based on engine ID
+  const heroPresetId = ENGINE_HERO_PRESETS[id || ''] || 'soul-glow';
+
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Immersive Hero */}
-      <div className="relative h-[60vh] overflow-hidden">
-         <div className="absolute inset-0">
-            <WallpaperRenderer 
-                config={config}
-                className="w-full h-full block"
-                lowQuality={false}
-            />
-         </div>
-         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
-         
-         <div className="absolute inset-0 container mx-auto px-6 flex flex-col justify-end pb-20">
-            <Link to="/creation/engines" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-6 transition-colors">
-                <ArrowLeft size={20} /> Voltar para Motores
+      {/* Hero Section - Using deterministic preset */}
+      <div className="relative h-[70vh] min-h-[500px] flex items-end overflow-hidden">
+        <HeroBackground 
+          presetId={heroPresetId}
+          className="absolute inset-0"
+          overlayOpacity={50}
+        />
+        
+        <div className="relative z-10 container mx-auto px-6 pb-20">
+          <div className="flex justify-between items-center mb-6">
+            <Link to="/creation/engines" className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors">
+              <ArrowLeft size={20} /> Voltar para Motores
             </Link>
-            <span className={`inline-block w-fit px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-widest mb-4 uppercase`}>
-                Engine // {engineMeta.id}
-            </span>
-            <h1 className="text-5xl md:text-8xl font-bold mb-4 tracking-tight">{engineMeta.name}</h1>
-            <p className="text-xl md:text-2xl text-zinc-300 max-w-2xl font-light italic">"{engineMeta.tagline}"</p>
-         </div>
+            <Link 
+              to={`/creation/engine/${nextEngine.id}`} 
+              className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              Próximo: {nextEngine.name} <ArrowRight size={20} />
+            </Link>
+          </div>
+          
+          <span className="inline-block w-fit px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-widest mb-4 uppercase">
+            Engine // {engineMeta.id}
+          </span>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">{engineMeta.name}</h1>
+          <p className="text-xl md:text-2xl text-zinc-300 max-w-2xl font-light italic">"{engineMeta.tagline}"</p>
+        </div>
       </div>
 
       <div className="container mx-auto px-6 py-20">
@@ -83,7 +172,6 @@ export default function CreationEngineDetail() {
                         <Zap size={18} className="text-yellow-500" /> Características Chave
                     </h3>
                     <ul className="space-y-3 text-zinc-400">
-                        {/* We could infer these from code or add to metadata later. For now, generic. */}
                         <li className="flex items-start gap-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-white mt-2" />
                             Geração procedural determinística
@@ -110,22 +198,23 @@ export default function CreationEngineDetail() {
                 </div>
             </div>
 
-            {/* Sidebar / Stats / variations preview could go here */}
-            <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/10">
-                 {/* Another variation or detail shot */}
-                 <WallpaperRenderer 
-                    config={{
-                        ...config,
-                        shapes: config.shapes.map(s => ({ ...s, x: 100 - s.x })) // Simple variation: Mirror
-                    }}
-                    className="w-full h-full block"
-                 />
-                 <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg text-xs font-mono border border-white/10 text-zinc-400">
-                    ID: {engineMeta.id}-var-01
-                 </div>
-            </div>
+            {/* Sidebar preview with hover-to-play - using first preset */}
+            <PreviewCard preset={firstPreset} engineId={engineMeta.id} />
 
          </div>
+
+         {/* Presets Grid Section */}
+         {enginePresets.length > 0 && (
+           <section className="mt-20">
+             <h2 className="text-3xl font-bold mb-8">Estilos do Motor {engineMeta.name}</h2>
+             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+               {enginePresets.map(preset => (
+                 <PresetCard key={preset.id} preset={preset} />
+               ))}
+             </div>
+           </section>
+         )}
+
       </div>
     </div>
   );

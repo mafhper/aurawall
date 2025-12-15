@@ -1,14 +1,38 @@
 <!doctype html>
 <html lang="en">
   <head>
-
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/icon-light.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AuraWall - Abstract Wallpaper Engine</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>AuraWall - Abstract Wallpaper Engine | Procedural Art Generator</title>
+    <meta name="description" content="Create stunning abstract wallpapers with AuraWall's procedural generation engine. 9 unique engines, infinite variations, export to any resolution. Free and open source." />
+    <meta name="keywords" content="wallpaper, abstract art, procedural generation, background generator, SVG, CSS animations" />
+    <meta name="author" content="mafhper" />
+    <link rel="canonical" href="https://mafhper.github.io/aurawall/" />
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AuraWall - Abstract Wallpaper Engine" />
+    <meta property="og:description" content="Create stunning abstract wallpapers with procedural generation. 9 engines, infinite variations." />
+    <meta property="og:url" content="https://mafhper.github.io/aurawall/" />
+    <meta property="og:image" content="https://mafhper.github.io/aurawall/og-image.png" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AuraWall - Abstract Wallpaper Engine" />
+    <meta name="twitter:description" content="Create stunning abstract wallpapers with procedural generation." />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/icon-light.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Performance: Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/entry-client.tsx"></script>
   </body>
 </html>

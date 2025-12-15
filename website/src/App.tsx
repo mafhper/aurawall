@@ -1,6 +1,6 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { createPortal } from 'react-dom';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Sparkles, Play, Menu, X, Shuffle, Loader2 } from 'lucide-react';
 import { getAppUrl } from './utils/appUrl';
@@ -10,7 +10,6 @@ import './i18n';
 const Home = lazy(() => import('./pages/Home'));
 const Creation = lazy(() => import('./pages/Creation'));
 const Tech = lazy(() => import('./pages/Tech'));
-const Gallery = lazy(() => import('./pages/Gallery'));
 const Changes = lazy(() => import('./pages/Changes'));
 const About = lazy(() => import('./pages/About'));
 
@@ -155,6 +154,12 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Prevent background scroll when menu is open
   React.useEffect(() => {
     if (isOpen) {
@@ -176,8 +181,8 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
         <Menu size={24} />
       </button>
 
-      {/* Fullscreen Overlay via Portal */}
-      {createPortal(
+      {/* Fullscreen Overlay via Portal - Client Side Only */}
+      {mounted && createPortal(
         <div 
           className={`fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] transition-all duration-300 flex flex-col ${
             isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
@@ -215,7 +220,6 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
             </div>
 
             <MobileLink to="/architecture" onClick={closeMenu}>{t('nav.arch')}</MobileLink>
-            <MobileLink to="/gallery" onClick={closeMenu}>{t('nav.gallery')}</MobileLink>
             <MobileLink to="/changes" onClick={closeMenu}>{t('nav.changes')}</MobileLink>
             <MobileLink to="/about" onClick={closeMenu}>{t('nav.about')}</MobileLink>
             
@@ -253,100 +257,99 @@ export default function App() {
   ];
 
   return (
-    <Router basename={import.meta.env.BASE_URL}>
-      <div className="min-h-screen bg-black text-white font-sans selection:bg-purple-500/30 overflow-x-hidden">
-        
-        {/* Floating Glass Navbar */}
-        <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
-          <nav className="glass-nav rounded-full px-6 py-3 flex items-center justify-between gap-4 md:gap-8 max-w-5xl w-full transition-all duration-300">
+
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-purple-500/30 overflow-x-hidden">
+      
+      {/* Floating Glass Navbar */}
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-6 px-4">
+        <nav className="glass-nav rounded-full px-6 py-3 flex items-center justify-between gap-4 md:gap-8 max-w-5xl w-full transition-all duration-300">
+          
+          <Link 
+            to="/" 
+            onClick={(e) => {
+              if (location.pathname === '/') {
+                e.preventDefault(); // Prevent re-navigation if already on home
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="flex items-center gap-2 shrink-0 hover:scale-105 transition-transform"
+          >
+            <img src={`${import.meta.env.BASE_URL}icon-light.svg`} className="w-8 h-8" alt="Logo" />
+            <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 hidden sm:block">
+              AuraWall
+            </span>
+          </Link>
+          
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-1">
+            <NavDropdown 
+              to="/creation" 
+              title={t('nav.creation')} 
+              items={creationItems} 
+            />
             
-            <Link 
-              to="/" 
-              onClick={(e) => {
-                if (location.pathname === '/') {
-                  e.preventDefault(); // Prevent re-navigation if already on home
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-              }}
-              className="flex items-center gap-2 shrink-0 hover:scale-105 transition-transform"
-            >
-              <img src={`${import.meta.env.BASE_URL}icon-light.svg`} className="w-8 h-8" alt="Logo" />
-              <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 hidden sm:block">
-                AuraWall
-              </span>
-            </Link>
-            
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-1">
-              <NavDropdown 
-                to="/creation" 
-                title={t('nav.creation')} 
-                items={creationItems} 
-              />
-              
-              <NavLink to="/architecture">{t('nav.arch')}</NavLink>
-              <NavLink to="/gallery">{t('nav.gallery')}</NavLink>
-              <NavLink to="/changes">{t('nav.changes')}</NavLink>
-              <NavLink to="/about">{t('nav.about')}</NavLink>
-            </div>
-
-            {/* Right Side: Lang + CTA + Mobile Toggle */}
-            <div className="flex items-center gap-3">
-              <select 
-                onChange={(e) => changeLanguage(e.target.value)} 
-                value={i18n.language}
-                className="bg-transparent text-xs text-zinc-400 font-medium focus:outline-none cursor-pointer hover:text-white uppercase hidden sm:block"
-                aria-label="Select Language"
-              >
-                <option value="en" className="bg-zinc-900">EN</option>
-                <option value="pt-BR" className="bg-zinc-900">PT</option>
-                <option value="es" className="bg-zinc-900">ES</option>
-              </select>
-
-              <a href={getAppUrl()} className="bg-white text-black hover:bg-zinc-200 px-5 py-2 rounded-full text-xs font-bold transition-all transform hover:scale-105 shadow-lg shadow-white/10 whitespace-nowrap hidden sm:block">
-                {t('nav.launch')}
-              </a>
-
-              {/* Mobile Menu Toggle */}
-              <MobileNav items={creationItems} />
-            </div>
-          </nav>
-        </div>
-
-        {/* Content, padding managed by individual pages */}
-        <ScrollToTop />
-        <div>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/creation" element={<Creation />} />
-              <Route path="/creation/engines" element={<CreationEngines />} />
-              <Route path="/creation/engine/:id" element={<CreationEngineDetail />} />
-              <Route path="/creation/animation" element={<CreationAnimation />} />
-              <Route path="/creation/procedural" element={<CreationProcedural />} />
-              <Route path="/architecture" element={<Tech />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/changes" element={<Changes />} />
-              <Route path="/about" element={<About />} />
-            </Routes>
-          </Suspense>
-        </div>
-        
-        {/* Footer Gradient Transition */}
-        <div className="relative h-32 mt-16">
-          <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 via-transparent to-transparent"></div>
-        </div>
-        
-        <footer className="border-t border-white/10 py-12 text-center">
-          <div className="flex justify-center gap-6 mb-8 text-zinc-500 flex-wrap px-6">
-             <Link to="/creation" className="hover:text-white transition-colors">{t('nav.creation')}</Link>
-             <Link to="/architecture" className="hover:text-white transition-colors">{t('nav.arch')}</Link>
-             <Link to="/gallery" className="hover:text-white transition-colors">{t('nav.gallery')}</Link>
-             <a href="https://github.com/mafhper/aurawall" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+            <NavLink to="/architecture">{t('nav.arch')}</NavLink>
+            <NavLink to="/changes">{t('nav.changes')}</NavLink>
+            <NavLink to="/about">{t('nav.about')}</NavLink>
           </div>
-          <p className="text-zinc-600 text-sm">{t('footer')}</p>
-        </footer>
+
+          {/* Right Side: Lang + CTA + Mobile Toggle */}
+          <div className="flex items-center gap-3">
+            <select 
+              onChange={(e) => changeLanguage(e.target.value)} 
+              value={i18n.language}
+              className="bg-transparent text-xs text-zinc-400 font-medium focus:outline-none cursor-pointer hover:text-white uppercase hidden sm:block"
+              aria-label="Select Language"
+            >
+              <option value="en" className="bg-zinc-900">EN</option>
+              <option value="pt-BR" className="bg-zinc-900">PT</option>
+              <option value="es" className="bg-zinc-900">ES</option>
+            </select>
+
+            <a href={getAppUrl()} className="bg-white text-black hover:bg-zinc-200 px-5 py-2 rounded-full text-xs font-bold transition-all transform hover:scale-105 shadow-lg shadow-white/10 whitespace-nowrap hidden sm:block">
+              {t('nav.launch')}
+            </a>
+
+            {/* Mobile Menu Toggle */}
+            <MobileNav items={creationItems} />
+          </div>
+        </nav>
       </div>
-    </Router>
+
+      {/* Content, padding managed by individual pages */}
+      <ScrollToTop />
+      <div>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/creation" element={<Creation />} />
+            <Route path="/creation/engines" element={<CreationEngines />} />
+            <Route path="/creation/engine/:id" element={<CreationEngineDetail />} />
+            <Route path="/creation/animation" element={<CreationAnimation />} />
+            <Route path="/creation/procedural" element={<CreationProcedural />} />
+            <Route path="/architecture" element={<Tech />} />
+            <Route path="/changes" element={<Changes />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Suspense>
+      </div>
+      
+      {/* Footer Gradient Transition - Enhanced with mask for absolute smoothness */}
+      <div className="relative h-96 mt-20 pointer-events-none select-none" style={{
+        maskImage: 'linear-gradient(to bottom, transparent, black)'
+      }}>
+         <div className="absolute inset-0 bg-gradient-to-t from-black via-purple-950/20 to-transparent"></div>
+         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
+      </div>
+      
+      <footer className="border-t border-white/10 py-12 text-center">
+        <div className="flex justify-center gap-6 mb-8 text-zinc-500 flex-wrap px-6">
+           <Link to="/creation" className="hover:text-white transition-colors">{t('nav.creation')}</Link>
+           <Link to="/architecture" className="hover:text-white transition-colors">{t('nav.arch')}</Link>
+           <a href="https://github.com/mafhper/aurawall" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+        </div>
+        <p className="text-zinc-600 text-sm">{t('footer')}</p>
+      </footer>
+    </div>
   );
 }

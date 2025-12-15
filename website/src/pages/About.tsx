@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { Github, ExternalLink, Rss, PenTool, Database } from 'lucide-react';
-import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
-import { PRESETS } from '../../../src/constants';
+import { Github, ExternalLink, Rss, PenTool, Database, User } from 'lucide-react';
+import HeroBackground from '../components/HeroBackground';
 
 const projects = [
   {
@@ -43,46 +43,42 @@ const projects = [
 export default function About() {
   const { t } = useTranslation();
 
-  // Config for the Hero Background
-  const heroConfig = useMemo(() => {
-    // Use 'Deep Space' or similar dark/subtle preset
-    const preset = PRESETS.find(p => p.id === 'deep-space') || PRESETS[0];
-    return {
-      ...preset.config,
-      animation: {
-        ...preset.config.animation,
-        enabled: true,
-        speed: 1, // Very slow
-        flow: 2
-      }
-    };
-  }, []);
-
   return (
-    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 relative">
+    <div className="min-h-screen bg-black text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <Helmet>
+        <title>{t('about.title', 'Sobre o Projeto | AuraWall')}</title>
+        <meta name="description" content={t('about.subtitle', 'AuraWall é uma ferramenta open source para geração de wallpapers abstratos.')} />
+        <link rel="canonical" href={import.meta.env.BASE_URL + 'about'} />
+      </Helmet>
       
-      {/* Background Renderer - Header Only */}
-      <div className="absolute top-0 left-0 w-full h-[70vh] overflow-hidden pointer-events-none opacity-40">
-        <WallpaperRenderer 
-          config={heroConfig}
-          className="w-full h-full block scale-110"
-          lowQuality={false}
-          paused={false} // Always animated
+      {/* Hero Section - Standardized like other pages */}
+      <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+        <HeroBackground 
+          className="absolute inset-0" 
+          presetId="system-error"
+          overlayOpacity={40}
         />
-        {/* Gradient: Fade from transparent to black at the bottom to blend with page */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black" />
-      </div>
-
-      <div className="container mx-auto px-6 max-w-5xl relative z-10">
         
-        {/* Hero */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">{t('about.title')}</h1>
+        <div className="relative z-10 text-center px-6 max-w-4xl">
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="w-16 h-16 rounded-2xl bg-purple-500/20 backdrop-blur border border-white/10 flex items-center justify-center">
+              <User size={32} className="text-purple-400" />
+            </div>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            Sobre{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-rose-400">o Projeto</span>
+          </h1>
           <p className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
             {t('about.subtitle')}
           </p>
         </div>
+      </div>
 
+      {/* Content Section */}
+      <div className="container mx-auto px-6 max-w-5xl py-20">
+        
         {/* Developer Bio */}
         <div className="glass-panel rounded-3xl p-10 mb-16">
           <div className="flex flex-col md:flex-row items-center gap-8">
@@ -90,6 +86,8 @@ export default function About() {
               src="https://github.com/mafhper.png" 
               alt="@mafhper"
               className="w-32 h-32 rounded-full border-4 border-purple-500/50 shadow-lg shadow-purple-500/20 shrink-0"
+              width="128"
+              height="128"
             />
             <div className="text-center md:text-left">
               <h2 className="text-3xl font-bold mb-2">@mafhper</h2>

@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Zap, Shield, Maximize, Play, Palette, Download, ArrowRight, Wand2, RefreshCw } from 'lucide-react';
@@ -111,6 +112,11 @@ export default function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>{t('seo.home_title', 'AuraWall - Abstract Wallpaper Engine')}</title>
+        <meta name="description" content={t('seo.home_desc', 'Create stunning abstract wallpapers with AuraWall\'s procedural generation engine. 9 unique engines, infinite variations.')} />
+        <link rel="canonical" href={import.meta.env.BASE_URL} />
+      </Helmet>
       <div 
         className="relative overflow-hidden bg-black text-white selection:bg-purple-500/30"
         onMouseEnter={() => setIsHeroHovered(true)}
@@ -151,7 +157,7 @@ export default function Home() {
             
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
                <Link 
-                 to="/creation" 
+                 to="/creation/engines" 
                  className="glass-panel hover:bg-white/10 text-white font-bold py-4 px-10 rounded-full transition-colors flex items-center justify-center gap-2 min-w-[180px] backdrop-blur-md border border-white/10"
                  title={t('hero.cta_secondary')}
                >
@@ -187,7 +193,7 @@ export default function Home() {
         <div className="py-24 bg-gradient-to-b from-black via-zinc-950 to-black relative z-10">
           <div className="container mx-auto px-6">
             <h2 className="text-4xl font-bold text-center mb-4">{t('features.title')}</h2>
-            <p className="text-zinc-500 text-center mb-16 max-w-2xl mx-auto">
+            <p className="text-zinc-400 text-center mb-16 max-w-2xl mx-auto">
               Combinando matemática com estética para criar arte visual única.
             </p>
             
@@ -253,7 +259,7 @@ export default function Home() {
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-5xl font-bold mb-6 tracking-tight">{t('home_compare.title')}</h2>
-              <p className="text-xl text-zinc-500 max-w-2xl mx-auto">{t('home_compare.desc')}</p>
+              <p className="text-xl text-zinc-400 max-w-2xl mx-auto">{t('home_compare.desc')}</p>
             </div>
             
             <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto items-stretch">
@@ -309,16 +315,6 @@ export default function Home() {
                   </div>
                </div>
             </div>
-
-            <div className="mt-16 text-center">
-               <Link 
-                 to="/gallery" 
-                 className="inline-flex items-center gap-3 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
-               >
-                 Ver Todos os Motores
-                 <ArrowRight size={20} />
-               </Link>
-            </div>
           </div>
         </div>
 
@@ -327,7 +323,7 @@ export default function Home() {
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold mb-4">Coleção Expandida</h2>
-              <p className="text-zinc-500 max-w-xl mx-auto">
+              <p className="text-zinc-400 max-w-xl mx-auto">
                 Explore 9 motores de geração distintos, de ondas oceânicas a falhas digitais e estética Bauhaus.
               </p>
             </div>
@@ -337,18 +333,19 @@ export default function Home() {
                 <GalleryCard 
                   key={preset.id} 
                   preset={preset} 
-                  className="aspect-video"
+                  className="aspect-[3/4] min-h-[360px]"
                 />
               ))}
             </div>
             
+            {/* Single CTA for both sections */}
             <div className="text-center">
               <Link 
-                to="/gallery" 
-                className="inline-flex items-center gap-2 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 px-8 py-3 rounded-full font-bold transition-all border border-purple-500/30"
+                to="/creation/engines" 
+                className="inline-flex items-center gap-3 bg-white text-black hover:bg-zinc-200 px-8 py-4 rounded-full text-lg font-bold transition-all transform hover:scale-105 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
               >
-                {t('home_gallery.btn')}
-                <ArrowRight size={18} />
+                Ver Todos os Motores
+                <ArrowRight size={20} />
               </Link>
             </div>
           </div>
@@ -395,7 +392,7 @@ export default function Home() {
                   </p>
                   
                   {/* Features mini-list */}
-                  <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm text-zinc-500">
+                  <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm text-zinc-400">
                     <span className="flex items-center gap-2">
                       <span className="w-2 h-2 bg-green-500 rounded-full" />
                       100% Gratuito

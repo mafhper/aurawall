@@ -19,6 +19,13 @@ const LOG_DIR = path.join(__dirname, '../performance-reports');
 
 const PROJECT_ROOT = path.join(__dirname, '..');
 
+// Helper to generate timestamp for filenames
+function getFormattedTimestamp() {
+    const now = new Date();
+    const p = n => String(n).padStart(2, '0');
+    return `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}_${p(now.getHours())}-${p(now.getMinutes())}`;
+}
+
 // --- ANSI Colors ---
 const RESET = "\x1b[0m";
 const CYAN = "\x1b[36m";
@@ -215,8 +222,8 @@ function runTask(task) {
     // Define Tasks
     tasks.push(new Task('Clean Environment', 'INTERNAL_CLEAN'));
     tasks.push(new Task('Install Dependencies', 'npm', ['install']));
-    tasks.push(new Task('Build: Promo Site', 'npm', ['run', 'build-promo']));
-    tasks.push(new Task('Build: Application', 'npm', ['run', 'build-app']));
+    tasks.push(new Task('Build: Promo Site', 'npm', ['run', 'build:promo']));
+    tasks.push(new Task('Build: Application', 'npm', ['run', 'build:app']));
     tasks.push(new Task('Test: File Structure', 'npm', ['run', 'test:structure']));
     tasks.push(new Task('Test: Security Audit', 'npm', ['run', 'test:security']));
     tasks.push(new Task('Test: i18n Integrity', 'npm', ['run', 'test:i18n']));
@@ -263,7 +270,8 @@ function runTask(task) {
     const filename = `Health-Check_${statusStr}_${getFormattedTimestamp()}.md`;
     const logPath = path.join(LOG_DIR, filename);
 
-    fs.writeFileSync(logPath, minifyMarkdown(generateReport()));
+    const totalTime = (Date.now() - tasks[0].startTime) / 1000;
+    fs.writeFileSync(logPath, minifyMarkdown(generateReport(tasks, totalTime.toFixed(2))));
     log(`Report saved to:`, 'info');
     console.log(`${YELLOW}${logPath}${RESET}`);
 

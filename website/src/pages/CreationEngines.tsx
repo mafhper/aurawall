@@ -1,8 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, ArrowLeft } from 'lucide-react';
 import { ENGINES } from '../data/engines';
+import HeroBackground from '../components/HeroBackground';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { getEngine } from '../../../src/engines';
 import { DEFAULT_CONFIG } from '../../../src/constants';
@@ -117,22 +118,46 @@ export default function CreationEngines() {
   }, []);
 
   const { hero, secondary, grid } = layout;
+  const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen bg-black text-white pt-32 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="container mx-auto px-6">
+    <div className="min-h-screen bg-black text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
+      
+      {/* Hero Section - Standardized */}
+      <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+        <HeroBackground 
+          className="absolute inset-0" 
+          presetId="magma-lamp"
+          overlayOpacity={40}
+        />
         
-        <div className="flex items-center gap-3 mb-8">
-            <div className="bg-purple-500/10 p-3 rounded-xl text-purple-400">
-                <Sparkles size={24} />
+        <div className="relative z-10 text-center px-6 max-w-4xl">
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="w-16 h-16 rounded-2xl bg-zinc-800/50 backdrop-blur border border-white/10 flex items-center justify-center">
+              <Sparkles size={32} className="text-purple-400" />
             </div>
-            <div>
-                <h1 className="text-3xl font-bold">Motores de Criação</h1>
-                <p className="text-zinc-500">Explore a diversidade procedural do AuraWall.</p>
-            </div>
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            Nossos <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Motores</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-zinc-300 leading-relaxed font-light">
+             {t('gallery.hero_subtitle', 'Cada motor possui uma filosofia visual única, gerando infinitas variações baseadas em seus princípios estéticos.')}
+          </p>
+          
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+             <Link to="/creation" className="px-8 py-3 rounded-full bg-white text-black font-bold hover:bg-zinc-200 transition-colors flex items-center gap-2">
+                <ArrowLeft size={18} /> Voltar para Criação
+             </Link>
+          </div>
         </div>
+      </div>
 
-        {/* Hero Section */}
+      {/* Content Section */}
+      <div className="container mx-auto px-6 py-20">
+
+        {/* Hero Section - Featured Engine */}
         <div className="mb-8">
             <EngineCard engine={hero} variant="hero" />
         </div>

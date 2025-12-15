@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GitCommit, Calendar, Sparkles, Wrench, AlertTriangle, Rocket, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import HeroBackground from '../components/HeroBackground';
+import { PRESETS } from '../../../src/constants';
 
 // GitHub commit interface
 interface GitHubCommit {
@@ -98,30 +101,28 @@ const statusColors = {
 
 export default function Changes() {
   const { t } = useTranslation();
-  const [changelog] = useState<ChangelogEntry[]>(staticChangelog);
   const [commits, setCommits] = useState<GitHubCommit[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAllCommits, setShowAllCommits] = useState(false);
-  const [loadingCommits, setLoadingCommits] = useState(true);
 
-  // Fetch real commits from GitHub
   useEffect(() => {
-    fetch('https://api.github.com/repos/mafhper/aurawall/commits?per_page=20')
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then((data: GitHubCommit[]) => {
-        setCommits(data);
-        setLoadingCommits(false);
+    fetch('https://api.github.com/repos/mafhper/aurawall/commits?per_page=10')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setCommits(data);
+        }
+        setLoading(false);
       })
-      .catch(() => {
-        console.log('Could not fetch GitHub commits');
-        setLoadingCommits(false);
+      .catch(err => {
+        console.error('Failed to fetch commits:', err);
+        setLoading(false);
       });
   }, []);
 
-  // Format date to readable format
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', { 
-      day: '2-digit', 
+    return new Date(dateString).toLocaleDateString(undefined, { 
+      day: 'numeric', 
       month: 'short', 
       year: 'numeric' 
     });
@@ -131,16 +132,34 @@ export default function Changes() {
   const displayedCommits = showAllCommits ? commits : commits.slice(0, 2);
 
   return (
-    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="container mx-auto px-6 max-w-4xl">
+    <div className="min-h-screen bg-black text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
+      
+      {/* Hero Section */}
+      <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+        <HeroBackground 
+          className="absolute inset-0" 
+          presetId="thermal-vision"
+          overlayOpacity={40}
+        />
         
-        {/* Hero */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">{t('changes.title')}</h1>
-          <p className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        <div className="relative z-10 text-center px-6">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-blue-500/20 backdrop-blur flex items-center justify-center">
+              <Rocket size={32} className="text-blue-400" />
+            </div>
+          </div>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            Road{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-amber-500 to-yellow-400">map</span>
+          </h1>
+          <p className="text-xl text-zinc-300 max-w-2xl mx-auto">
             {t('changes.subtitle')}
           </p>
         </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="container mx-auto px-6 max-w-4xl py-20">
 
         {/* Roadmap */}
         <div className="mb-24">
@@ -163,7 +182,7 @@ export default function Changes() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0 bg-white/5 px-2 py-1 rounded-full">
                     <span className={`w-2 h-2 rounded-full ${statusColors[item.status]}`}></span>
-                    <span className="text-xs text-zinc-500 uppercase font-bold tracking-wider">{item.status}</span>
+                    <span className="text-xs text-zinc-400 uppercase font-bold tracking-wider">{item.status}</span>
                   </div>
                 </div>
               </div>
@@ -178,9 +197,9 @@ export default function Changes() {
             {t('changes.changelog_title')}
           </h2>
           
-          {loadingCommits ? (
+          {loading ? (
             <div className="glass-panel rounded-2xl p-8 text-center">
-              <div className="animate-pulse text-zinc-500">Carregando commits do GitHub...</div>
+              <div className="animate-pulse text-zinc-400">Carregando commits do GitHub...</div>
             </div>
           ) : commits.length > 0 ? (
             <div className="space-y-4">
@@ -199,7 +218,7 @@ export default function Changes() {
                       <p className="text-white font-medium mb-1 truncate">
                         {commit.commit.message.split('\n')[0]}
                       </p>
-                      <div className="flex items-center gap-3 text-xs text-zinc-500">
+                      <div className="flex items-center gap-3 text-xs text-zinc-400">
                         <span className="font-mono">{commit.sha.slice(0, 7)}</span>
                         <span>•</span>
                         <span>{commit.commit.author.name}</span>
@@ -211,7 +230,7 @@ export default function Changes() {
                       href={commit.html_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-zinc-500 hover:text-purple-400 transition-colors shrink-0"
+                      className="text-zinc-400 hover:text-purple-400 transition-colors shrink-0"
                       title="Ver no GitHub"
                     >
                       <ExternalLink size={16} />
@@ -246,7 +265,7 @@ export default function Changes() {
                   href="https://github.com/mafhper/aurawall/commits/main"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-purple-400 transition-colors"
+                  className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-purple-400 transition-colors"
                 >
                   Ver todos os commits no GitHub
                   <ExternalLink size={14} />
@@ -271,7 +290,7 @@ export default function Changes() {
                         <Icon size={12} />
                         {entry.type}
                       </span>
-                      <span className="flex items-center gap-1 text-zinc-500 text-sm ml-auto">
+                      <span className="flex items-center gap-1 text-zinc-400 text-sm ml-auto">
                         <Calendar size={14} />
                         {entry.date}
                       </span>

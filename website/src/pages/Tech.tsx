@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Code, Layers, Palette, Download, Share2, Globe, Zap, TestTube2, ArrowRight, Github, Binary } from 'lucide-react';
 import CodeWindow from '../components/CodeWindow';
+import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import { PRESETS } from '../../../src/constants';
 
 const stackItems = [
   { key: 'core', icon: Code, color: 'blue', reason: 'React 19 fornece os hooks mais recentes e renderização concorrente para atualizações de UI suaves.' },
@@ -16,25 +19,120 @@ const stackItems = [
   { key: 'compress', icon: Binary, color: 'teal', reason: 'lz-string com Array Notation V2 compacta configurações para compartilhamento via URL com redução de até 78%.' },
 ];
 
-export default function Tech() {
-  const { t } = useTranslation();
+import HeroBackground from '../components/HeroBackground';
+import { DEFAULT_ANIMATION } from '../../../src/constants';
+
+// Pipeline Card with animated background on hover (styled like GalleryCard)
+const PipelineCard = ({ 
+  item, 
+  preset, 
+  colorClass 
+}: { 
+  item: { layer: number; name: string; desc: string; color: string; presetId: string };
+  preset: typeof PRESETS[0] | undefined;
+  colorClass: string;
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const config = useMemo(() => {
+    if (!preset) return null;
+    return {
+      ...preset.config,
+      animation: {
+        ...DEFAULT_ANIMATION,
+        ...preset.config.animation,
+        enabled: true,
+        speed: 2,
+        flow: 2,
+      }
+    };
+  }, [preset]);
 
   return (
-    <div className="min-h-screen bg-black text-white pt-40 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <div 
+      className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 hover:border-purple-500/50 transition-all duration-500 bg-zinc-900 shadow-2xl cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Animated Background with scale on hover */}
+      {config && (
+        <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+          <WallpaperRenderer 
+            config={config}
+            className="w-full h-full block"
+            lowQuality={false}
+            paused={!isHovered}
+          />
+        </div>
+      )}
+      
+      {/* Gradient Overlay - same as GalleryCard */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity" />
+      
+      {/* Content positioned at bottom like GalleryCard */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        <span className={`text-xs font-bold tracking-wider ${colorClass.split(' ')[1]} uppercase mb-1 block`}>
+          CAMADA {item.layer}
+        </span>
+        <h4 className="text-lg md:text-xl font-bold text-white mb-2 drop-shadow-md">{item.name}</h4>
+        <p className="text-zinc-300 text-sm leading-relaxed">{item.desc}</p>
+      </div>
+    </div>
+  );
+};
+
+export default function Tech() {
+  const { t } = useTranslation();
+  
+  // Rotate hero preset - deterministic initial value to avoid hydration mismatch
+  const heroPresets = ['oil-slick', 'soul-glow', 'phoenix-rise', 'thermal-vision', 'magma-lamp'];
+  const [heroPresetId, setHeroPresetId] = React.useState(heroPresets[0]);
+  
+  React.useEffect(() => {
+    // Select preset based on current time (client-side only)
+    const index = Math.floor(Date.now() / 1000) % heroPresets.length;
+    setHeroPresetId(heroPresets[index]);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-black text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <Helmet>
+        <title>{t('tech.title', 'Arquitetura & Stack | AuraWall')}</title>
+        <meta name="description" content={t('tech.subtitle', 'Explore a tecnologia por trás do AuraWall: React 19, Tailwind v4, geração procedural e renderização SVG/Canvas.')} />
+        <link rel="canonical" href={import.meta.env.BASE_URL + 'architecture'} />
+      </Helmet>
+      
+      {/* Hero Section */}
+      <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+        <HeroBackground 
+          className="absolute inset-0" 
+          presetId={heroPresetId}
+          overlayOpacity={40}
+        />
         
-        {/* Hero */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">{t('tech.title')}</h1>
-          <p className="text-xl text-zinc-400 max-w-3xl mx-auto leading-relaxed">
+        <div className="relative z-10 text-center px-6">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-blue-500/20 backdrop-blur flex items-center justify-center">
+              <Code size={32} className="text-blue-400" />
+            </div>
+          </div>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            Sob{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-400">o Capô</span>
+          </h1>
+          <p className="text-xl text-zinc-300 max-w-2xl mx-auto">
             {t('tech.subtitle')}
           </p>
         </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="container mx-auto px-6 max-w-5xl py-20">
 
         {/* Stack Section */}
-        <section className="mb-20">
+        <section className="mb-32">
           <h2 className="text-3xl font-bold mb-4">{t('tech.stack_title')}</h2>
-          <p className="text-zinc-500 mb-8">{t('tech.why_title')}</p>
+          <p className="text-zinc-400 mb-8">{t('tech.why_title')}</p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {stackItems.map((item) => {
@@ -71,32 +169,74 @@ export default function Tech() {
                     <Icon size={20} className={iconColors[item.color]} />
                     <span className="font-bold">{t(`tech.stack_${item.key}`)}</span>
                   </div>
-                  <p className="text-zinc-500 text-sm leading-relaxed">{item.reason}</p>
+                  <p className="text-zinc-400 text-sm leading-relaxed">{item.reason}</p>
                 </div>
               );
             })}
           </div>
         </section>
 
+        {/* SSG and Performance Optimization */}
+        <section className="mb-32">
+          <h2 className="text-3xl font-bold mb-6">SSG e Otimização de Performance</h2>
+          <p className="text-zinc-400 mb-8">
+            O site promocional utiliza Static Site Generation (SSG) para máxima performance: 
+            páginas pré-renderizadas em build time, zero JavaScript para first paint, 
+            TTI (Time to Interactive) abaixo de 1s, e scripts centralizados para monitoramento contínuo.
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* SSG Migration */}
+            <div className="p-6 rounded-2xl border border-green-500/30 bg-green-500/5">
+              <div className="flex items-center gap-3 mb-4">
+                <Zap size={20} className="text-green-400" />
+                <span className="font-bold">Static Site Generation</span>
+              </div>
+              <ul className="text-zinc-400 text-sm space-y-2">
+                <li>• Pré-rendering de todas as rotas em build time</li>
+                <li>• Carregamento instantâneo sem hydration delay</li>
+                <li>• SEO otimizado com HTML estático</li>
+                <li>• Cache agressivo no CDN do GitHub Pages</li>
+              </ul>
+            </div>
+            
+            {/* Health & Performance Scripts */}
+            <div className="p-6 rounded-2xl border border-blue-500/30 bg-blue-500/5">
+              <div className="flex items-center gap-3 mb-4">
+                <TestTube2 size={20} className="text-blue-400" />
+                <span className="font-bold">Scripts Centralizados</span>
+              </div>
+              <ul className="text-zinc-400 text-sm space-y-2">
+                <li>• <code className="bg-zinc-800 px-1 rounded">npm run health</code> - Verificação completa do projeto</li>
+                <li>• <code className="bg-zinc-800 px-1 rounded">npm run performance:audit</code> - Métricas de Lighthouse</li>
+                <li>• CI/CD automatizado com GitHub Actions</li>
+                <li>• Relatórios de build e tamanho de bundles</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Architecture Diagram */}
-        <section className="mb-20">
+        <section className="mb-32">
           <h2 className="text-3xl font-bold mb-6">Arquitetura Reativa</h2>
           <div className="glass-panel rounded-2xl p-8">
             <div className="bg-zinc-900 rounded-xl overflow-hidden">
               <img 
                 src={`${import.meta.env.BASE_URL}architecture-diagram.jpg`}
                 alt="Diagrama de Arquitetura - App.tsx Estado Global"
-                className="w-full h-auto"
+                className="w-full h-auto aspect-[16/9] object-cover"
+                width="800"
+                height="450"
               />
             </div>
-            <p className="text-zinc-500 text-sm mt-4">
+            <p className="text-zinc-400 text-sm mt-4">
               Estado unidirecional: todas as mudanças fluem do estado global para os componentes visuais.
             </p>
           </div>
         </section>
 
         {/* The Seed */}
-        <section className="mb-20">
+        <section className="mb-32">
           <h2 className="text-3xl font-bold mb-4">{t('tech.seed_title')}</h2>
           <p className="text-zinc-400 mb-6">{t('tech.seed_desc')}</p>
           
@@ -137,7 +277,7 @@ interface Shape {
 }`}</pre>
           </CodeWindow>
           <div className="bg-zinc-900 border-t border-white/5 rounded-b-xl p-4 flex justify-between items-center text-xs">
-               <span className="text-zinc-500">1.2kb Minified</span>
+               <span className="text-zinc-400">1.2kb Minified</span>
                <Link to="/creation/procedural" className="text-purple-400 hover:text-purple-300 flex items-center gap-1">
                   {t('tech.seed_button', 'Ver Detalhes Procedurais')} <ArrowRight size={12} />
                </Link>
@@ -145,31 +285,39 @@ interface Shape {
         </section>
 
         {/* Rendering Pipeline */}
-        <section className="mb-20">
+        <section className="mb-32">
           <h2 className="text-3xl font-bold mb-4">{t('tech.pipeline_title')}</h2>
           <p className="text-zinc-400 mb-6">{t('tech.pipeline_desc')}</p>
           
           <div className="grid md:grid-cols-4 gap-4">
             {[
-              { layer: 1, name: 'Background', desc: 'Cor sólida ou gradiente linear/radial', color: 'purple' },
-              { layer: 2, name: 'Shapes', desc: 'Círculos e blobs com blur e blend modes', color: 'blue' },
-              { layer: 3, name: 'Vignette', desc: 'Máscara radial com gradientTransform', color: 'pink' },
-              { layer: 4, name: 'Noise', desc: 'feTurbulence com mix-blend-mode overlay', color: 'green' },
-            ].map((item) => (
-              <div 
-                key={item.layer}
-                className={`bg-zinc-900/50 border border-${item.color}-500/20 rounded-xl p-5`}
-              >
-                <div className={`text-xs font-bold text-${item.color}-400 mb-2`}>CAMADA {item.layer}</div>
-                <h4 className="font-bold text-lg mb-2">{item.name}</h4>
-                <p className="text-zinc-500 text-sm">{item.desc}</p>
-              </div>
-            ))}
+              { layer: 1, name: 'Background', desc: 'Cor sólida ou gradiente linear/radial', color: 'purple', presetId: 'dune-haze' },
+              { layer: 2, name: 'Shapes', desc: 'Círculos e blobs com blur e blend modes', color: 'blue', presetId: 'bauhaus-one' },
+              { layer: 3, name: 'Vignette', desc: 'Máscara radial com gradientTransform', color: 'pink', presetId: 'soul-glow' },
+              { layer: 4, name: 'Noise', desc: 'feTurbulence com mix-blend-mode overlay', color: 'green', presetId: 'cyber-attack' },
+            ].map((item) => {
+              const preset = PRESETS.find(p => p.id === item.presetId);
+              const colorClasses: Record<string, string> = {
+                purple: 'border-purple-500/30 text-purple-400',
+                blue: 'border-blue-500/30 text-blue-400',
+                pink: 'border-pink-500/30 text-pink-400',
+                green: 'border-green-500/30 text-green-400',
+              };
+              
+              return (
+                <PipelineCard 
+                  key={item.layer} 
+                  item={item} 
+                  preset={preset}
+                  colorClass={colorClasses[item.color]}
+                />
+              );
+            })}
           </div>
         </section>
 
         {/* SVG Filters */}
-        <section className="mb-20">
+        <section className="mb-32">
           <h2 className="text-3xl font-bold mb-4">{t('tech.filters_title')}</h2>
           <p className="text-zinc-400 mb-6">{t('tech.filters_desc')}</p>
           
@@ -233,7 +381,7 @@ interface Shape {
         </section>
 
         {/* Contrast Safeguard */}
-        <section className="mb-20">
+        <section className="mb-32">
           <h2 className="text-3xl font-bold mb-4">Guarda-Costas de Contraste</h2>
           <p className="text-zinc-400 mb-6">
             Um sistema de validação automática que garante que todas as formas são visíveis,
@@ -276,7 +424,7 @@ interface Shape {
         </section>
 
         {/* Export Process */}
-        <section className="mb-20">
+        <section className="mb-32">
           <h2 className="text-3xl font-bold mb-4">{t('tech.export_title')}</h2>
           <p className="text-zinc-400 mb-6">{t('tech.export_desc')}</p>
           
@@ -423,7 +571,7 @@ type ShapeArray = [
                   </div>
                 </div>
               </div>
-              <p className="text-zinc-500 text-xs mt-4">Redução total: ~78% do tamanho original</p>
+              <p className="text-zinc-400 text-xs mt-4">Redução total: ~78% do tamanho original</p>
             </div>
             
             <div className="bg-zinc-900/50 border border-white/5 rounded-2xl p-6">
@@ -459,7 +607,7 @@ type ShapeArray = [
             <code className="text-xs bg-zinc-900 px-3 py-2 rounded-lg block overflow-x-auto text-zinc-400">
               https://mafhper.github.io/aurawall/app/#c=NoRg...DjR3dqBE (~400 chars)
             </code>
-            <p className="text-zinc-500 text-sm mt-4">
+            <p className="text-zinc-400 text-sm mt-4">
               Links V2 são 65% menores que o formato anterior, facilitando compartilhamento 
               em redes sociais e mensageiros.
             </p>

@@ -18,7 +18,7 @@ export default function CreationBoreal() {
     <div className="min-h-screen bg-black text-white">
       
       {/* Hero with Boreal background */}
-      <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+      <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden isolate">
         <HeroBackground 
             config={{
                 ...PRESETS.find(p => p.id === 'angel-aura')?.config || PRESETS[0].config,
@@ -27,7 +27,7 @@ export default function CreationBoreal() {
             opacity={0.6}
         />
         
-        <div className="relative text-center px-6 pointer-events-none">
+        <div className="relative text-center px-6 pointer-events-none z-10">
           <Link 
             to="/creation" 
             className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors pointer-events-auto"
@@ -57,7 +57,7 @@ export default function CreationBoreal() {
           <p className="text-zinc-400 text-lg leading-relaxed mb-6">
             {t('modes.boreal_desc')}
           </p>
-          <p className="text-zinc-500 leading-relaxed">
+          <p className="text-zinc-400 leading-relaxed">
             O modo Boreal é inspirado nas auroras boreais e na atmosfera de sonhos etéreos. 
             Cada composição busca evocar calma e contemplação, usando matemática para criar 
             paisagens abstratas que parecem flutuar suavemente na tela.
@@ -74,8 +74,8 @@ export default function CreationBoreal() {
               <p className="text-zinc-400 mb-4">{t('modes.boreal_char_1_desc')}</p>
               
               <div className="bg-zinc-900 rounded-xl p-4 font-mono text-sm">
-                <span className="text-zinc-500">// Faixa de blur típica</span><br/>
-                <span className="text-purple-400">blur</span>: <span className="text-green-400">60</span> - <span className="text-green-400">150</span><span className="text-zinc-500">px</span>
+                <span className="text-zinc-400">// Faixa de blur típica</span><br/>
+                <span className="text-purple-400">blur</span>: <span className="text-green-400">60</span> - <span className="text-green-400">150</span><span className="text-zinc-400">px</span>
               </div>
             </div>
             
@@ -84,7 +84,7 @@ export default function CreationBoreal() {
               <p className="text-zinc-400 mb-4">{t('modes.boreal_char_2_desc')}</p>
               
               <div className="bg-zinc-900 rounded-xl p-4 font-mono text-sm">
-                <span className="text-zinc-500">// Modos preferidos</span><br/>
+                <span className="text-zinc-400">// Modos preferidos</span><br/>
                 <span className="text-purple-400">blendMode</span>: [<br/>
                 &nbsp;&nbsp;<span className="text-yellow-400">'multiply'</span>,<br/>
                 &nbsp;&nbsp;<span className="text-yellow-400">'screen'</span>,<br/>
@@ -110,7 +110,7 @@ export default function CreationBoreal() {
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-pink-600" />
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600" />
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600" />
-              <span className="text-zinc-500 text-sm">Paleta análoga típica</span>
+              <span className="text-zinc-400 text-sm">Paleta análoga típica</span>
             </div>
           </div>
         </section>

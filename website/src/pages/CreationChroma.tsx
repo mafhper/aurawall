@@ -58,7 +58,7 @@ export default function CreationChroma() {
           <p className="text-zinc-400 text-lg leading-relaxed mb-6">
             {t('modes.chroma_desc')}
           </p>
-          <p className="text-zinc-500 leading-relaxed">
+          <p className="text-zinc-400 leading-relaxed">
             O modo Chroma explora o lado mais agressivo da matemática visual. 
             Inspirado em metal líquido, vidro dicróico e estéticas cyberpunk, 
             cada composição busca criar tensão visual através de alto contraste 
@@ -76,7 +76,7 @@ export default function CreationChroma() {
               <p className="text-zinc-400 mb-4">{t('modes.chroma_char_1_desc')}</p>
               
               <div className="bg-zinc-900 rounded-xl p-4 font-mono text-sm">
-                <span className="text-zinc-500">// Modos de alto contraste</span><br/>
+                <span className="text-zinc-400">// Modos de alto contraste</span><br/>
                 <span className="text-green-400">blendMode</span>: [<br/>
                 &nbsp;&nbsp;<span className="text-yellow-400">'difference'</span>,<br/>
                 &nbsp;&nbsp;<span className="text-yellow-400">'exclusion'</span>,<br/>
@@ -90,7 +90,7 @@ export default function CreationChroma() {
               <p className="text-zinc-400 mb-4">{t('modes.chroma_char_2_desc')}</p>
               
               <div className="bg-zinc-900 rounded-xl p-4 font-mono text-sm">
-                <span className="text-zinc-500">// Filtro de turbulência</span><br/>
+                <span className="text-zinc-400">// Filtro de turbulência</span><br/>
                 <span className="text-green-400">&lt;feTurbulence</span><br/>
                 &nbsp;&nbsp;<span className="text-blue-400">type</span>=<span className="text-yellow-400">"fractalNoise"</span><br/>
                 &nbsp;&nbsp;<span className="text-blue-400">baseFrequency</span>=<span className="text-yellow-400">"0.02"</span><br/>
@@ -115,7 +115,7 @@ export default function CreationChroma() {
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-600" />
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600" />
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-lime-400 to-lime-600" />
-              <span className="text-zinc-500 text-sm">Paleta de alto contraste típica</span>
+              <span className="text-zinc-400 text-sm">Paleta de alto contraste típica</span>
             </div>
           </div>
         </section>
