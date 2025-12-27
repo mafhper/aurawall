@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Zap, Shield, Maximize, Play, Palette, Download, ArrowRight, Wand2, RefreshCw } from 'lucide-react';
 import { PRESETS, HERO_PRESETS, DEFAULT_CONFIG, DEFAULT_ANIMATION } from '../../../src/constants';
 import GalleryCard from '../components/GalleryCard';
+import LazySection from '../components/LazySection';
 import { getAppUrl } from '../utils/appUrl';
 import { encodeConfigCompact } from '../../../src/utils/compactUrlEncoder';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
@@ -76,6 +77,23 @@ export default function Home() {
 
   const [actionIndex, setActionIndex] = useState(0);
   const [isRotating, setIsRotating] = useState(false);
+  
+  // Check for hover capability on mount with lazy init to avoid effect warning
+  const [canHover, setCanHover] = useState(() => {
+    if (typeof window !== 'undefined') {
+       return window.matchMedia('(hover: hover)').matches;
+    }
+    return true; // Default to desktop for SSR
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const media = window.matchMedia('(hover: hover)');
+    const handler = (e: MediaQueryListEvent) => setCanHover(e.matches);
+    media.addEventListener('change', handler);
+    return () => media.removeEventListener('change', handler);
+  }, []);
 
   // Hover states for animations
   const [isHeroHovered, setIsHeroHovered] = useState(false);
@@ -161,7 +179,7 @@ export default function Home() {
                className="w-full h-full block" 
                style={{ transform: 'scale(1.1)' }}
                lowQuality={false}
-               paused={!isHeroHovered}
+               paused={canHover && !isHeroHovered}
              />
              {/* Overlay for better text contrast */}
              <div className="absolute inset-0 bg-black/30 pointer-events-none" />
@@ -221,8 +239,9 @@ export default function Home() {
         </div>
 
         {/* Features Section - 6 features now */}
-        <div className="py-24 bg-gradient-to-b from-black via-zinc-950 to-black relative z-10 [content-visibility:auto] [contain-intrinsic-size:1000px]">
+        <div className="py-24 bg-gradient-to-b from-black via-zinc-950 to-black relative z-10">
           <div className="container mx-auto px-6">
+            <LazySection minHeight="800px">
             <h2 className="text-4xl font-bold text-center mb-4">{t('features.title')}</h2>
             <p className="text-zinc-400 text-center mb-16 max-w-2xl mx-auto">
               {t('features_extra.subtitle')}
@@ -283,11 +302,13 @@ export default function Home() {
                 <p className="text-zinc-400 leading-relaxed">{t('features.feat_6_desc')}</p>
               </div>
             </div>
+            </LazySection>
           </div>
         </div>
 
-        <div className="py-32 border-t border-white/5 relative z-10 [content-visibility:auto] [contain-intrinsic-size:800px]">
+        <div className="py-32 border-t border-white/5 relative z-10">
           <div className="container mx-auto px-6">
+            <LazySection minHeight="800px">
             <div className="text-center mb-16">
               <h2 className="text-5xl font-bold mb-6 tracking-tight">{t('home_compare.title')}</h2>
               <p className="text-xl text-zinc-400 max-w-2xl mx-auto">{t('home_compare.desc')}</p>
@@ -306,7 +327,7 @@ export default function Home() {
                       config={borealConfig}
                       className="w-full h-full block"
                       lowQuality={false}
-                      paused={!isBorealHovered}
+                      paused={canHover && !isBorealHovered}
                     />
                  </div>
                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
@@ -332,7 +353,7 @@ export default function Home() {
                     config={chromaConfig}
                     className="w-full h-full block"
                     lowQuality={false}
-                    paused={!isChromaHovered}
+                    paused={canHover && !isChromaHovered}
                   />
                  </div>
                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 pointer-events-none" />
@@ -346,12 +367,14 @@ export default function Home() {
                   </div>
                </div>
             </div>
+            </LazySection>
           </div>
         </div>
 
         {/* Gallery Teaser - New section */}
-        <div className="py-24 bg-gradient-to-b from-black via-zinc-950/50 to-black [content-visibility:auto] [contain-intrinsic-size:600px]">
+        <div className="py-24 bg-gradient-to-b from-black via-zinc-950/50 to-black">
           <div className="container mx-auto px-6">
+            <LazySection minHeight="600px">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold mb-4">{t('home_gallery.expanded_collection')}</h2>
               <p className="text-zinc-400 max-w-xl mx-auto">
@@ -379,11 +402,13 @@ export default function Home() {
                 <ArrowRight size={20} />
               </Link>
             </div>
+            </LazySection>
           </div>
         </div>
 
         {/* Final CTA - Large Illustrated Section */}
-        <div className="py-32 relative overflow-hidden [content-visibility:auto] [contain-intrinsic-size:500px]">
+        <div className="py-32 relative overflow-hidden">
+          <LazySection minHeight="500px">
           {/* Decorative Elements - Contained for performance */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ isolation: 'isolate' }}>
             {/* Floating orbs - reduced blur for performance */}
@@ -449,6 +474,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          </LazySection>
         </div>
       </div>
     </>

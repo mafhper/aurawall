@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const DIR = path.join(__dirname, '../../performance-reports/manual');
+const userDir = process.argv[2];
+const DIR = userDir ? path.resolve(userDir) : path.join(__dirname, '../../performance-reports/manual');
 
 function getLatestMobileReport() {
     if (!fs.existsSync(DIR)) return null;

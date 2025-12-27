@@ -1,4 +1,9 @@
-[2025/12/15 - perf: Promo Site Core Web Vitals]
+[2025/12/27 - Mobile Animations & Hover Logic]
+- App: Enabled animations on mobile devices (removed lowQuality restriction).
+- Promo: Implemented smart hover detection (Always animate on touch devices, Animate on hover for Desktop).
+- Fix: Resolved React useEffect dependency/state warnings in Hero components.
+
+[2025/12/15 - Performance & Analytics]
 - Fixed CLS by enforcing min-height on route container to stabilize footer
 - Reduced TBT by applying content-visibility:auto to heavy Home sections (Features, Gallery, Compare)
 

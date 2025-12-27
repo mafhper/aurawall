@@ -1,8 +1,8 @@
 # ============================
 # Desenvolvimento Interno
 # ============================
-_desenvolvimento/
-performance-reports/
+_dev/
+_template/
 
 
 # ============================
@@ -83,3 +83,4 @@ coverage/
 *.tmp
 *.temp
 *.orig
+performance-reports/

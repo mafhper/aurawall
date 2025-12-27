@@ -74,8 +74,6 @@ export default function App() {
     return 0.4;
   });
   
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  
   const [isFullscreen, setIsFullscreen] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -306,7 +304,7 @@ export default function App() {
           style={{ width: config.width, height: config.height, transform: `scale(${zoom})` }}
         >
           <React.Suspense fallback={<div className="w-full h-full" style={{ backgroundColor: typeof config.baseColor === 'string' ? config.baseColor : '#000000' }} />}>
-            <WallpaperRenderer ref={svgRef} config={config} className="w-full h-full block" lowQuality={isMobile} />
+            <WallpaperRenderer ref={svgRef} config={config} className="w-full h-full block" lowQuality={false} />
           </React.Suspense>
         </div>
 

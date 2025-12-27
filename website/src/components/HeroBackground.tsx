@@ -57,8 +57,28 @@ export default function HeroBackground({
 }: HeroBackgroundProps) {
   const [internalHovered, setInternalHovered] = React.useState(false);
   
+  // Check for hover capability on mount with lazy init
+  const [canHover, setCanHover] = React.useState(() => {
+    if (typeof window !== 'undefined') {
+       return window.matchMedia('(hover: hover)').matches;
+    }
+    return true; 
+  });
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const media = window.matchMedia('(hover: hover)');
+    const handler = (e: MediaQueryListEvent) => setCanHover(e.matches);
+    media.addEventListener('change', handler);
+    return () => media.removeEventListener('change', handler);
+  }, []);
+  
   // Use external hover if provided, otherwise use internal state
   const isHovered = externalHovered !== undefined ? externalHovered : internalHovered;
+  
+  // On mobile (no hover capability), always animate. On desktop, animate on hover.
+  const shouldPause = canHover && !isHovered;
 
   // Determine preset deterministically (SSR-safe)
   const activePreset = useMemo(() => {
@@ -112,7 +132,7 @@ export default function HeroBackground({
          }}
          className="w-full h-full block scale-110" 
          lowQuality={false}
-         paused={!isHovered}
+         paused={shouldPause}
        />
        {/* Dark overlay - opacity is percentage of darkness */}
        <div 

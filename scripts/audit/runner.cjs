@@ -78,7 +78,7 @@ async function main() {
 
     const results = [];
     const startTime = Date.now();
-    const AUDIT_TIMEOUT = 180000; // 3 minutes per audit
+    const AUDIT_TIMEOUT = 300000; // 5 minutes per audit
 
     // Executa sequencialmente para evitar conflitos de porta e esgotamento de recursos
     for (let i = 0; i < targetsToRun.length; i++) {

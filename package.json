@@ -25,6 +25,7 @@
         "audit:app": "node scripts/audit/runner.cjs --filter=app",
         "optimize:images": "node scripts/ops/optimize-images.cjs",
         "icons": "node scripts/ops/distribute-icons.cjs",
+        "template:export": "node scripts/ops/export-template.cjs",
         "generate:bgs": "node scripts/ops/generate-bgs.cjs",
         "logs": "node scripts/ops/fetch-changelog.js",
         "test:structure": "node scripts/test/structure.cjs",
