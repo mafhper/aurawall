@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { ensureVisibility } from '../utils/engineUtils';
+import { ensureVisibility, applyGrainLock } from '../utils/engineUtils';
 
 export const geometricaEngine: EngineDefinition = {
   id: 'geometrica',
@@ -48,10 +48,12 @@ export const geometricaEngine: EngineDefinition = {
          });
     }
 
+    const grain = applyGrainLock(config, isGrainLocked, 8); // Subtle paper grain
+
     return {
         ...config,
         baseColor,
-        noise: isGrainLocked ? config.noise : 8, // Subtle paper grain
+        ...grain,
         shapes: newShapes,
         animation: {
             ...config.animation,
@@ -62,29 +64,37 @@ export const geometricaEngine: EngineDefinition = {
   variations: [
       {
           name: 'Dark Mode Architect',
-          transform: (cfg) => ({
-              ...cfg,
-              baseColor: '#101010',
-              shapes: ensureVisibility(cfg.shapes.map(s => ({
-                  ...s,
-                  blendMode: 'screen',
-                  opacity: 0.9,
-                  color: s.color === '#000000' ? '#333333' : s.color
-              })), '#101010')
-          })
+          transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+              const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+              return {
+                  ...cfg,
+                  ...grain,
+                  baseColor: '#101010',
+                  shapes: ensureVisibility(cfg.shapes.map(s => ({
+                      ...s,
+                      blendMode: 'screen',
+                      opacity: 0.9,
+                      color: s.color === '#000000' ? '#333333' : s.color
+                  })), '#101010')
+              };
+          }
       },
       {
           name: 'Deconstructed',
-          transform: (cfg) => ({
-              ...cfg,
-              shapes: cfg.shapes.map(s => ({
-                  ...s,
-                  x: s.x + (Math.random() * 10 - 5), // Slight off-grid
-                  y: s.y + (Math.random() * 10 - 5),
-                  opacity: 0.7,
-                  blendMode: 'multiply'
-              }))
-          })
+          transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+              const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+              return {
+                  ...cfg,
+                  ...grain,
+                  shapes: cfg.shapes.map(s => ({
+                      ...s,
+                      x: s.x + (Math.random() * 10 - 5), // Slight off-grid
+                      y: s.y + (Math.random() * 10 - 5),
+                      opacity: 0.7,
+                      blendMode: 'multiply'
+                  }))
+              };
+          }
       }
   ]
 };

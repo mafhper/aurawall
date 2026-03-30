@@ -1,4 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
+import { applyGrainLock } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
@@ -50,26 +51,31 @@ export const midnightEngine: EngineDefinition = {
          });
     }
 
+    const grain = applyGrainLock(config, isGrainLocked, 10, 1);
+
     return {
         ...config,
         baseColor,
-        noise: isGrainLocked ? config.noise : 10,
-        noiseScale: 1,
+        ...grain,
         shapes: newShapes
     };
   },
   variations: [
       {
           name: 'Supernova',
-          transform: (cfg) => ({
-              ...cfg,
-              shapes: cfg.shapes.map(s => s.id.includes('nebula') ? {
-                  ...s,
-                  color: '#ffaa00',
-                  opacity: 0.5,
-                  blendMode: 'screen'
-              } : s)
-          })
+          transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+              const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+              return {
+                  ...cfg,
+                  ...grain,
+                  shapes: cfg.shapes.map(s => s.id.includes('nebula') ? {
+                      ...s,
+                      color: '#ffaa00',
+                      opacity: 0.5,
+                      blendMode: 'screen'
+                  } : s)
+              };
+          }
       }
   ]
 };

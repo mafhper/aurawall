@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape, BlendMode } from '../types';
-import { shiftColor, jitter, clamp, ensureVisibility } from '../utils/engineUtils';
+import { shiftColor, jitter, clamp, ensureVisibility, applyGrainLock } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
@@ -24,11 +24,7 @@ export const borealEngine: EngineDefinition = {
         ? getHSL(baseHue, 40, Math.floor(Math.random() * 10) + 5) 
         : getHSL(baseHue, 20, Math.floor(Math.random() * 10) + 88);
       
-    let noise = config.noise;
-
-    if (!isGrainLocked) {
-       noise = Math.floor(Math.random() * 25) + 20;
-    }
+    const grain = applyGrainLock(config, isGrainLocked, Math.floor(Math.random() * 25) + 20, 1.0);
       
     const safeBlendModes: BlendMode[] = isDarkTheme
         ? ['screen', 'color-dodge', 'normal', 'lighten'] 
@@ -56,7 +52,7 @@ export const borealEngine: EngineDefinition = {
     return {
         ...config,
         baseColor,
-        noise,
+        ...grain,
         shapes: newShapes
     };
   },
@@ -78,12 +74,13 @@ export const borealEngine: EngineDefinition = {
     },
     {
       name: 'Atmosphere Shift',
-      transform: (baseConfig) => {
+      transform: (baseConfig, { isGrainLocked } = { isGrainLocked: false }) => {
         const atmosBase = shiftColor(baseConfig.baseColor, 10, -5, 5);
+        const grain = applyGrainLock(baseConfig, isGrainLocked, clamp(baseConfig.noise - 10, 10, 50));
         return {
           ...baseConfig,
           baseColor: atmosBase,
-          noise: clamp(baseConfig.noise - 10, 10, 50),
+          ...grain,
           shapes: ensureVisibility(baseConfig.shapes.map(s => ({
             ...s,
             blur: Math.min(150, s.blur * 1.3),
@@ -96,12 +93,13 @@ export const borealEngine: EngineDefinition = {
     },
     {
       name: 'Deep Contrast',
-      transform: (baseConfig) => {
+      transform: (baseConfig, { isGrainLocked } = { isGrainLocked: false }) => {
         const contrastBase = shiftColor(baseConfig.baseColor, 0, 10, -10);
+        const grain = applyGrainLock(baseConfig, isGrainLocked, clamp(baseConfig.noise + 15, 20, 80));
         return {
           ...baseConfig,
           baseColor: contrastBase,
-          noise: clamp(baseConfig.noise + 15, 20, 80),
+          ...grain,
           shapes: ensureVisibility(baseConfig.shapes.map(s => ({
             ...s,
             color: shiftColor(s.color, 0, 20, 5),

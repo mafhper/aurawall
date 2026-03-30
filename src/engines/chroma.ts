@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape, BlendMode } from '../types';
-import { shiftColor, jitter, clamp, ensureVisibility } from '../utils/engineUtils';
+import { shiftColor, jitter, clamp, ensureVisibility, applyGrainLock } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
@@ -21,13 +21,7 @@ export const chromaEngine: EngineDefinition = {
     // Usually darker bases work better for "liquid light"
     const baseColor = getHSL(baseHue, 10, 5); // Very dark base
     
-    let noise = config.noise;
-    let noiseScale = config.noiseScale;
-
-    if (!isGrainLocked) {
-      noise = Math.floor(Math.random() * 40) + 30; // Higher grain
-      noiseScale = Math.random() * 2 + 2; // Coarser grain
-    }
+    const grain = applyGrainLock(config, isGrainLocked, Math.floor(Math.random() * 40) + 30, Math.random() * 2 + 2);
 
     const acidModes: BlendMode[] = ['difference', 'exclusion', 'hard-light', 'color-dodge', 'overlay'];
 
@@ -54,17 +48,18 @@ export const chromaEngine: EngineDefinition = {
     return {
         ...config,
         baseColor,
-        noise,
-        noiseScale,
+        ...grain,
         shapes: newShapes
     };
   },
   variations: [
     {
       name: 'Liquid Distort',
-      transform: (baseConfig) => {
+      transform: (baseConfig, { isGrainLocked } = { isGrainLocked: false }) => {
+        const grain = applyGrainLock(baseConfig, isGrainLocked, baseConfig.noise);
         return {
           ...baseConfig,
+          ...grain,
           shapes: ensureVisibility(baseConfig.shapes.map(s => ({
             ...s,
             x: clamp(jitter(s.x, 20), 20, 80), // Keep centered
@@ -79,13 +74,13 @@ export const chromaEngine: EngineDefinition = {
     },
     {
       name: 'Acid Wash',
-      transform: (baseConfig) => {
+      transform: (baseConfig, { isGrainLocked } = { isGrainLocked: false }) => {
         const acidBase = shiftColor(baseConfig.baseColor, 120, 20, 0);
+        const grain = applyGrainLock(baseConfig, isGrainLocked, 60, 4.0);
         return {
           ...baseConfig,
           baseColor: acidBase,
-          noise: 60, // High grain
-          noiseScale: 4, // Coarse grain
+          ...grain,
           shapes: ensureVisibility(baseConfig.shapes.map(s => ({
             ...s,
             color: shiftColor(s.color, 120, 40, 0), // Shift hue + boost sat
@@ -97,10 +92,12 @@ export const chromaEngine: EngineDefinition = {
     },
     {
       name: 'Thermal Shift',
-      transform: (baseConfig) => {
+      transform: (baseConfig, { isGrainLocked } = { isGrainLocked: false }) => {
         const thermalBase = shiftColor(baseConfig.baseColor, 180, 0, 10);
+        const grain = applyGrainLock(baseConfig, isGrainLocked, baseConfig.noise);
         return {
           ...baseConfig,
+          ...grain,
           baseColor: thermalBase,
           shapes: ensureVisibility(baseConfig.shapes.map(s => ({
             ...s,
@@ -114,9 +111,11 @@ export const chromaEngine: EngineDefinition = {
     },
     {
       name: 'Glass Shards',
-      transform: (baseConfig) => {
+      transform: (baseConfig, { isGrainLocked } = { isGrainLocked: false }) => {
+        const grain = applyGrainLock(baseConfig, isGrainLocked, baseConfig.noise);
         return {
           ...baseConfig,
+          ...grain,
           shapes: ensureVisibility(baseConfig.shapes.map(s => ({
             ...s,
             blur: 10, // Very sharp
@@ -130,9 +129,11 @@ export const chromaEngine: EngineDefinition = {
     },
     {
       name: 'Dark Matter',
-      transform: (baseConfig) => {
+      transform: (baseConfig, { isGrainLocked } = { isGrainLocked: false }) => {
+        const grain = applyGrainLock(baseConfig, isGrainLocked, baseConfig.noise);
         return {
           ...baseConfig,
+          ...grain,
           baseColor: '#000000',
           shapes: ensureVisibility(baseConfig.shapes.map(s => ({
             ...s,

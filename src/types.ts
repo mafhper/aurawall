@@ -98,7 +98,7 @@ export interface AppPreferences {
 
 export interface VariationRule {
   name: string;
-  transform: (config: WallpaperConfig) => WallpaperConfig;
+  transform: (config: WallpaperConfig, options?: { isGrainLocked: boolean }) => WallpaperConfig;
 }
 
 export interface EngineDefinition {
