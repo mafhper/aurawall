@@ -108,6 +108,22 @@ export const ensureVisibility = (shapes: Shape[], baseColor: string | Background
   });
 };
 
+/**
+ * Helper to apply grain lock logic consistently across all engines.
+ * Returns the provided values if NOT locked, or the original config values if LOCKED.
+ */
+export const applyGrainLock = (
+  config: { noise: number; noiseScale: number }, 
+  isGrainLocked: boolean, 
+  newNoise: number, 
+  newNoiseScale?: number
+) => {
+  return {
+    noise: isGrainLocked ? config.noise : newNoise,
+    noiseScale: isGrainLocked ? config.noiseScale : (newNoiseScale ?? config.noiseScale)
+  };
+};
+
 export function shiftColor(color: string, dH: number, dS: number, dL: number): string;
 export function shiftColor(color: BackgroundConfig, dH: number, dS: number, dL: number): BackgroundConfig;
 export function shiftColor(color: string | BackgroundConfig, dH: number, dS: number, dL: number): string | BackgroundConfig;

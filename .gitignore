@@ -84,3 +84,26 @@ coverage/
 *.temp
 *.orig
 performance-reports/
+/.gemini
+GEMINI.md
+.dev/
+_dev/
+
+# Codex local private files
+AGENTS.md
+.codex/
+.gemini/
+.claude/
+.qwen/
+.kimi/
+
+# Codex local private files
+.agents/
+.gemini-clipboard/
+.roo/
+.cursor/
+.windsurf/
+.claude-code/
+CLAUDE.md
+QWEN.md
+KIMI.md

@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { ensureVisibility, shiftColor } from '../utils/engineUtils';
+import { ensureVisibility, shiftColor, applyGrainLock } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
@@ -57,10 +57,12 @@ export const oceanicEngine: EngineDefinition = {
         });
     }
 
+    const grain = applyGrainLock(config, isGrainLocked, 15);
+
     return {
         ...config,
         baseColor,
-        noise: isGrainLocked ? config.noise : 15,
+        ...grain,
         shapes: newShapes,
         animation: {
             ...config.animation,
@@ -75,29 +77,36 @@ export const oceanicEngine: EngineDefinition = {
   variations: [
     {
       name: 'Stormy Seas',
-      transform: (cfg) => ({
-        ...cfg,
-        baseColor: '#0a1015', // Dark grey-blue
-        noise: 40, // Rough texture
-        shapes: ensureVisibility(cfg.shapes.map(s => ({
-          ...s,
-          color: shiftColor(s.color, 0, -20, -10), // Desaturated
-          blendMode: 'hard-light',
-          blur: s.blur * 0.8 // Sharper waves
-        })), '#0a1015')
-      })
+      transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+        const grain = applyGrainLock(cfg, isGrainLocked, 40);
+        return {
+          ...cfg,
+          baseColor: '#0a1015', // Dark grey-blue
+          ...grain,
+          shapes: ensureVisibility(cfg.shapes.map(s => ({
+            ...s,
+            color: shiftColor(s.color, 0, -20, -10), // Desaturated
+            blendMode: 'hard-light',
+            blur: s.blur * 0.8 // Sharper waves
+          })), '#0a1015')
+        };
+      }
     },
     {
         name: 'Coral Reef',
-        transform: (cfg) => ({
-          ...cfg,
-          baseColor: '#002030', // Clear tropical water
-          shapes: cfg.shapes.map((s, i) => ({
-            ...s,
-            color: i % 2 === 0 ? shiftColor(s.color, 0, 0, 0) : '#ff7f50', // Inject coral orange
-            blendMode: 'screen'
-          }))
-        })
+        transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+          const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+          return {
+            ...cfg,
+            ...grain,
+            baseColor: '#002030', // Clear tropical water
+            shapes: cfg.shapes.map((s, i) => ({
+              ...s,
+              color: i % 2 === 0 ? shiftColor(s.color, 0, 0, 0) : '#ff7f50', // Inject coral orange
+              blendMode: 'screen'
+            }))
+          };
+        }
       }
   ]
 };

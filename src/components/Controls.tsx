@@ -741,7 +741,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                         e.stopPropagation();
                         toggleVignette();
                       }}
-                      className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${vig.enabled ? 'bg-purple-900' : 'bg-zinc-700'}`}
+                      className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${vig.enabled ? 'bg-purple-600' : 'bg-zinc-700'}`}
                     ></div>
                   </div>
                 }
@@ -881,34 +881,33 @@ const ControlsInner: React.FC<ControlsProps> = ({
                            right: vig.inverted ? '0' : 'auto', 
                            left: vig.inverted ? 'auto' : '0',
                            borderColor: vig.inverted ? '#a855f7' : '#3f3f46'
-                         }}
-                       />
-                       <div 
-                         onClick={() => updateVignette('inverted', !vig.inverted)}
-                         className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${vig.inverted ? 'bg-purple-900' : 'bg-zinc-700'}`}
-                       ></div>
-                     </div>
-                  </div>
-                </div>
-              </CollapsibleSection>
+                           }}
+                           />
+                           <div 
+                           onClick={() => updateVignette('inverted', !vig.inverted)}
+                           className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${vig.inverted ? 'bg-purple-600' : 'bg-zinc-700'}`}
+                           ></div>
+                           </div>
+                           </div>
+                           </div>
+                           </CollapsibleSection>
 
-              {/* Noise Control */}
-              <CollapsibleSection 
-                title={t('grain_effect')}
-                rightElement={
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleGrainLock();
-                    }}
-                    className={`p-1 rounded transition-colors ${isGrainLocked ? 'text-purple-400 bg-purple-500/10' : 'text-zinc-600 hover:text-zinc-400'}`}
-                    title={isGrainLocked ? t('parameters_locked_randomization_ignored') : t('parameters_unlocked')}
-                  >
-                    {isGrainLocked ? <Lock size={12} /> : <Unlock size={12} />}
-                  </button>
-                }
-              >
-                <div className={`bg-zinc-800/30 p-3 rounded-lg border border-white/5 space-y-3 transition-opacity ${isGrainLocked ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
+                           {/* Noise Control */}
+                           <CollapsibleSection 
+                           title={t('grain_effect')}
+                           rightElement={
+                           <button 
+                           onClick={(e) => {
+                           e.stopPropagation();
+                           onToggleGrainLock();
+                           }}
+                           className={`p-1.5 rounded transition-all duration-200 ${isGrainLocked ? 'text-purple-400 bg-purple-500/20' : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'}`}
+                           title={isGrainLocked ? t('parameters_locked_randomization_ignored') : t('parameters_unlocked')}
+                           >
+                           {isGrainLocked ? <Lock size={14} /> : <Unlock size={14} />}
+                           </button>
+                           }
+                           >                <div className={`bg-zinc-800/30 p-3 rounded-lg border border-white/5 space-y-3 transition-all duration-200 ${isGrainLocked ? 'opacity-60 grayscale-[0.2]' : 'opacity-100'}`}>
                   <div>
                     <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('intensity')}</span>
@@ -922,7 +921,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                       disabled={isGrainLocked}
                       value={config.noise} 
                       onChange={(e) => handleNoiseChange(Number(e.target.value))}
-                      className="w-full h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                      className={`w-full h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-purple-500 ${isGrainLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                     />
                   </div>
                   <div>
@@ -939,7 +938,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                       disabled={isGrainLocked}
                       value={config.noiseScale} 
                       onChange={(e) => handleNoiseScaleChange(Number(e.target.value))}
-                      className="w-full h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                      className={`w-full h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-purple-500 ${isGrainLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                     />
                   </div>
                 </div>
@@ -1105,125 +1104,124 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   {t('live_animation')}
                 </label>
                 <div className="relative inline-block w-10 mr-2 align-middle select-none">
-                  <input 
-                    type="checkbox" 
-                    aria-label="Ativar/Desativar Animação"
-                    checked={anim.enabled}
-                    onChange={toggleAnim}
-                    className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 ease-in-out top-0.5"
-                    style={{ 
-                      right: anim.enabled ? '0' : 'auto', 
-                      left: anim.enabled ? 'auto' : '0',
-                      borderColor: anim.enabled ? '#a855f7' : '#3f3f46'
-                    }}
-                  />
-                  <div 
-                    onClick={toggleAnim}
-                    className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${anim.enabled ? 'bg-purple-900' : 'bg-zinc-700'}`}
-                  ></div>
+                <input 
+                  type="checkbox" 
+                  aria-label="Ativar/Desativar Animação"
+                  checked={anim.enabled}
+                  onChange={toggleAnim}
+                  className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 ease-in-out top-0.5"
+                  style={{ 
+                    right: anim.enabled ? '0' : 'auto', 
+                    left: anim.enabled ? 'auto' : '0',
+                    borderColor: anim.enabled ? '#a855f7' : '#3f3f46'
+                  }}
+                />
+                <div 
+                  onClick={toggleAnim}
+                  className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${anim.enabled ? 'bg-purple-600' : 'bg-zinc-700'}`}
+                ></div>
                 </div>
-             </div>
-             
-             <div className={`space-y-4 transition-opacity duration-300 ${anim.enabled ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}>
-               
-               <div className="bg-zinc-800/30 p-3 rounded-lg border border-white/5 space-y-4">
-                 
-                 {/* Speed */}
-                 <div>
-                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
-                      <span>{t('global_speed')}</span>
-                      <span>{anim.speed.toFixed(1)}</span>
-                    </div>
+                </div>
+
+                <div className={`space-y-4 transition-opacity duration-300 ${anim.enabled ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}>
+
+                <div className="bg-zinc-800/30 p-3 rounded-lg border border-white/5 space-y-4">
+
+                {/* Speed */}
+                <div>
+                  <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
+                    <span>{t('global_speed')}</span>
+                    <span>{anim.speed.toFixed(1)}</span>
+                  </div>
+                  <input 
+                    type="range" min="0.1" max="10" step="0.1"
+                    aria-label={t('global_speed')}
+                    value={anim.speed} onChange={(e) => updateAnim('speed', Number(e.target.value))}
+                    className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
+                  />
+                </div>
+
+                <hr className="border-white/5" />
+
+                {/* Drift/Flow */}
+                <div>
+                  <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
+                    <span>{t('drift_flow')}</span>
+                    <span>{anim.flow}</span>
+                  </div>
+                  <input 
+                    type="range" min="0" max="10" step="1"
+                    aria-label={t('drift_flow')}
+                    value={anim.flow} onChange={(e) => updateAnim('flow', Number(e.target.value))}
+                    className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
+                  />
+                </div>
+
+                {/* Pulse */}
+                <div>
+                  <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
+                    <span>{t('pulse_breathing')}</span>
+                    <span>{anim.pulse}</span>
+                  </div>
+                  <input 
+                    type="range" min="0" max="10" step="1"
+                    aria-label={t('pulse_breathing')}
+                    value={anim.pulse} onChange={(e) => updateAnim('pulse', Number(e.target.value))}
+                    className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
+                  />
+                </div>
+
+                {/* Rotate */}
+                <div>
+                  <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
+                    <span>{t('slow_rotate')}</span>
+                    <span>{anim.rotate}</span>
+                  </div>
+                  <input 
+                    type="range" min="0" max="10" step="1"
+                    aria-label={t('slow_rotate')}
+                    value={anim.rotate} onChange={(e) => updateAnim('rotate', Number(e.target.value))}
+                    className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
+                  />
+                </div>
+
+                {/* Noise Anim */}
+                <div>
+                  <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
+                    <span>{t('static_noise_tv')}</span>
+                    <span>{anim.noiseAnim}</span>
+                  </div>
+                  <input 
+                    type="range" min="0" max="10" step="1"
+                    aria-label={t('static_noise_tv')}
+                    value={anim.noiseAnim} onChange={(e) => updateAnim('noiseAnim', Number(e.target.value))}
+                    className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
+                  />
+                </div>
+
+                <hr className="border-white/5" />
+
+                {/* Color Cycle Toggle */}
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-zinc-500">{t('color_cycle_shapes')}</span>
+                  <div className="relative inline-block w-10 mr-1 align-middle select-none">
                     <input 
-                      type="range" min="0.1" max="10" step="0.1"
-                      aria-label={t('global_speed')}
-                      value={anim.speed} onChange={(e) => updateAnim('speed', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
+                      type="checkbox" 
+                      checked={anim.colorCycle}
+                      onChange={() => updateAnim('colorCycle', !anim.colorCycle)}
+                      className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 ease-in-out top-0.5"
+                      style={{ 
+                        right: anim.colorCycle ? '0' : 'auto', 
+                        left: anim.colorCycle ? 'auto' : '0',
+                        borderColor: anim.colorCycle ? '#a855f7' : '#3f3f46'
+                      }}
                     />
-                 </div>
-
-                 <hr className="border-white/5" />
-                 
-                 {/* Drift/Flow */}
-                 <div>
-                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
-                      <span>{t('drift_flow')}</span>
-                      <span>{anim.flow}</span>
-                    </div>
-                    <input 
-                      type="range" min="0" max="10" step="1"
-                      aria-label={t('drift_flow')}
-                      value={anim.flow} onChange={(e) => updateAnim('flow', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
-                    />
-                 </div>
-
-                 {/* Pulse */}
-                 <div>
-                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
-                      <span>{t('pulse_breathing')}</span>
-                      <span>{anim.pulse}</span>
-                    </div>
-                    <input 
-                      type="range" min="0" max="10" step="1"
-                      aria-label={t('pulse_breathing')}
-                      value={anim.pulse} onChange={(e) => updateAnim('pulse', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
-                    />
-                 </div>
-
-                 {/* Rotate */}
-                 <div>
-                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
-                      <span>{t('slow_rotate')}</span>
-                      <span>{anim.rotate}</span>
-                    </div>
-                    <input 
-                      type="range" min="0" max="10" step="1"
-                      aria-label={t('slow_rotate')}
-                      value={anim.rotate} onChange={(e) => updateAnim('rotate', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
-                    />
-                 </div>
-                 
-                 {/* Noise Anim */}
-                 <div>
-                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
-                      <span>{t('static_noise_tv')}</span>
-                      <span>{anim.noiseAnim}</span>
-                    </div>
-                    <input 
-                      type="range" min="0" max="10" step="1"
-                      aria-label={t('static_noise_tv')}
-                      value={anim.noiseAnim} onChange={(e) => updateAnim('noiseAnim', Number(e.target.value))}
-                      className="w-full h-1 bg-zinc-700 rounded appearance-none cursor-pointer accent-purple-500"
-                    />
-                 </div>
-
-                 <hr className="border-white/5" />
-
-                 {/* Color Cycle Toggle */}
-                 <div className="flex items-center justify-between">
-                    <span className="text-[10px] text-zinc-500">{t('color_cycle_shapes')}</span>
-                    <div className="relative inline-block w-10 mr-1 align-middle select-none">
-                      <input 
-                        type="checkbox" 
-                        checked={anim.colorCycle}
-                        onChange={() => updateAnim('colorCycle', !anim.colorCycle)}
-                        className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 ease-in-out top-0.5"
-                        style={{ 
-                          right: anim.colorCycle ? '0' : 'auto', 
-                          left: anim.colorCycle ? 'auto' : '0',
-                          borderColor: anim.colorCycle ? '#a855f7' : '#3f3f46'
-                        }}
-                      />
-                      <div 
-                        onClick={() => updateAnim('colorCycle', !anim.colorCycle)}
-                        className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${anim.colorCycle ? 'bg-purple-900' : 'bg-zinc-700'}`}
-                      ></div>
-                    </div>
-                 </div>
-
+                    <div 
+                      onClick={() => updateAnim('colorCycle', !anim.colorCycle)}
+                      className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer transition-colors duration-300 ${anim.colorCycle ? 'bg-purple-600' : 'bg-zinc-700'}`}
+                    ></div>
+                  </div>
+                </div>
                  {/* Color Cycle Speed */}
                  <div className={`${anim.colorCycle ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
                     <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
@@ -1335,38 +1333,40 @@ const ControlsInner: React.FC<ControlsProps> = ({
             </div>
           </div>
         )}
+
+        {/* Palette Extraction Section - Now inside scrollable area */}
+        <div className="pt-4 border-t border-white/5 mt-6">
+          <CollapsibleSection title={t('palette_extraction_title', 'Paleta de Cores')} defaultOpen={false}>
+            <ColorPaletteExtractor config={config} />
+          </CollapsibleSection>
+        </div>
       </div>
 
-      {/* Palette Extraction Section */}
-      <CollapsibleSection title={t('palette_extraction_title', 'Paleta de Cores')} defaultOpen={false}>
-        <ColorPaletteExtractor config={config} />
-      </CollapsibleSection>
-
       {/* Footer / Download - Fixed at bottom */}
-      <div className="p-4 md:p-6 border-t border-white/10 bg-[#18181b] z-20 shrink-0 flex gap-2">
+      <div className="p-3 md:p-4 border-t border-white/10 bg-[#18181b] z-20 shrink-0 flex gap-2">
          <button 
           onClick={onShowSVGModal}
-          className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors active:scale-98 border border-white/10"
+          className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2.5 px-2 rounded-lg flex flex-col sm:flex-row items-center justify-center gap-1 md:gap-2 transition-colors active:scale-98 border border-white/10"
+          title={t('view_svg')}
         >
-          <FileCode size={20} />
-          <span className="hidden sm:inline">{t('view_svg')}</span>
-          <span className="inline sm:hidden">{t('view_svg_short')}</span>
+          <FileCode size={18} />
+          <span className="text-[10px] md:text-xs whitespace-nowrap">{t('view_svg_short')}</span>
         </button>
         <button 
           onClick={onDownloadSvgFile}
-          className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors active:scale-98 border border-white/10"
+          className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2.5 px-2 rounded-lg flex flex-col sm:flex-row items-center justify-center gap-1 md:gap-2 transition-colors active:scale-98 border border-white/10"
+          title={t('download_svg')}
         >
-          <Download size={20} />
-          <span className="hidden sm:inline">{t('download_svg')}</span>
-          <span className="inline sm:hidden">{t('download_svg_short')}</span>
+          <Download size={18} />
+          <span className="text-[10px] md:text-xs whitespace-nowrap">{t('download_svg_short')}</span>
         </button>
         <button 
           onClick={onDownload}
-          className="flex-1 bg-white text-black hover:bg-zinc-200 font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors active:scale-98 shadow-lg shadow-white/5"
+          className="flex-1 bg-white text-black hover:bg-zinc-200 font-bold py-2.5 px-2 rounded-lg flex flex-col sm:flex-row items-center justify-center gap-1 md:gap-2 transition-colors active:scale-98 shadow-lg shadow-white/5"
+          title={t('export_jpg')}
         >
-          <Download size={20} />
-          <span className="hidden sm:inline">{t('export_jpg')}</span>
-          <span className="inline sm:hidden">{t('export_jpg_short')}</span>
+          <Download size={18} />
+          <span className="text-[10px] md:text-xs whitespace-nowrap">{t('export_jpg_short')}</span>
         </button>
       </div>
 

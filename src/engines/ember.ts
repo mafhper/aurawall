@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { ensureVisibility } from '../utils/engineUtils';
+import { ensureVisibility, applyGrainLock } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
@@ -49,10 +49,12 @@ export const emberEngine: EngineDefinition = {
          });
     }
 
+    const grain = applyGrainLock(config, isGrainLocked, 25); // Ashy
+
     return {
         ...config,
         baseColor,
-        noise: isGrainLocked ? config.noise : 25, // Ashy
+        ...grain,
         shapes: newShapes,
         animation: {
             ...config.animation,
@@ -65,14 +67,18 @@ export const emberEngine: EngineDefinition = {
   variations: [
       {
           name: 'Blue Flame',
-          transform: (cfg) => ({
-              ...cfg,
-              baseColor: '#020510',
-              shapes: ensureVisibility(cfg.shapes.map(s => ({
-                  ...s,
-                  color: s.id.includes('spark') ? '#0088ff' : '#051020',
-              })), '#020510')
-          })
+          transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+              const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+              return {
+                  ...cfg,
+                  ...grain,
+                  baseColor: '#020510',
+                  shapes: ensureVisibility(cfg.shapes.map(s => ({
+                      ...s,
+                      color: s.id.includes('spark') ? '#0088ff' : '#051020',
+                  })), '#020510')
+              };
+          }
       }
   ]
 };

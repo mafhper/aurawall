@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { clamp } from '../utils/engineUtils';
+import { clamp, applyGrainLock } from '../utils/engineUtils';
 
 export const glitchEngine: EngineDefinition = {
   id: 'glitch',
@@ -82,11 +82,12 @@ export const glitchEngine: EngineDefinition = {
           }
     }
 
+    const grain = applyGrainLock(config, isGrainLocked, 60, 4); // Digital noise
+
     return {
         ...config,
         baseColor,
-        noise: isGrainLocked ? config.noise : 60, 
-        noiseScale: 4, // Digital noise
+        ...grain,
         shapes: newShapes,
         animation: {
             ...config.animation,
@@ -99,29 +100,37 @@ export const glitchEngine: EngineDefinition = {
   variations: [
       {
           name: 'Terminal Failure',
-          transform: (cfg) => ({
-              ...cfg,
-              baseColor: '#001100', // Matrix Green base
-              shapes: cfg.shapes.map(s => ({
-                  ...s,
-                  color: '#00ff44',
-                  blendMode: 'lighten',
-                  blur: 0 // Hard pixels
-              }))
-          })
+          transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+              const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+              return {
+                  ...cfg,
+                  ...grain,
+                  baseColor: '#001100', // Matrix Green base
+                  shapes: cfg.shapes.map(s => ({
+                      ...s,
+                      color: '#00ff44',
+                      blendMode: 'lighten',
+                      blur: 0 // Hard pixels
+                  }))
+              };
+          }
       },
       {
           name: 'Blue Screen',
-          transform: (cfg) => ({
-              ...cfg,
-              baseColor: '#0000aa', // BSOD Blue
-              shapes: cfg.shapes.map(s => ({
-                  ...s,
-                  color: '#ffffff',
-                  blendMode: 'overlay',
-                  opacity: 0.5
-              }))
-          })
+          transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+              const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+              return {
+                  ...cfg,
+                  ...grain,
+                  baseColor: '#0000aa', // BSOD Blue
+                  shapes: cfg.shapes.map(s => ({
+                      ...s,
+                      color: '#ffffff',
+                      blendMode: 'overlay',
+                      opacity: 0.5
+                  }))
+              };
+          }
       }
   ]
 };

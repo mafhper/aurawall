@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { ensureVisibility } from '../utils/engineUtils';
+import { ensureVisibility, applyGrainLock } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
@@ -35,10 +35,12 @@ export const sakuraEngine: EngineDefinition = {
          });
     }
 
+    const grain = applyGrainLock(config, isGrainLocked, 15);
+
     return {
         ...config,
         baseColor,
-        noise: isGrainLocked ? config.noise : 15,
+        ...grain,
         shapes: newShapes,
         animation: {
             ...config.animation,
@@ -51,15 +53,19 @@ export const sakuraEngine: EngineDefinition = {
   variations: [
       {
           name: 'Night Blossom',
-          transform: (cfg) => ({
-              ...cfg,
-              baseColor: '#1a0b10', // Dark cherry
-              shapes: ensureVisibility(cfg.shapes.map(s => ({
-                  ...s,
-                  blendMode: 'screen',
-                  opacity: 0.8
-              })), '#1a0b10')
-          })
+          transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+              const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+              return {
+                  ...cfg,
+                  ...grain,
+                  baseColor: '#1a0b10', // Dark cherry
+                  shapes: ensureVisibility(cfg.shapes.map(s => ({
+                      ...s,
+                      blendMode: 'screen',
+                      opacity: 0.8
+                  })), '#1a0b10')
+              };
+          }
       }
   ]
 };

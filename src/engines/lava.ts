@@ -1,5 +1,5 @@
 import { EngineDefinition, Shape } from '../types';
-import { shiftColor, ensureVisibility } from '../utils/engineUtils';
+import { shiftColor, ensureVisibility, applyGrainLock } from '../utils/engineUtils';
 import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
@@ -46,10 +46,12 @@ export const lavaEngine: EngineDefinition = {
          });
     }
 
+    const grain = applyGrainLock(config, isGrainLocked, 15);
+
     return {
         ...config,
         baseColor,
-        noise: isGrainLocked ? config.noise : 15,
+        ...grain,
         shapes: newShapes,
         animation: {
             ...config.animation,
@@ -62,27 +64,35 @@ export const lavaEngine: EngineDefinition = {
   variations: [
     {
       name: 'Magma Flow',
-      transform: (cfg) => ({
-        ...cfg,
-        baseColor: '#1a0500',
-        shapes: ensureVisibility(cfg.shapes.map(s => ({
-          ...s,
-          color: shiftColor(s.color, 0, 0, 10),
-          blendMode: 'screen'
-        })), '#1a0500')
-      })
+      transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+        const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+        return {
+          ...cfg,
+          ...grain,
+          baseColor: '#1a0500',
+          shapes: ensureVisibility(cfg.shapes.map(s => ({
+            ...s,
+            color: shiftColor(s.color, 0, 0, 10),
+            blendMode: 'screen'
+          })), '#1a0500')
+        };
+      }
     },
     {
         name: 'Toxic Sludge',
-        transform: (cfg) => ({
-          ...cfg,
-          baseColor: '#051a05',
-          shapes: ensureVisibility(cfg.shapes.map(s => ({
-            ...s,
-            color: shiftColor(s.color, 120, 0, 0), // Shift to green
-            blendMode: 'hard-light'
-          })), '#051a05')
-        })
+        transform: (cfg, { isGrainLocked } = { isGrainLocked: false }) => {
+          const grain = applyGrainLock(cfg, isGrainLocked, cfg.noise);
+          return {
+            ...cfg,
+            ...grain,
+            baseColor: '#051a05',
+            shapes: ensureVisibility(cfg.shapes.map(s => ({
+              ...s,
+              color: shiftColor(s.color, 120, 0, 0), // Shift to green
+              blendMode: 'hard-light'
+            })), '#051a05')
+          };
+        }
       }
   ]
 };
