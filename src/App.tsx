@@ -145,12 +145,12 @@ export default function App() {
   // Debounced Variation Generation when config changes
   useEffect(() => {
     const timer = setTimeout(() => {
-      const vars = generateVariations(config, activeCollection);
+      const vars = generateVariations(config, activeCollection, isGrainLocked);
       setVariations(vars);
     }, 600); 
 
     return () => clearTimeout(timer);
-  }, [config, activeCollection]);
+  }, [config, activeCollection, isGrainLocked]);
 
   const handleApplyPreset = useCallback((presetId: string) => {
     const preset = PRESETS.find(p => p.id === presetId);
@@ -169,7 +169,7 @@ export default function App() {
       };
       setConfig(newConfig);
       // Immediate variation generation
-      setVariations(generateVariations(newConfig, activeCollection));
+      setVariations(generateVariations(newConfig, activeCollection, isGrainLocked));
     }
   }, [config, activeCollection, isGrainLocked, setConfig]);
 
@@ -193,7 +193,7 @@ export default function App() {
     if (engine && engine.randomizer) {
         const randomConfig = engine.randomizer(config, { isGrainLocked });
         setConfig(randomConfig);
-        setVariations(generateVariations(randomConfig, activeCollection));
+        setVariations(generateVariations(randomConfig, activeCollection, isGrainLocked));
     }
   }, [config, activeCollection, isGrainLocked, setConfig]);
 

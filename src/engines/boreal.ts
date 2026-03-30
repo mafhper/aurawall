@@ -24,7 +24,7 @@ export const borealEngine: EngineDefinition = {
         ? getHSL(baseHue, 40, Math.floor(Math.random() * 10) + 5) 
         : getHSL(baseHue, 20, Math.floor(Math.random() * 10) + 88);
       
-    const grain = applyGrainLock(config, isGrainLocked, Math.floor(Math.random() * 25) + 20, 1.0);
+    const grain = applyGrainLock(config, isGrainLocked, Math.floor(Math.random() * 25) + 20);
       
     const safeBlendModes: BlendMode[] = isDarkTheme
         ? ['screen', 'color-dodge', 'normal', 'lighten'] 
