@@ -17,7 +17,7 @@ module.exports = {
             id: 'promo',
             name: 'Landing Page (Promo)',
             url: 'http://localhost:5173/', // Vite dev default
-            serverCommand: 'npm run dev', // Command to start this server
+            serverCommand: 'npm run promo',
             serverPort: 5173,
             type: 'promo', // Folder name in reports
             thresholds: {
@@ -31,7 +31,7 @@ module.exports = {
             id: 'app',
             name: 'Dashboard App',
             url: 'http://localhost:3000/', // Main app default
-            serverCommand: 'npm run start', // or 'npm run dev:app' if split
+            serverCommand: 'npm run app',
             serverPort: 3000,
             type: 'app',
             thresholds: {

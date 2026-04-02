@@ -2,7 +2,7 @@ import React, { useState, Suspense, lazy } from 'react';
 import { createPortal } from 'react-dom';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ChevronDown, Sparkles, Play, Menu, X, Shuffle, Loader2 } from 'lucide-react';
+import { ChevronDown, Aperture, Play, Menu, X, Shuffle, Loader2 } from 'lucide-react';
 import { getAppUrl } from './utils/appUrl';
 import './i18n'; 
 
@@ -269,10 +269,10 @@ export default function App() {
     if (detected !== i18n.language) {
       i18n.changeLanguage(detected);
     }
-  }, []); // Empty deps = run once after mount
+  }, [i18n]);
 
   const creationItems = [
-    { to: '/creation/engines', label: t('engines.creation_engines'), icon: Sparkles, key: 'engines' },
+    { to: '/creation/engines', label: t('engines.creation_engines'), icon: Aperture, key: 'engines' },
     { to: '/creation/animation', label: t('creation.anim_title'), icon: Play, key: 'animation' },
     { to: '/creation/procedural', label: t('procedural.title'), icon: Shuffle, key: 'procedural' }
   ];

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Sparkles } from 'lucide-react';
-import { PRESETS } from '../../../src/constants';
+import { ArrowLeft, Wind } from 'lucide-react';
+import { DEFAULT_ANIMATION, PRESETS } from '../../../src/constants';
 import HeroBackground from '../components/HeroBackground';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import CodeWindow from '../components/CodeWindow';
 import { getAppUrl } from '../utils/appUrl';
+import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 
 export default function CreationBoreal() {
   const { t } = useTranslation();
@@ -20,11 +21,10 @@ export default function CreationBoreal() {
       {/* Hero with Boreal background */}
       <div className="relative h-[70vh] min-h-[500px] flex items-center justify-center overflow-hidden isolate">
         <HeroBackground 
-            config={{
-                ...PRESETS.find(p => p.id === 'angel-aura')?.config || PRESETS[0].config,
-                animation: { enabled: true, speed: 1.5, flow: 2, pulse: 0, rotate: 0, noiseAnim: 0, colorCycle: false, colorCycleSpeed: 0 }
-            }}
-            opacity={0.6}
+            config={resolveWallpaperConfig(PRESETS.find(p => p.id === 'angel-aura')?.config || PRESETS[0].config, {
+              animation: { ...DEFAULT_ANIMATION, enabled: true, speed: 1.5, flow: 2, pulse: 0, rotate: 0, noiseAnim: 0, colorCycle: false, colorCycleSpeed: 0 }
+            })}
+            overlayOpacity={60}
         />
         
         <div className="relative text-center px-6 pointer-events-none z-10">
@@ -38,7 +38,7 @@ export default function CreationBoreal() {
           
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="w-16 h-16 rounded-2xl bg-purple-500/20 backdrop-blur flex items-center justify-center">
-              <Sparkles size={32} className="text-purple-400" />
+              <Wind size={32} className="text-purple-400" />
             </div>
           </div>
           
@@ -148,7 +148,7 @@ export default function CreationBoreal() {
                 className="aspect-[9/16] rounded-xl overflow-hidden border border-white/10 hover:border-purple-500/50 transition-all"
               >
                 <WallpaperRenderer 
-                  config={preset.config as any} 
+                  config={resolveWallpaperConfig(preset.config)} 
                   className="w-full h-full" 
                   lowQuality={true} 
                 />

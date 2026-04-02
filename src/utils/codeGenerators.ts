@@ -37,10 +37,6 @@ const getBlendMode = (mode: string) => {
 };
 
 export const generateReactCode = (config: WallpaperConfig) => {
-  const bgStyle = typeof config.baseColor === 'string'
-    ? `bg-[${config.baseColor}]`
-    : 'bg-black'; // Fallback for gradients in class names (complex to map perfectly to tailwind classes, using style tag in component is safer)
-
   const bgCss = typeof config.baseColor === 'string'
     ? config.baseColor
     : config.baseColor.type === 'linear'

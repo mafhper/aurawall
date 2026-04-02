@@ -69,6 +69,21 @@ function formatDuration(ms) {
     return (ms / 1000).toFixed(2) + 's';
 }
 
+function spawnCommand(command, args, options) {
+    if (process.platform === 'win32' && command === 'npm') {
+        return spawn(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', 'npm', ...args], {
+            ...options,
+            shell: false,
+            windowsVerbatimArguments: true,
+        });
+    }
+
+    return spawn(command, args, {
+        ...options,
+        shell: false,
+    });
+}
+
 function generateReport(results, duration) {
     const { saveReport, minifyMarkdown } = require('./utils/audit-helpers.cjs');
 
@@ -159,9 +174,8 @@ function runTask(task) {
         }
 
         // Spawn Process
-        const child = spawn(task.command, task.args, {
+        const child = spawnCommand(task.command, task.args, {
             cwd: PROJECT_ROOT,
-            shell: true, // Needed for npm on Windows
             stdio: ['ignore', 'pipe', 'pipe'] // We handle output manually
         });
 

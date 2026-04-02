@@ -2,10 +2,16 @@ const { spawn } = require('child_process');
 
 console.log('Checking Code Quality (Linting)...\n');
 
-const child = spawn('npm', ['run', 'lint'], {
-    stdio: 'inherit',
-    shell: true
-});
+const child = process.platform === 'win32'
+    ? spawn(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', 'npm', 'run', 'lint'], {
+        stdio: 'inherit',
+        shell: false,
+        windowsVerbatimArguments: true,
+    })
+    : spawn('npm', ['run', 'lint'], {
+        stdio: 'inherit',
+        shell: false,
+    });
 
 child.on('close', (code) => {
     if (code === 0) {

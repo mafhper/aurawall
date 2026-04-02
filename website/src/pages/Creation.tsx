@@ -1,10 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, Play, ArrowRight, Shuffle, Scale, Palette, Aperture, Activity, Layers, Box, Cpu } from 'lucide-react';
+import { Play, ArrowRight, Shuffle, Scale, Palette, Aperture, Activity, Layers, Box, Cpu } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { PRESETS } from '../../../src/constants';
+import { WallpaperConfig } from '../../../src/types';
 import HeroBackground from '../components/HeroBackground';
+import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 
 // Helper to get specific preset configs
 const getPresetConfig = (id: string) => {
@@ -12,9 +14,20 @@ const getPresetConfig = (id: string) => {
   return preset ? preset.config : PRESETS[0].config;
 };
 
+interface CreationMode {
+  id: string;
+  path: string;
+  icon: React.ElementType;
+  titleKey: string;
+  desc: string;
+  config: Partial<WallpaperConfig>;
+  accentColor: 'purple' | 'blue';
+  isReverse: boolean;
+}
+
 // Component for rendering individual creation modes
 const CreationModeItem = ({ mode, hoveredMode, setHoveredMode }: { 
-  mode: any, 
+  mode: CreationMode, 
   hoveredMode: string | null, 
   setHoveredMode: (id: string | null) => void 
 }) => {
@@ -32,19 +45,22 @@ const CreationModeItem = ({ mode, hoveredMode, setHoveredMode }: {
   };
 
   // Dynamic config for hover animation
-  const displayConfig = useMemo(() => ({
-    ...mode.config,
-    animation: {
-      ...mode.config.animation,
-      enabled: true, // Always enable for this view to ensure it works on hover
-      speed: mode.id === 'animation' ? 8 : 4, // Fixed speed
-      flow: mode.id === 'animation' ? 5 : 3,  // Fixed flow
-    }
-  }), [mode.config, mode.id]);
+  const displayConfig = useMemo(() => {
+    const baseConfig = resolveWallpaperConfig(mode.config);
 
-  // Custom Title/Desc handling because of key changes
-  const title = mode.id === 'engines' ? t('engines.creation_engines') : t(mode.titleKey);
-  const desc = mode.id === 'engines' ? mode.descKey : t('showcase.animation_desc'); // Quick fallback for animation desc
+    return {
+      ...baseConfig,
+      animation: {
+        ...baseConfig.animation,
+        ...mode.config.animation,
+        enabled: true, // Always enable for this view to ensure it works on hover
+        speed: mode.id === 'animation' ? 8 : 4, // Fixed speed
+        flow: mode.id === 'animation' ? 5 : 3,  // Fixed flow
+      }
+    };
+  }, [mode.config, mode.id]);
+
+  const title = t(mode.titleKey);
 
   return (
     <div 
@@ -84,7 +100,7 @@ const CreationModeItem = ({ mode, hoveredMode, setHoveredMode }: {
         <div className="space-y-4">
            <h2 className="text-5xl font-bold">{title}</h2>
            <p className="text-2xl text-zinc-300 leading-relaxed max-w-lg">
-             {desc}
+             {mode.desc}
            </p>
         </div>
         
@@ -119,13 +135,13 @@ export default function Creation() {
     };
   }, []);
 
-  const creationModes = [
+  const creationModes: CreationMode[] = [
     {
       id: 'engines',
       path: '/creation/engines',
-      icon: Sparkles,
-      titleKey: 'nav.creation',
-      descKey: t('creation.engines_desc'),
+      icon: Aperture,
+      titleKey: 'engines.creation_engines',
+      desc: t('creation.engines_desc'),
       config: getPresetConfig('angel-aura'), // Representative
       accentColor: 'purple',
       isReverse: false,
@@ -135,7 +151,7 @@ export default function Creation() {
       path: '/creation/animation',
       icon: Play,
       titleKey: 'creation.anim_title',
-      descKey: t('creation.animation_proc_desc'),
+      desc: t('creation.animation_proc_desc'),
       config: animationConfig,
       accentColor: 'blue',
       isReverse: true,

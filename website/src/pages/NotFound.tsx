@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { Home, ArrowLeft, Sparkles } from 'lucide-react';
+import { Home, ArrowLeft, Aperture } from 'lucide-react';
 
 export default function NotFound() {
   const { t } = useTranslation();
@@ -50,7 +50,7 @@ export default function NotFound() {
               to="/creation/engines"
               className="inline-flex items-center justify-center gap-2 bg-zinc-800 text-white px-8 py-4 rounded-full font-bold hover:bg-zinc-700 transition-all border border-white/10"
             >
-              <Sparkles size={20} />
+              <Aperture size={20} />
               {t('notfound.view_engines')}
             </Link>
           </div>
