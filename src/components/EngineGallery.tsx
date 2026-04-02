@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllEngines, EngineDefinition } from '../engines';
 import WallpaperRenderer from './WallpaperRenderer';
-import { X, Check, Sparkles } from 'lucide-react';
+import { X, Check, Aperture } from 'lucide-react';
 import { WallpaperConfig } from '../types';
 import { DEFAULT_CONFIG } from '../constants';
 
@@ -87,7 +87,7 @@ export default function EngineGallery({ onClose, onEquip, activeEngineId }: Engi
         <div className="flex items-center justify-between p-6 border-b border-white/10 bg-zinc-900/50">
            <div>
              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-               <Sparkles className="text-purple-500" /> Galeria de Motores
+               <Aperture className="text-purple-500" /> Galeria de Motores
              </h2>
              <p className="text-sm text-zinc-400 mt-1">Escolha um motor para ativar no slot selecionado.</p>
            </div>

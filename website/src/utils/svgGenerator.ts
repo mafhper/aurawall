@@ -1,8 +1,10 @@
 import { DEFAULT_VIGNETTE } from '../../../src/constants';
+import { Shape, WallpaperConfig } from '../../../src/types';
 import { getBlobPath } from '../../../src/utils/blobUtils';
+import { resolveWallpaperConfig } from './resolveWallpaperConfig';
 
-export const generateWallpaperSVG = (presetConfig: any, width: number, height: number): SVGSVGElement => {
-    const config = { ...presetConfig, width, height };
+export const generateWallpaperSVG = (presetConfig: Partial<WallpaperConfig>, width: number, height: number): SVGSVGElement => {
+    const config = resolveWallpaperConfig(presetConfig, { width, height });
     const { shapes, baseColor, noise, noiseScale, vignette } = config;
     const svgNS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(svgNS, 'svg');
@@ -68,7 +70,7 @@ export const generateWallpaperSVG = (presetConfig: any, width: number, height: n
     }
 
     // 4. Shape Blurs
-    shapes.forEach((shape: any) => {
+    shapes.forEach((shape: Shape) => {
         const blur = document.createElementNS(svgNS, 'filter');
         blur.setAttribute('id', `blur-${shape.id}`);
         blur.setAttribute('x', '-100%'); blur.setAttribute('y', '-100%');
@@ -90,7 +92,7 @@ export const generateWallpaperSVG = (presetConfig: any, width: number, height: n
 
     // 2. Shapes
     const shapesGroup = document.createElementNS(svgNS, 'g');
-    shapes.forEach((shape: any) => {
+    shapes.forEach((shape: Shape) => {
         let el;
         if (shape.type === 'blob') {
             el = document.createElementNS(svgNS, 'path');

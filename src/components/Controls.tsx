@@ -14,7 +14,6 @@ import {
   Shuffle,
   FileCode,
   Palette,
-  Sparkles,
   Zap,
   Wind,
   ChevronDown,
@@ -48,7 +47,7 @@ const COLLECTION_ICONS: Record<string, React.ElementType> = {
   geometrica: Aperture,
   glitch: FileCode,
   sakura: Wind,
-  ember: Sparkles,
+  ember: Aperture,
   oceanic: Wind // Using Wind as placeholder for Waves/Water
 };
 
@@ -232,10 +231,10 @@ const ControlsInner: React.FC<ControlsProps> = ({
     setConfig(prev => ({ ...prev, noiseScale: val }));
   };
 
-  const updateShape = (id: string, key: keyof Shape, value: any) => {
+  const updateShape = <K extends keyof Shape>(id: string, key: K, value: Shape[K]) => {
     setConfig(prev => ({
       ...prev,
-      shapes: prev.shapes.map(s => s.id === id ? { ...s, [key]: value } : s)
+      shapes: prev.shapes.map(s => s.id === id ? { ...s, [key]: value } as Shape : s)
     }));
   };
 
@@ -261,7 +260,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
     setConfig(prev => ({ ...prev, shapes: [...prev.shapes, newShape] }));
   };
 
-  const updateAnim = (key: keyof AnimationSettings, value: any) => {
+  const updateAnim = <K extends keyof AnimationSettings>(key: K, value: AnimationSettings[K]) => {
     setConfig(prev => ({
        ...prev,
        animation: { ...prev.animation, [key]: value } as AnimationSettings
@@ -278,7 +277,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
     }));
   };
 
-  const updateVignette = (key: keyof VignetteSettings, value: any) => {
+  const updateVignette = <K extends keyof VignetteSettings>(key: K, value: VignetteSettings[K]) => {
     setConfig(prev => ({
        ...prev,
        vignette: { ...(prev.vignette || DEFAULT_VIGNETTE), [key]: value } as VignetteSettings
@@ -475,7 +474,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                 const engine = getEngine(engineId);
                 if (!engine) return null;
 
-                const Icon = COLLECTION_ICONS[engineId] || Sparkles;
+                const Icon = COLLECTION_ICONS[engineId] || Aperture;
                 const isActive = activeCollection === engineId;
                 
                 // Dynamic style based on ID 
@@ -555,7 +554,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   {isRandomMode && variations.length > 0 && (
                      <>
                         <div className="col-span-3 text-[10px] text-purple-400 font-medium uppercase tracking-wider flex items-center gap-1 my-1">
-                          <Sparkles size={12} /> {t('inspired_variations')}
+                          <Aperture size={12} /> {t('inspired_variations')}
                         </div>
                         {variations.map((variant, vIdx) => (
                             <button

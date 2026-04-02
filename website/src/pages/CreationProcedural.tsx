@@ -14,17 +14,10 @@ import {
   Shield,
   Database
 } from 'lucide-react';
-import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import HeroBackground from '../components/HeroBackground';
-import { PRESETS } from '../../../src/constants';
 import CodeWindow from '../components/CodeWindow';
 
-const getPresetConfig = (id: string) => {
-  const preset = PRESETS.find(p => p.id === id);
-  return preset ? preset.config : PRESETS[0].config;
-};
-
-const ProceduralSection = ({ icon: Icon, title, desc, delay }: { icon: any, title: string, desc: string, delay: number }) => (
+const ProceduralSection = ({ icon: Icon, title, desc, delay }: { icon: React.ElementType, title: string, desc: string, delay: number }) => (
   <div 
     className="glass-panel p-8 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all card-hover animate-in fade-in slide-in-from-bottom-8 duration-700" 
     style={{ animationDelay: `${delay}ms` }}

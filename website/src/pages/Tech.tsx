@@ -22,6 +22,8 @@ const stackItems = [
 import HeroBackground from '../components/HeroBackground';
 import { DEFAULT_ANIMATION } from '../../../src/constants';
 
+const HERO_PRESET_ROTATION = ['oil-slick', 'soul-glow', 'phoenix-rise', 'thermal-vision', 'magma-lamp'];
+
 // Pipeline Card with animated background on hover (styled like GalleryCard)
 const PipelineCard = ({ 
   item, 
@@ -85,13 +87,12 @@ export default function Tech() {
   const { t } = useTranslation();
   
   // Rotate hero preset - deterministic initial value to avoid hydration mismatch
-  const heroPresets = ['oil-slick', 'soul-glow', 'phoenix-rise', 'thermal-vision', 'magma-lamp'];
-  const [heroPresetId, setHeroPresetId] = React.useState(heroPresets[0]);
+  const [heroPresetId, setHeroPresetId] = React.useState(HERO_PRESET_ROTATION[0]);
   
   React.useEffect(() => {
     // Select preset based on current time (client-side only)
-    const index = Math.floor(Date.now() / 1000) % heroPresets.length;
-    setHeroPresetId(heroPresets[index]);
+    const index = Math.floor(Date.now() / 1000) % HERO_PRESET_ROTATION.length;
+    setHeroPresetId(HERO_PRESET_ROTATION[index]);
   }, []);
 
   return (

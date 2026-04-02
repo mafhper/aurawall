@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Sparkles, ArrowLeft } from 'lucide-react';
+import { ArrowRight, Aperture, ArrowLeft } from 'lucide-react';
 import { ENGINES } from '../data/engines';
 import HeroBackground from '../components/HeroBackground';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
@@ -135,7 +135,7 @@ export default function CreationEngines() {
         <div className="relative z-10 text-center px-6 max-w-4xl">
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className="w-16 h-16 rounded-2xl bg-zinc-800/50 backdrop-blur border border-white/10 flex items-center justify-center">
-              <Sparkles size={32} className="text-purple-400" />
+              <Aperture size={32} className="text-purple-400" />
             </div>
           </div>
           

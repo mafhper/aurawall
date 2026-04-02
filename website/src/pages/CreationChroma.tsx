@@ -6,6 +6,7 @@ import { PRESETS } from '../../../src/constants';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import CodeWindow from '../components/CodeWindow';
 import { getAppUrl } from '../utils/appUrl';
+import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 
 export default function CreationChroma() {
   const { t } = useTranslation();
@@ -186,7 +187,7 @@ export default function CreationChroma() {
                 className="aspect-[9/16] rounded-xl overflow-hidden border border-white/10 hover:border-green-500/50 transition-all"
               >
                 <WallpaperRenderer 
-                  config={preset.config as any} 
+                  config={resolveWallpaperConfig(preset.config)} 
                   className="w-full h-full" 
                   lowQuality={true} 
                 />

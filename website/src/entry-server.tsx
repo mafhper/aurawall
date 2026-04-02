@@ -6,9 +6,9 @@ import { Writable } from 'node:stream';
 import App from './App';
 
 export function render(url: string) {
-  const helmetContext: { helmet?: any } = {};
+  const helmetContext: { helmet?: unknown } = {};
   
-  return new Promise<{ html: string; helmet: any }>((resolve, reject) => {
+  return new Promise<{ html: string; helmet: unknown }>((resolve, reject) => {
     let html = '';
     const stream = new Writable({
       write(chunk, _encoding, cb) {

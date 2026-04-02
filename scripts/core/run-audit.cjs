@@ -1,7 +1,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { spawn, execSync, exec } = require('child_process');
+const { spawn, execSync } = require('child_process');
 const http = require('http');
 const { saveReport, minifyMarkdown } = require('../utils/audit-helpers.cjs');
 
@@ -19,6 +19,41 @@ function log(msg, color = 'reset', style = '') {
     const c = colors[color] || colors.reset;
     const s = colors[style] || '';
     console.log(`${s}${c}${msg}${colors.reset}`);
+}
+
+async function cleanupChromeProfile(userDataDir) {
+    if (!userDataDir) {
+        return;
+    }
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            fs.rmSync(userDataDir, { recursive: true, force: true, maxRetries: 10 });
+            return;
+        } catch (error) {
+            if (attempt === 2) {
+                log(`Aviso: não foi possível remover perfil temporário do Lighthouse (${userDataDir}).`, 'yellow');
+                return;
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 300 * (attempt + 1)));
+        }
+    }
+}
+
+function spawnCommand(command, args, options) {
+    if (process.platform === 'win32' && command === 'npm') {
+        return spawn(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', 'npm', ...args], {
+            ...options,
+            shell: false,
+            windowsVerbatimArguments: true,
+        });
+    }
+
+    return spawn(command, args, {
+        ...options,
+        shell: false,
+    });
 }
 
 async function findRunningServer(port) {
@@ -42,14 +77,11 @@ function startServer(command, port, timeout = 60000) {
     const args = parts.slice(1);
 
     // Windows compatibility
-    const npmCmd = process.platform === 'win32' ? `${cmd}.cmd` : cmd;
-
-    const serverProcess = spawn(npmCmd, args, {
+    const serverProcess = spawnCommand(cmd, args, {
         cwd: process.cwd(),
         stdio: 'inherit', // Show output to debug
         env: { ...process.env, PORT: port, BROWSER: 'none' },
         detached: false,
-        shell: true // Required for npm on Windows to parse arguments correctly
     });
 
     return new Promise((resolve, reject) => {
@@ -73,8 +105,9 @@ function startServer(command, port, timeout = 60000) {
     });
 }
 
-async function runLighthouse(url, thresholds, type, timeout = 120000) {
+async function runLighthouse(url, timeout = 120000) {
     let chrome = null;
+    let userDataDir = null;
     try {
         const lighthouseParams = await import('lighthouse');
         const lighthouse = lighthouseParams.default;
@@ -85,7 +118,15 @@ async function runLighthouse(url, thresholds, type, timeout = 120000) {
             setTimeout(() => reject(new Error(`Lighthouse timeout após ${timeout / 1000}s`)), timeout)
         );
 
-        chrome = await chromeLauncher.launch({ chromeFlags: ['--headless', '--no-sandbox'] });
+        const chromeProfileRoot = path.join(process.cwd(), '.dev', 'tmp', 'lighthouse');
+        fs.mkdirSync(chromeProfileRoot, { recursive: true });
+        userDataDir = fs.mkdtempSync(path.join(chromeProfileRoot, 'profile-'));
+
+        chrome = await chromeLauncher.launch({
+            chromeFlags: ['--headless', '--no-sandbox', '--disable-dev-shm-usage'],
+            logLevel: 'error',
+            userDataDir,
+        });
 
         const options = {
             logLevel: 'error',
@@ -103,12 +144,14 @@ async function runLighthouse(url, thresholds, type, timeout = 120000) {
         const lhr = runnerResult.lhr;
 
         await chrome.kill();
+        await cleanupChromeProfile(userDataDir);
         return lhr;
     } catch (e) {
         // Cleanup do Chrome em caso de erro
         if (chrome) {
             try { await chrome.kill(); } catch { }
         }
+        await cleanupChromeProfile(userDataDir);
         throw new Error(`Running Lighthouse failed: ${e.message}`);
     }
 }
@@ -135,7 +178,7 @@ async function runAudit(target) {
 
         // 2. Run Lighthouse
         log(`Executando Lighthouse em ${target.url}...`, 'cyan');
-        const lhr = await runLighthouse(target.url, target.thresholds, target.type);
+        const lhr = await runLighthouse(target.url);
 
         // 3. Process Results
         const scores = {};

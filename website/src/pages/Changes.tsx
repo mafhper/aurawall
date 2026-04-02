@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GitCommit, Calendar, Sparkles, Wrench, AlertTriangle, Rocket, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
-import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import { GitCommit, Calendar, Wrench, AlertTriangle, Rocket, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import HeroBackground from '../components/HeroBackground';
-import { PRESETS } from '../../../src/constants';
 
 // GitHub commit interface
 interface GitHubCommit {
@@ -80,7 +78,7 @@ const roadmapItems = [
 ];
 
 const typeIcons = {
-  feature: Sparkles,
+  feature: Rocket,
   fix: Wrench,
   breaking: AlertTriangle,
   refactor: GitCommit,
@@ -275,7 +273,7 @@ export default function Changes() {
           ) : (
             /* Fallback to static changelog */
             <div className="space-y-6">
-              {changelog.map((entry, index) => {
+              {staticChangelog.map((entry, index) => {
                 const Icon = typeIcons[entry.type];
                 return (
                   <div 

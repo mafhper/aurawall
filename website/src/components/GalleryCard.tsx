@@ -2,11 +2,13 @@ import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Download, ExternalLink, ChevronDown, Image as ImageIcon, FileImage, Code } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import { Preset } from '../../../src/types';
 import { generateWallpaperSVG } from '../utils/svgGenerator';
 import { getAppUrl } from '../utils/appUrl';
+import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 
 interface GalleryCardProps {
-  preset: any;
+  preset: Preset;
   className?: string;
 }
 
@@ -14,11 +16,12 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const staticConfig = useMemo(() => resolveWallpaperConfig(preset.config), [preset.config]);
 
   // Generate a unique animation config for this card to demonstrate the engine's capabilities
   const displayConfig = useMemo(() => {
     // If preset already has animation enabled, use it
-    if (preset.config.animation?.enabled) return preset.config;
+    if (staticConfig.animation?.enabled) return staticConfig;
 
     // Deterministic pseudo-random based on ID to ensure it looks the same on every render/reload
     // Simple hash
@@ -33,7 +36,7 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
     const s2 = seed + 20;
 
     return {
-      ...preset.config,
+      ...staticConfig,
       animation: {
         enabled: true,
         // Varied speeds and effects
@@ -46,7 +49,7 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
         colorCycleSpeed: 5
       }
     };
-  }, [preset]);
+  }, [preset.id, staticConfig]);
 
   const handleDownload = async (format: 'jpg' | 'png' | 'svg') => {
     const exportWidth = 1080;
@@ -54,7 +57,7 @@ export default function GalleryCard({ preset, className = "aspect-[9/16]" }: Gal
 
     // Note: We use the ORIGINAL static config for download, not the animated one
     // unless the user specifically requested animated exports (which needs video export).
-    const svgElement = generateWallpaperSVG(preset.config, exportWidth, exportHeight);
+    const svgElement = generateWallpaperSVG(staticConfig, exportWidth, exportHeight);
     const svgString = new XMLSerializer().serializeToString(svgElement);
     const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(svgBlob);
