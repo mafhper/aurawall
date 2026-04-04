@@ -59,7 +59,7 @@ const resources = {
         desc: "Explore algorithmic art possibilities.",
         btn: "View Gallery",
         expanded_collection: "Expanded Collection",
-        expanded_desc: "Explore 9 distinct generation engines, from oceanic waves to digital glitches and Bauhaus aesthetics.",
+        expanded_desc: "Explore 10 distinct generation engines, from deep-space nebulas to digital glitches and Bauhaus aesthetics.",
         view_all_engines: "View All Engines"
       },
       home_cta: {
@@ -92,7 +92,7 @@ const resources = {
         chroma_title: "Chroma",
         anim_title: "Animation",
         anim_desc: "A pure expression of kinetic energy, using CSS keyframes to drive procedural motion paths for every shape.",
-        engines_desc: "Explore 9 distinct engines, each with its own physics and visual aesthetic, powered by procedural intelligence.",
+        engines_desc: "Explore 10 distinct engines, each with its own physics and visual aesthetic, powered by procedural intelligence.",
         animation_proc_desc: "A pure expression of kinetic energy, using CSS keyframes to drive procedural motion paths for every shape, demonstrating procedural intelligence in action.",
         custom_title: "Deep Customization",
         custom_desc: "For advanced users: manually edit the JSON manifest to alter seeds, adjust opacity curves, swap blend-modes (multiply, overlay, difference), and create compositions impossible via the standard UI.",
@@ -229,7 +229,7 @@ const resources = {
         create_with: "Create with {{name}}",
         full_collection: "Full Collection",
         hero_title: "Creation Engines",
-        hero_desc: "AuraWall operates with 9 distinct aesthetic engines. Each encapsulates a unique set of mathematical rules, color palettes, and physical behaviors to generate infinite procedural art.",
+        hero_desc: "AuraWall operates with 10 distinct aesthetic engines. Each encapsulates a unique set of mathematical rules, color palettes, and physical behaviors to generate infinite procedural art.",
         ready_title: "Ready to Create?",
         ready_desc: "All these engines are available for free in the editor. Mix, match, and export in 4K.",
         start: "Start Editor"
@@ -400,6 +400,8 @@ const resources = {
         lava_desc: "Psychedelic flows and molten movement. Inspired by 60s/70s lava lamps.",
         midnight_tagline: "Stardust and deep silence.",
         midnight_desc: "The vastness of the cosmos. Distant stars, subtle nebulae and the silence of deep space.",
+        astra_tagline: "Dense nebulas and orbital light.",
+        astra_desc: "A deep-space engine with luminous ribbons, stellar dust and warm celestial cores.",
         geometrica_tagline: "Order, grid and function.",
         geometrica_desc: "Mathematical precision and Bauhaus structure. Pure shapes aligned to grid, primary colors and balanced composition.",
         glitch_tagline: "The beautiful system error.",
@@ -409,7 +411,8 @@ const resources = {
         ember_tagline: "Living embers and dancing smoke.",
         ember_desc: "The warmth of embers and the dance of smoke. Earthy tones, vibrant oranges and cozy atmospheres.",
         oceanic_tagline: "Deep blues and living tides.",
-        oceanic_desc: "The calm and fury of the seas. Organic waves, deep blue tones and constant fluidity."
+        oceanic_desc: "The calm and fury of the seas. Organic waves, deep blue tones and constant fluidity.",
+        collection_summary: "{{count}} engines, one rotating feature and a uniform gallery below."
       },
       notfound: {
         title: "404 - Page not found | AuraWall",
@@ -470,7 +473,7 @@ const resources = {
         desc: "Explore as possibilidades da arte algorítmica.",
         btn: "Ver Galeria",
         expanded_collection: "Coleção Expandida",
-        expanded_desc: "Explore 9 motores de geração distintos, de ondas oceânicas a falhas digitais e estética Bauhaus.",
+        expanded_desc: "Explore 10 motores de geração distintos, de nebulosas profundas a falhas digitais e estética Bauhaus.",
         view_all_engines: "Ver Todos os Motores"
       },
       home_cta: {
@@ -503,7 +506,7 @@ const resources = {
         chroma_title: "Chroma",
         anim_title: "Animação",
         anim_desc: "Uma expressão pura de energia cinética, usando keyframes CSS para dirigir caminhos de movimento procedurais para cada forma.",
-        engines_desc: "Explore 9 motores distintos, cada um com sua própria física e estética visual, alimentados por inteligência procedural.",
+        engines_desc: "Explore 10 motores distintos, cada um com sua própria física e estética visual, alimentados por inteligência procedural.",
         animation_proc_desc: "Uma expressão pura de energia cinética, usando keyframes CSS para dirigir caminhos de movimento procedurais para cada forma, demonstrando a inteligência procedural em ação.",
         custom_title: "Customização Profunda",
         custom_desc: "Para usuários avançados: edite manualmente o manifesto JSON para alterar seeds, ajustar curvas de opacidade, mudar blend-modes (multiply, overlay, difference) e criar composições impossíveis pela UI padrão.",
@@ -640,7 +643,7 @@ const resources = {
         create_with: "Criar com {{name}}",
         full_collection: "Coleção Completa",
         hero_title: "Motores de Criação",
-        hero_desc: "O AuraWall opera com 9 motores estéticos distintos. Cada um encapsula um conjunto único de regras matemáticas, paletas de cores e comportamentos físicos para gerar arte procedural infinita.",
+        hero_desc: "O AuraWall opera com 10 motores estéticos distintos. Cada um encapsula um conjunto único de regras matemáticas, paletas de cores e comportamentos físicos para gerar arte procedural infinita.",
         ready_title: "Pronto para criar?",
         ready_desc: "Todos esses motores estão disponíveis gratuitamente no editor. Misture, combine e exporte em 4K.",
         start: "Iniciar Editor"
@@ -810,6 +813,8 @@ const resources = {
         lava_desc: "Fluxos psicodélicos e movimento fundido. Inspirado nas lâmpadas de lava dos anos 60/70.",
         midnight_tagline: "Poeira estelar e silêncio profundo.",
         midnight_desc: "A imensidão do cosmos. Estrelas distantes, nebulosas sutis e o silêncio do espaço profundo.",
+        astra_tagline: "Nebulosas densas e luz orbital.",
+        astra_desc: "Um motor de espaço profundo com faixas luminosas, poeira estelar e núcleos celestes aquecidos.",
         geometrica_tagline: "Ordem, grade e função.",
         geometrica_desc: "Precisão matemática e estrutura Bauhaus. Formas puras alinhadas à grade, cores primárias e composição equilibrada.",
         glitch_tagline: "O belo erro do sistema.",
@@ -819,7 +824,8 @@ const resources = {
         ember_tagline: "Brasas vivas e fumaça dançante.",
         ember_desc: "O calor das brasas e a dança da fumaça. Tons terrosos, laranjas vibrantes e atmosferas acolhedoras.",
         oceanic_tagline: "Profundezas azuis e marés vivas.",
-        oceanic_desc: "A calma e a fúria dos mares. Ondas orgânicas, tons profundos de azul e fluidez constante."
+        oceanic_desc: "A calma e a fúria dos mares. Ondas orgânicas, tons profundos de azul e fluidez constante.",
+        collection_summary: "{{count}} motores, um destaque rotativo e uma galeria uniforme logo abaixo."
       },
       notfound: {
         title: "404 - Página não encontrada | AuraWall",
@@ -880,7 +886,7 @@ const resources = {
         desc: "Explora el arte algorítmico.",
         btn: "Ver Galería",
         expanded_collection: "Colección Expandida",
-        expanded_desc: "Explora 9 motores de generación distintos, desde olas oceánicas hasta glitches digitales y estética Bauhaus.",
+        expanded_desc: "Explora 10 motores de generación distintos, desde nebulosas profundas hasta glitches digitales y estética Bauhaus.",
         view_all_engines: "Ver Todos los Motores"
       },
       home_cta: {
@@ -913,7 +919,7 @@ const resources = {
         chroma_title: "Croma",
         anim_title: "Animación",
         anim_desc: "Una expresión pura de energía cinética, usando keyframes CSS para dirigir caminos de movimiento proceduras para cada forma.",
-        engines_desc: "Explora 9 motores distintos, cada uno con su propia física y estética visual, impulsados por inteligencia procedural.",
+        engines_desc: "Explora 10 motores distintos, cada uno con su propia física y estética visual, impulsados por inteligencia procedural.",
         animation_proc_desc: "Una expresión pura de energía cinética, usando keyframes CSS para dirigir caminos de movimiento proceduras para cada forma, demostrando la inteligencia procedural en acción.",
         custom_title: "Personalización Profunda",
         custom_desc: "Para usuarios avanzados: edita manualmente el manifiesto JSON para alterar semillas, ajustar curvas de opacidad, cambiar blend-modes y crear composiciones imposibles desde la UI estándar.",
@@ -1050,7 +1056,7 @@ const resources = {
         create_with: "Crear con {{name}}",
         full_collection: "Colección Completa",
         hero_title: "Motores de Creación",
-        hero_desc: "AuraWall opera con 9 motores estéticos distintos. Cada uno encapsula un conjunto único de reglas matemáticas, paletas de colores y comportamentos físicos para generar arte procedural infinito.",
+        hero_desc: "AuraWall opera con 10 motores estéticos distintos. Cada uno encapsula un conjunto único de reglas matemáticas, paletas de colores y comportamentos físicos para generar arte procedural infinito.",
         ready_title: "¿Listo para crear?",
         ready_desc: "Todos estos motores están disponibles gratis en el editor. Mezcla, combina y exporta en 4K.",
         start: "Iniciar Editor"
@@ -1221,6 +1227,8 @@ const resources = {
         lava_desc: "Flujos psicodélicos y movimiento fundido. Inspirado en las lámparas de lava de los 60/70.",
         midnight_tagline: "Polvo estelar y silencio profundo.",
         midnight_desc: "La inmensidad del cosmos. Estrellas distantes, nebulosas sutiles y el silencio del espacio profundo.",
+        astra_tagline: "Nebulosas densas y luz orbital.",
+        astra_desc: "Un motor de espacio profundo con cintas luminosas, polvo estelar y núcleos celestes cálidos.",
         geometrica_tagline: "Orden, cuadrícula y función.",
         geometrica_desc: "Precisión matemática y estructura Bauhaus. Formas puras alineadas a la cuadrícula, colores primarios y composición equilibrada.",
         glitch_tagline: "El bello error del sistema.",
@@ -1230,7 +1238,8 @@ const resources = {
         ember_tagline: "Brasas vivas y humo danzante.",
         ember_desc: "El calor de las brasas y la danza del humo. Tonos terrosos, naranjas vibrantes y atmósferas acogedoras.",
         oceanic_tagline: "Azules profundos y mareas vivas.",
-        oceanic_desc: "La calma y la furia de los mares. Olas orgánicas, tonos profundos de azul y fluidez constante."
+        oceanic_desc: "La calma y la furia de los mares. Olas orgánicas, tonos profundos de azul y fluidez constante.",
+        collection_summary: "{{count}} motores, un destaque rotativo y una galería uniforme debajo."
       },
       notfound: {
         title: "404 - Página no encontrada | AuraWall",

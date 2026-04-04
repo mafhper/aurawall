@@ -27,6 +27,8 @@
         "icons": "node scripts/ops/distribute-icons.cjs",
         "template:export": "node scripts/ops/export-template.cjs",
         "generate:bgs": "node scripts/ops/generate-bgs.cjs",
+        "generate:engine-samples": "node scripts/ops/render-engine-samples.mjs",
+        "generate:promo-assets": "node scripts/ops/render-promo-assets.mjs",
         "logs": "node scripts/ops/fetch-changelog.js",
         "test:structure": "node scripts/test/structure.cjs",
         "test:security": "npm audit",

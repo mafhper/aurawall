@@ -21,7 +21,7 @@ export const ensureVisibility = (shapes: Shape[], baseColor: string | Background
   shapes.forEach(s => {
     s.opacity = Math.min(s.opacity, 0.9);
     // If screen mode and high opacity, reduce it
-    if (s.blendMode === 'screen' && s.opacity > 0.6) s.opacity = 0.5;
+    if (s.blendMode === 'screen' && s.opacity > 0.72) s.opacity = 0.72;
   });
 
   // 2. Luminance Clamp for Base Color (Avoid Pitch Black / Pure White)
@@ -36,8 +36,10 @@ export const ensureVisibility = (shapes: Shape[], baseColor: string | Background
   return shapes.map(s => {
     const shapeHsl = s.color.startsWith('#') ? hexToHsl(s.color) : parseHsl(s.color);
     let newBlend = s.blendMode;
-    const newOpacity = Math.max(0.4, s.opacity); // Increase opacity floor
-    const newSize = Math.max(30, s.size);
+    const opacityFloor = s.type === 'circle' ? 0.08 : s.type === 'rect' ? 0.12 : 0.18;
+    const sizeFloor = s.type === 'circle' ? 0.8 : s.type === 'rect' ? 6 : 8;
+    const newOpacity = Math.max(opacityFloor, s.opacity);
+    const newSize = Math.max(sizeFloor, s.size);
 
     // --- PITCH BLACK BACKGROUND RULES (Risk Level: HIGH) ---
     if (isPitchBlack) {

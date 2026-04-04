@@ -33,6 +33,14 @@ export const ENGINES = [
     colors: 'from-indigo-900 to-purple-900'
   },
   {
+    id: 'astra',
+    name: 'Astra',
+    description: 'Nebulosas profundas, poeira estelar e núcleos luminosos. Um motor cósmico inspirado no espaço profundo.',
+    tagline: 'Nebulosas densas e luz orbital.',
+    image: 'bg-astra.svg',
+    colors: 'from-sky-400 to-amber-300'
+  },
+  {
     id: 'geometrica',
     name: 'Geometrica',
     description: 'Precisão matemática e estrutura Bauhaus. Formas puras alinhadas à grade, cores primárias e composição equilibrada.',

@@ -29,21 +29,23 @@ import {
   CopyCheck,
   Heart,
   Star,
-  ArrowLeft
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
-import { DEFAULT_ANIMATION, DEFAULT_VIGNETTE } from '../constants';
+import { DEFAULT_ANIMATION, DEFAULT_CONFIG, DEFAULT_VIGNETTE } from '../constants';
 import { hslToHex } from '../utils/colorUtils';
 import { useTranslation } from 'react-i18next';
 import PreferencesMenu from './PreferencesMenu'; 
 import ColorPaletteExtractor from './ColorPaletteExtractor'; // New Import
-import { getEngine } from '../engines';
-import EngineGallery from './EngineGallery';
+import { getAllEngines, getEngine } from '../engines';
 
 const COLLECTION_ICONS: Record<string, React.ElementType> = {
   boreal: Wind,
   chroma: Zap,
   lava: Zap, // Reuse Zap or find better
   midnight: Star,
+  astra: Star,
   geometrica: Aperture,
   glitch: FileCode,
   sakura: Wind,
@@ -58,9 +60,7 @@ interface ControlsProps {
   setPreferences: React.Dispatch<React.SetStateAction<AppPreferences>>;
   selectedPresetId?: string | null;
   activeCollection: CollectionId;
-  setActiveCollection: (c: CollectionId) => void;
-  enabledEngines: string[];
-  setEnabledEngines: (engines: string[]) => void;
+  onSelectEngine: (engineId: CollectionId) => void;
   setConfig: React.Dispatch<React.SetStateAction<WallpaperConfig>>;
   undo: () => void;
   redo: () => void;
@@ -129,9 +129,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
   setPreferences,
   selectedPresetId,
   activeCollection,
-  setActiveCollection,
-  enabledEngines,
-  setEnabledEngines,
+  onSelectEngine,
   setConfig,
   undo,
   redo,
@@ -155,41 +153,25 @@ const ControlsInner: React.FC<ControlsProps> = ({
   const [activeTab, setActiveTab] = useState<'adjust' | 'shapes' | 'sizes' | 'motion' | 'preferences' | 'favorites'>('adjust');
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [copied, setCopied] = useState(false);
-  const [showGallery, setShowGallery] = useState(false);
-  const [slotToReplace, setSlotToReplace] = useState<string | null>(null);
-
-  const handleOpenGallery = (currentEngineId: string) => {
-    setSlotToReplace(currentEngineId);
-    setShowGallery(true);
-  };
-
-  const handleEquipEngine = (newEngineId: string) => {
-    if (slotToReplace) {
-        let newEnabled: string[];
-        
-        // Check if the selected engine is already active in another slot
-        if (enabledEngines.includes(newEngineId)) {
-            // Swap logic: The old slot gets the new engine, the existing slot gets the old engine
-            newEnabled = enabledEngines.map(id => {
-                if (id === slotToReplace) return newEngineId;
-                if (id === newEngineId) return slotToReplace;
-                return id;
-            });
-        } else {
-            // Standard replacement
-            newEnabled = enabledEngines.map(id => id === slotToReplace ? newEngineId : id);
-        }
-
-        setEnabledEngines(newEnabled);
-        setActiveCollection(newEngineId);
-        setShowGallery(false);
-        setSlotToReplace(null);
-    }
-  };
+  const [inspiredCollectionId, setInspiredCollectionId] = useState<CollectionId | null>(null);
+  const exportTitleKey = preferences.format === 'png' ? 'export_png' : 'export_jpg';
+  const exportShortKey = preferences.format === 'png' ? 'export_png_short' : 'export_jpg_short';
 
   // Filter categories based on active collection
   const collectionPresets = PRESETS.filter(p => p.collection === activeCollection);
   const categories = ['All', ...Array.from(new Set(collectionPresets.map(p => p.category)))];
+
+  const getPresetPreviewConfig = (preset: (typeof PRESETS)[number]): WallpaperConfig => ({
+    ...DEFAULT_CONFIG,
+    width: 320,
+    height: 320,
+    baseColor: preset.config.baseColor || DEFAULT_CONFIG.baseColor,
+    shapes: preset.config.shapes || [],
+    noise: preset.config.noise ?? DEFAULT_CONFIG.noise,
+    noiseScale: preset.config.noiseScale ?? DEFAULT_CONFIG.noiseScale,
+    animation: { ...DEFAULT_ANIMATION, ...(preset.config.animation || {}), enabled: false },
+    vignette: { ...DEFAULT_VIGNETTE, ...(preset.config.vignette || {}) }
+  });
 
   // Reset category when collection changes
   useEffect(() => {
@@ -294,9 +276,14 @@ const ControlsInner: React.FC<ControlsProps> = ({
     }));
   };
 
-  const isRandomMode = selectedPresetId === 'custom-random';
   const anim = config.animation || DEFAULT_ANIMATION;
   const vig = config.vignette || DEFAULT_VIGNETTE;
+  const activeEngine = getEngine(activeCollection);
+  const engineIds = getAllEngines().map(engine => engine.id);
+  const activeEngineIndex = Math.max(0, engineIds.indexOf(activeCollection));
+  const previousEngineId = engineIds[(activeEngineIndex - 1 + engineIds.length) % engineIds.length];
+  const nextEngineId = engineIds[(activeEngineIndex + 1) % engineIds.length];
+  const shouldShowInspiredVariations = inspiredCollectionId === activeCollection && variations.length > 0;
   
   // Normalize background for UI
   const bgConfig: BackgroundConfig = typeof config.baseColor === 'string'
@@ -468,120 +455,58 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
         {activeTab === 'adjust' && (
           <div> {/* Container for all 'adjust' tab content */}
-            {/* Collection Switcher */}
-            <div className="bg-zinc-900 rounded-lg p-1 flex gap-1 border border-white/10 mb-6 relative">
-              {enabledEngines.map(engineId => {
-                const engine = getEngine(engineId);
-                if (!engine) return null;
-
-                const Icon = COLLECTION_ICONS[engineId] || Aperture;
-                const isActive = activeCollection === engineId;
-                
-                // Dynamic style based on ID 
-                let activeClass = 'bg-zinc-800 text-blue-300 shadow-sm border border-blue-500/30';
-                if (engineId === 'boreal') activeClass = 'bg-zinc-800 text-purple-300 shadow-sm border border-purple-500/30';
-                if (engineId === 'chroma') activeClass = 'bg-zinc-800 text-green-300 shadow-sm border border-green-500/30';
-                if (engineId === 'lava') activeClass = 'bg-zinc-800 text-orange-300 shadow-sm border border-orange-500/30';
-                if (engineId === 'midnight') activeClass = 'bg-zinc-800 text-indigo-300 shadow-sm border border-indigo-500/30';
-                if (engineId === 'glitch') activeClass = 'bg-zinc-800 text-pink-300 shadow-sm border border-pink-500/30';
-                if (engineId === 'oceanic') activeClass = 'bg-zinc-800 text-cyan-300 shadow-sm border border-cyan-500/30';
-
-                return (
-                  <div key={engineId} className="flex-1 relative group/btn">
-                    <button
-                        onClick={() => setActiveCollection(engineId)}
-                        className={`w-full py-2 rounded text-xs font-medium flex items-center justify-center gap-2 transition-all ${
-                        isActive ? activeClass : 'text-zinc-500 hover:text-zinc-300'
-                        }`}
-                    >
-                        <Icon size={14} /> <span className="hidden xl:inline">{engine.meta.name}</span>
-                        <span className="inline xl:hidden text-zinc-400">{engine.meta.name.slice(0, 3)}</span>
-                    </button>
-                    <button 
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenGallery(engineId);
-                        }}
-                        aria-label="Trocar motor"
-                        className="absolute -top-2 -right-2 bg-zinc-700 text-white rounded-full p-2 opacity-50 group-hover/btn:opacity-100 hover:bg-purple-500 transition-all z-10 shadow-lg scale-75"
-                        title="Trocar motor"
-                    >
-                        <Settings2 size={10} />
-                    </button>
+            <div className="rounded-xl border border-white/10 bg-zinc-900/70 p-3 mb-6">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-3">
+                {t('current_engine')}
+              </div>
+              <div className="flex items-center gap-2 min-w-0">
+                <button
+                  onClick={() => onSelectEngine(previousEngineId)}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-zinc-950 text-zinc-300 transition-colors hover:border-white/20 hover:text-white"
+                  aria-label={t('previous_engine')}
+                  title={t('previous_engine')}
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <div className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/20 px-3 py-3 flex items-center gap-3 overflow-hidden">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 text-zinc-300">
+                    {activeEngine && React.createElement(COLLECTION_ICONS[activeCollection] || Aperture, { size: 16 })}
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Quick Actions (Random) */}
-            <div className="bg-zinc-900/50 p-3 rounded-lg border border-white/5 space-y-3 mb-6">
-              <button 
-                onClick={onRandomize}
-                className={`btn-premium w-full text-zinc-300 py-3 px-3 rounded-lg flex items-center justify-center gap-2 text-xs border font-medium ${
-                    isRandomMode ? 'bg-purple-500/20 border-purple-500 text-purple-200 glow-purple' : 'bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-600 border-white/5'
-                }`}
-              >
-                <Shuffle size={14} /> 
-                {activeCollection === 'boreal' ? t('random_ethereal') : t('random_liquid')}
-              </button>
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-semibold text-white">{activeEngine?.meta.name || activeCollection}</div>
+                    <div className="truncate text-[11px] text-zinc-400">{activeEngine?.meta.tagline}</div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => onSelectEngine(nextEngineId)}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-zinc-950 text-zinc-300 transition-colors hover:border-white/20 hover:text-white"
+                  aria-label={t('next_engine')}
+                  title={t('next_engine')}
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
 
             <div className="space-y-1">
-              <CollapsibleSection title={`${activeCollection} Series`}>
-                {/* Horizontal Category Chips */}
-                {!isRandomMode && (
-                  <div className="flex gap-2 overflow-x-auto pb-2 mb-2 no-scrollbar -mx-1 px-1">
-                    {categories.map(c => (
-                      <button
-                        key={c}
-                        onClick={() => setActiveCategory(c)}
-                        className={`px-3 py-1 rounded-full text-xs whitespace-nowrap transition-colors flex-shrink-0 border ${
-                          activeCategory === c 
-                            ? 'bg-purple-500/20 text-purple-300 border-purple-500/50' 
-                            : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'
-                        }`}
-                      >
-                        {c}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                
-                {/* Grid System */}
-                <div className="grid grid-cols-3 md:grid-cols-3 gap-2">
-                  
-                  {/* Special Logic: If Random Mode, show variations FIRST */}
-                  {isRandomMode && variations.length > 0 && (
-                     <>
-                        <div className="col-span-3 text-[10px] text-purple-400 font-medium uppercase tracking-wider flex items-center gap-1 my-1">
-                          <Aperture size={12} /> {t('inspired_variations')}
-                        </div>
-                        {variations.map((variant, vIdx) => (
-                            <button
-                              key={`rand-v-${vIdx}`}
-                              onClick={() => onApplyVariation(variant)}
-                              className="group relative aspect-square rounded-lg overflow-hidden border border-purple-500/30 hover:border-purple-500 transition-all active:scale-95 animate-in fade-in zoom-in duration-500"
-                              style={{ animationDelay: `${vIdx * 50}ms` }}
-                              title={t('creative_variation_title')}
-                            >
-                              <WallpaperRenderer 
-                                config={variant} 
-                                className="w-full h-full"
-                                lowQuality={true} 
-                              />
-                              <div className="absolute top-1 right-1 opacity-70">
-                                 <Palette size={10} className="text-white drop-shadow-md"/>
-                              </div>
-                            </button>
-                        ))}
-                        <div className="col-span-3 h-px bg-white/5 my-2" />
-                        <div className="col-span-3 text-[10px] text-zinc-500 font-medium uppercase tracking-wider">
-                           {t('library')}
-                        </div>
-                     </>
-                  )}
+              <CollapsibleSection title={t('library')}>
+                <div className="flex gap-2 overflow-x-auto pb-2 mb-2 no-scrollbar -mx-1 px-1">
+                  {categories.map(c => (
+                    <button
+                      key={c}
+                      onClick={() => setActiveCategory(c)}
+                      className={`px-3 py-1 rounded-full text-xs whitespace-nowrap transition-colors flex-shrink-0 border ${
+                        activeCategory === c 
+                          ? 'bg-purple-500/20 text-purple-300 border-purple-500/50' 
+                          : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'
+                      }`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
 
-                  {/* Standard Preset Rendering */}
+                <div className="grid grid-cols-3 md:grid-cols-3 gap-2">
                   {(() => {
                     const filtered = collectionPresets.filter(p => activeCategory === 'All' || p.category === activeCategory);
                     const items: React.ReactNode[] = [];
@@ -593,43 +518,28 @@ const ControlsInner: React.FC<ControlsProps> = ({
                       items.push(
                         <button
                           key={preset.id}
-                          onClick={() => onApplyPreset(preset.id)}
+                          onClick={() => {
+                            setInspiredCollectionId(activeCollection);
+                            onApplyPreset(preset.id);
+                          }}
                           className={`group relative aspect-square rounded-lg overflow-hidden border transition-all active:scale-95 ${
                             isSelected ? 'border-purple-500 ring-2 ring-purple-500/20' : 'border-white/10 hover:border-white/30'
                           }`}
                         >
                           <div className="absolute inset-0" style={{ background: preset.thumbnail }} />
-                          <span className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm text-[10px] py-1 text-center text-white opacity-0 group-hover:opacity-100 transition-opacity truncate px-1">
+                          <WallpaperRenderer
+                            config={getPresetPreviewConfig(preset)}
+                            className="relative z-[1] w-full h-full pointer-events-none"
+                            lowQuality={true}
+                          />
+                          <span className="absolute z-[2] inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm text-[10px] py-1 text-center text-white opacity-0 group-hover:opacity-100 transition-opacity truncate px-1">
                             {preset.name}
                           </span>
                           {isSelected && (
-                             <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-purple-500 shadow-lg" />
+                             <div className="absolute z-[2] top-1 right-1 w-2 h-2 rounded-full bg-purple-500 shadow-lg" />
                           )}
                         </button>
                       );
-
-                      // Inline Variations (Only if NOT in Random Mode)
-                      if (isSelected && !isRandomMode && variations.length > 0) {
-                        variations.forEach((variant, vIdx) => {
-                          items.push(
-                            <button
-                              key={`${preset.id}-v-${vIdx}`}
-                              onClick={() => onApplyVariation(variant)}
-                              className="group relative aspect-square rounded-lg overflow-hidden border border-purple-500/30 hover:border-purple-500 transition-all active:scale-95 animate-in fade-in zoom-in duration-300"
-                              title={t('generated_variation_title')}
-                            >
-                              <WallpaperRenderer 
-                                config={variant} 
-                                className="w-full h-full"
-                                lowQuality={true} 
-                              />
-                              <div className="absolute top-1 right-1 opacity-50">
-                                 <Palette size={10} className="text-white drop-shadow-md"/>
-                              </div>
-                            </button>
-                          );
-                        });
-                      }
                     });
 
                     if (items.length === 0) {
@@ -640,6 +550,43 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   })()}
                 </div>
               </CollapsibleSection>
+
+              <div className="bg-zinc-900/50 p-3 rounded-lg border border-white/5 space-y-3 mb-2">
+                <button 
+                  onClick={() => {
+                    setInspiredCollectionId(activeCollection);
+                    onRandomize();
+                  }}
+                  className="btn-premium w-full text-zinc-300 py-3 px-3 rounded-lg flex items-center justify-center gap-2 text-xs border font-medium bg-zinc-800 hover:bg-zinc-700 active:bg-zinc-600 border-white/5"
+                >
+                  <Shuffle size={14} /> 
+                  {t('random_series')}
+                </button>
+              </div>
+
+              {shouldShowInspiredVariations && (
+                <CollapsibleSection title={t('inspired_variations')}>
+                  <div className="grid grid-cols-3 md:grid-cols-3 gap-2">
+                    {variations.map((variant, vIdx) => (
+                      <button
+                        key={`inspired-${vIdx}`}
+                        onClick={() => onApplyVariation(variant)}
+                        className="group relative aspect-square rounded-lg overflow-hidden border border-purple-500/30 hover:border-purple-500 transition-all active:scale-95 animate-in fade-in zoom-in duration-300"
+                        title={t('generated_variation_title')}
+                      >
+                        <WallpaperRenderer 
+                          config={variant} 
+                          className="w-full h-full"
+                          lowQuality={true} 
+                        />
+                        <div className="absolute top-1 right-1 opacity-50">
+                          <Palette size={10} className="text-white drop-shadow-md"/>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </CollapsibleSection>
+              )}
 
               {/* Background Control (Updated) */}
               <CollapsibleSection title={t('background_base')}>
@@ -1053,6 +1000,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                       >
                         <option value="circle">{t('circle')}</option>
                         <option value="blob">{t('organic_blob')}</option>
+                        <option value="rect">{t('rectangle')}</option>
                       </select>
                     </div>
                     <div>
@@ -1343,7 +1291,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
       {/* Footer / Download - Fixed at bottom */}
       <div className="p-3 md:p-4 border-t border-white/10 bg-[#18181b] z-20 shrink-0 flex gap-2">
-         <button 
+        <button 
           onClick={onShowSVGModal}
           className="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2.5 px-2 rounded-lg flex flex-col sm:flex-row items-center justify-center gap-1 md:gap-2 transition-colors active:scale-98 border border-white/10"
           title={t('view_svg')}
@@ -1362,20 +1310,13 @@ const ControlsInner: React.FC<ControlsProps> = ({
         <button 
           onClick={onDownload}
           className="flex-1 bg-white text-black hover:bg-zinc-200 font-bold py-2.5 px-2 rounded-lg flex flex-col sm:flex-row items-center justify-center gap-1 md:gap-2 transition-colors active:scale-98 shadow-lg shadow-white/5"
-          title={t('export_jpg')}
+          title={t(exportTitleKey)}
         >
           <Download size={18} />
-          <span className="text-[10px] md:text-xs whitespace-nowrap">{t('export_jpg_short')}</span>
+          <span className="text-[10px] md:text-xs whitespace-nowrap">{t(exportShortKey)}</span>
         </button>
       </div>
 
-      {showGallery && slotToReplace && (
-        <EngineGallery 
-          onClose={() => setShowGallery(false)}
-          onEquip={handleEquipEngine}
-          activeEngineId={slotToReplace}
-        />
-      )}
     </div>
   );
 };

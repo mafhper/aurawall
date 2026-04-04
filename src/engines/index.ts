@@ -8,6 +8,7 @@ import { glitchEngine } from './glitch';
 import { sakuraEngine } from './sakura';
 import { emberEngine } from './ember';
 import { oceanicEngine } from './oceanic';
+import { astraEngine } from './astra';
 
 export const engines: Record<string, EngineDefinition> = {
   [borealEngine.id]: borealEngine,
@@ -19,6 +20,7 @@ export const engines: Record<string, EngineDefinition> = {
   [sakuraEngine.id]: sakuraEngine,
   [emberEngine.id]: emberEngine,
   [oceanicEngine.id]: oceanicEngine,
+  [astraEngine.id]: astraEngine,
 };
 
 export const getEngine = (id: string): EngineDefinition | undefined => engines[id];

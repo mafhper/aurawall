@@ -1,3 +1,10 @@
+[2026/04/03 - Preset-aware Randomization, Canonical Promo Assets & Doc Sync]
+- App: Randomization now preserves the selected preset identity instead of collapsing back to a generic engine state.
+- App: Inspired variations continue from the current canvas while preserving the active preset envelope when applicable.
+- Visual: Recurated overlapping presets in Midnight, Geometrica, Glitch, Ember, Oceanic and Astra to reduce redundancy and better match their names/taglines.
+- Promo: Added canonical preset mapping and static asset generation flow so `bg-*.svg` files come from real presets instead of drifting illustrations.
+- Docs: Rewrote README and technical docs to reflect the current single-engine flow, 3 presets per engine, real preset thumbnails and static promo architecture.
+
 [2025/12/27 - Mobile Animations & Hover Logic]
 - App: Enabled animations on mobile devices (removed lowQuality restriction).
 - Promo: Implemented smart hover detection (Always animate on touch devices, Animate on hover for Desktop).

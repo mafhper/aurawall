@@ -20,7 +20,7 @@ export type BlendMode =
 
 export interface Shape {
   id: string;
-  type: 'circle' | 'blob';
+  type: 'circle' | 'blob' | 'rect';
   x: number; // Percentage 0-100
   y: number; // Percentage 0-100
   size: number; // Percentage relative to width
@@ -29,6 +29,9 @@ export interface Shape {
   blur: number;
   blendMode: BlendMode;
   complexity?: number; // 3 to 10, for blobs
+  rotation?: number; // Degrees
+  scaleX?: number; // Horizontal scale
+  scaleY?: number; // Vertical scale
 }
 
 export interface AnimationSettings {
@@ -101,6 +104,11 @@ export interface VariationRule {
   transform: (config: WallpaperConfig, options?: { isGrainLocked: boolean }) => WallpaperConfig;
 }
 
+export interface EngineRandomizerOptions {
+  isGrainLocked: boolean;
+  presetId?: string | null;
+}
+
 export interface EngineDefinition {
   id: string;
   meta: {
@@ -110,6 +118,6 @@ export interface EngineDefinition {
     promoImage?: string;
   };
   defaults: Partial<WallpaperConfig>;
-  randomizer: (currentConfig: WallpaperConfig, options: { isGrainLocked: boolean }) => WallpaperConfig;
+  randomizer: (currentConfig: WallpaperConfig, options: EngineRandomizerOptions) => WallpaperConfig;
   variations: VariationRule[];
 }

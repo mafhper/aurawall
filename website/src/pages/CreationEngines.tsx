@@ -18,7 +18,7 @@ const getPreviewConfig = (engineId: string) => {
   return engine.randomizer(DEFAULT_CONFIG, { isGrainLocked: false });
 };
 
-const EngineCard = ({ engine, variant = 'grid' }: { engine: typeof ENGINES[0], variant?: 'hero' | 'secondary' | 'grid' }) => {
+const EngineCard = ({ engine, variant = 'grid' }: { engine: typeof ENGINES[0], variant?: 'hero' | 'grid' }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useTranslation();
   
@@ -47,13 +47,11 @@ const EngineCard = ({ engine, variant = 'grid' }: { engine: typeof ENGINES[0], v
       ...config,
       animation: {
           ...config.animation,
-          // If variant is hero, maybe always animate? User said "all images".
-          // Let's stick to hover for all.
           enabled: isHovered 
       }
   }), [config, isHovered]);
 
-  const heightClass = variant === 'hero' ? 'h-[500px] md:h-[600px]' : (variant === 'secondary' ? 'h-[400px]' : 'aspect-[4/3]');
+  const heightClass = variant === 'hero' ? 'h-[500px] md:h-[600px]' : 'aspect-[4/3]';
   
   return (
     <Link 
@@ -96,30 +94,24 @@ const EngineCard = ({ engine, variant = 'grid' }: { engine: typeof ENGINES[0], v
 };
 
 export default function CreationEngines() {
-  // const { t } = useTranslation(); // unused
-
-  // Initialize with default order, then shuffle on mount
+  const { t } = useTranslation();
   const [layout, setLayout] = useState(() => ({
     hero: ENGINES[0],
-    secondary: ENGINES.slice(1, 4),
-    grid: ENGINES.slice(4)
+    grid: ENGINES.slice(1)
   }));
 
   useEffect(() => {
-    // Shuffle engines on client-side mount
     const timer = setTimeout(() => {
       const shuffled = [...ENGINES].sort(() => Math.random() - 0.5);
       setLayout({
         hero: shuffled[0],
-        secondary: shuffled.slice(1, 4),
-        grid: shuffled.slice(4)
+        grid: shuffled.slice(1)
       });
     }, 0);
     return () => clearTimeout(timer);
   }, []);
 
-  const { hero, secondary, grid } = layout;
-  const { t } = useTranslation();
+  const { hero, grid } = layout;
 
   return (
     <div className="min-h-screen bg-black text-white animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -159,19 +151,17 @@ export default function CreationEngines() {
       <div className="container mx-auto px-6 py-20">
 
         {/* Hero Section - Featured Engine */}
-        <div className="mb-8">
+        <div className="mb-10">
             <EngineCard engine={hero} variant="hero" />
         </div>
 
-        {/* Secondary Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {secondary.map(engine => (
-                <EngineCard key={engine.id} engine={engine} variant="secondary" />
-            ))}
-        </div>
-
         {/* Grid Section */}
-        <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-4">{t('engines.more_engines')}</h2>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold">{t('gallery.full_collection')}</h2>
+            <p className="mt-1 text-sm text-zinc-500">{t('engines.collection_summary', { count: grid.length + 1 })}</p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {grid.map(engine => (
                 <EngineCard key={engine.id} engine={engine} variant="grid" />

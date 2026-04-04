@@ -1,88 +1,107 @@
-# Technical Guide - AuraWall
+# Technical Guide
 
 ## Overview
 
-AuraWall is a procedural wallpaper generator built with React 19, TypeScript, and SVG rendering.
+AuraWall is a static, vector-first wallpaper system with two surfaces:
 
-## Architecture
+- `src/`: the editor app
+- `website/`: the promo site
 
-### Core Stack
-- **React 19** + TypeScript - UI and state management
-- **Vite 6** - Build and development server
-- **Tailwind CSS v4** - Styling framework
-- **SVG DOM** - Vector graphics rendering
+The shared visual contract is `WallpaperConfig`. Engines and presets create or transform that config, `WallpaperRenderer` renders it as SVG, and export flows optionally rasterize it to `JPG` or `PNG`.
 
-### Project Structure
-```
-aurawall/
-├── src/                   # Main application (editor)
-│   ├── components/        # React components
-│   ├── engines/           # Preset generation engines
-│   ├── hooks/             # Custom React hooks
-│   ├── utils/             # Utility functions
-│   ├── types.ts           # TypeScript definitions
-│   └── constants.ts       # Application constants
-├── website/               # Promo site (SSR/SSG)
-│   ├── src/pages/         # Page components
-│   └── src/components/    # Shared components
-├── public/                # Static assets
-├── scripts/               # Build and maintenance scripts
-└── docs/                  # Documentation
-```
+## Current Product Behavior
 
-## Build Commands
+### Editor
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start both app and promo dev servers |
-| `npm run build` | Build both app and promo for production |
-| `npm run build:promo` | Build promo site with SSG |
-| `npm run build:app` | Build main application |
+- one engine active at a time
+- one library per engine, with exactly 3 curated presets
+- preset thumbnails rendered from the actual preset config
+- `Randomizar Motor Atual` preserves the selected preset identity when one is active
+- `Variacoes Inspiradas` are derived from the current canvas and stay visually close to the active preset/config
 
-## Health & Quality Scripts
+### Promo
 
-| Command | Description |
-|---------|-------------|
-| `npm run health` | Full system health check |
-| `npm run health:fast` | Quick health (skip install) |
-| `npm run test:lint` | ESLint check |
-| `npm run test:i18n` | i18n key parity check |
-| `npm run test:contrast` | WCAG contrast check |
-| `npm run test:perf` | Bundle size check |
+- static deployment with no backend
+- engine gallery driven by `website/src/data/engines.ts`
+- hero plus uniform grid layout on `/creation/engines`
+- canonical `bg-*.svg` assets generated from real presets, not hand-maintained illustrations
 
-## Key Components
+## Core Files
 
-### WallpaperRenderer
-Main SVG rendering component. Accepts a `WallpaperConfig` and renders shapes with filters.
+### `src/constants.ts`
 
-### HeroBackground
-Hero section background with animated presets. Uses `presetId` for deterministic SSR.
+Contains:
 
-### GalleryCard
-Interactive card component with hover-to-play animation.
+- `DEFAULT_CONFIG`
+- preset library
+- curated hero presets
+- canonical promo preset mapping through `CANONICAL_ENGINE_PRESET_IDS`
 
-## Performance Targets
+### `src/types.ts`
 
-- **Lighthouse Score**: 90+
-- **FPS**: 60 (CSS animations)
-- **Bundle Size**: <5MB total
+Defines:
 
-## i18n Support
+- `WallpaperConfig`
+- `Shape`
+- engine interfaces and variation/randomizer contracts
 
-Languages: English (en), Portuguese (pt-BR), Spanish (es)
+### `src/engines/*.ts`
 
-All translations in `src/i18n.ts` and `website/src/i18n.ts`.
+Each engine exposes:
 
-## Protocolo Obrigatório de Pré-Commit (Seven Steps)
+- `meta`
+- `randomizer`
+- `variations`
 
-Antes de qualquer commit significativo, siga este fluxo para garantir qualidade:
+The randomizer should stay cheap enough for animated SVG playback. If an engine depends on too many tiny particles or heavy blur stacks, browser animation will regress quickly.
 
-1.  **Análise de Estado**: `git status --short` para entender o escopo.
-2.  **Verificação de Saúde**: `npm run health:fast` (Builds e testes estruturais).
-3.  **Auditoria de Qualidade**: `npm run test:lint` (Código limpo).
-4.  **Documentação Ativa**: Atualizar `docs/change.log` com entrada no topo.
-5.  **Preparação (Staging)**: `git add .`
-6.  **Commit Semântico**: Mensagem clara (`feat:`, `fix:`, `perf:`).
-7.  **Sincronização (Push)**: Enviar para remoto após confirmação.
+### `src/components/WallpaperRenderer.tsx`
 
-*Para mudanças de performance, rodar também `npm run audit` e comparar resultados.*
+Responsible for:
+
+- SVG shape rendering
+- base transforms
+- animation transforms
+- filters and grain
+- deterministic static rendering for thumbnails and promo assets
+
+### `scripts/ops/render-engine-samples.mjs`
+
+CLI renderer for batch engine sampling. Use it to inspect visual differentiation without opening the app UI.
+
+### `scripts/ops/render-promo-assets.mjs`
+
+Generates the canonical promo SVGs from `CANONICAL_ENGINE_PRESET_IDS` and writes them to both `public/` and `website/public/`.
+
+## Commands
+
+### Main
+
+- `npm run dev`
+- `npm run build:app`
+- `npm run build:promo`
+- `npm run lint`
+
+### Visual Tooling
+
+- `npm run generate:engine-samples`
+- `npm run generate:promo-assets`
+
+## Visual Contract
+
+When refining engines or presets:
+
+- each engine must justify its existence with a distinct visual vocabulary
+- each preset must reflect its name and tagline, not just a small palette shift
+- avoid reusing the same fallback motif across engines, especially tiny bright circular particles
+- keep animated SVG cost under control; visual richness cannot come from brute-force shape counts
+
+## Documentation Contract
+
+When engine behavior, preset flow, or promo asset generation changes, update:
+
+- `README.md`
+- `docs/TECHNICAL_GUIDE.md`
+- `docs/change.log`
+
+The docs should describe the current system as shipped, not intermediate experiments.

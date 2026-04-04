@@ -30,10 +30,15 @@ export default function App() {
 
     const colParam = getCollectionFromUrl();
     if (colParam) {
-       const engine = getEngine(colParam);
-       if (engine && engine.randomizer) {
-           // Generate a fresh random config for this collection
-           return engine.randomizer(DEFAULT_CONFIG, { isGrainLocked: false });
+       const firstPreset = PRESETS.find(preset => preset.collection === colParam);
+       if (firstPreset?.config) {
+         return {
+           ...DEFAULT_CONFIG,
+           ...firstPreset.config,
+           shapes: firstPreset.config.shapes || [],
+           animation: { ...DEFAULT_CONFIG.animation, ...(firstPreset.config.animation || {}) },
+           vignette: { ...DEFAULT_CONFIG.vignette, ...(firstPreset.config.vignette || {}) }
+         };
        }
     }
     return DEFAULT_CONFIG;
@@ -61,8 +66,6 @@ export default function App() {
   const [activeCollection, setActiveCollection] = useState<CollectionId>(() => {
       return (getCollectionFromUrl() as CollectionId) || 'boreal';
   });
-  // Default enabled engines (3 slots)
-  const [enabledEngines, setEnabledEngines] = useState<string[]>(['boreal', 'chroma', 'lava']);
   const [isGrainLocked, setIsGrainLocked] = useState(false);
   const [isZenMode, setIsZenMode] = useState(false); // New state for Zen Mode
   
@@ -145,33 +148,51 @@ export default function App() {
   // Debounced Variation Generation when config changes
   useEffect(() => {
     const timer = setTimeout(() => {
-      const vars = generateVariations(config, activeCollection);
+      const vars = generateVariations(config, activeCollection, isGrainLocked);
       setVariations(vars);
     }, 600); 
 
     return () => clearTimeout(timer);
-  }, [config, activeCollection]);
+  }, [config, activeCollection, isGrainLocked]);
+
+  const getPresetBaseConfig = useCallback((baseConfig: WallpaperConfig = config) => {
+    return {
+      ...DEFAULT_CONFIG,
+      width: baseConfig.width,
+      height: baseConfig.height,
+      noise: isGrainLocked ? baseConfig.noise : DEFAULT_CONFIG.noise,
+      noiseScale: isGrainLocked ? baseConfig.noiseScale : DEFAULT_CONFIG.noiseScale
+    };
+  }, [config, isGrainLocked]);
+
+  const mergeConfigWithPartial = useCallback((partial: Partial<WallpaperConfig>, baseConfig: WallpaperConfig = getPresetBaseConfig()) => {
+    return {
+      ...baseConfig,
+      ...partial,
+      width: baseConfig.width,
+      height: baseConfig.height,
+      shapes: partial.shapes || [],
+      baseColor: partial.baseColor || baseConfig.baseColor,
+      noise: isGrainLocked ? baseConfig.noise : (partial.noise ?? baseConfig.noise),
+      noiseScale: isGrainLocked ? baseConfig.noiseScale : (partial.noiseScale ?? baseConfig.noiseScale),
+      animation: { ...(baseConfig.animation || {}), ...(partial.animation || {}) },
+      vignette: { ...(baseConfig.vignette || {}), ...(partial.vignette || {}) }
+    };
+  }, [getPresetBaseConfig, isGrainLocked]);
+
+  const getCollectionPresets = useCallback((collectionId: CollectionId) => {
+    return PRESETS.filter(preset => preset.collection === collectionId);
+  }, []);
 
   const handleApplyPreset = useCallback((presetId: string) => {
     const preset = PRESETS.find(p => p.id === presetId);
     if (preset && preset.config) {
+      setActiveCollection(preset.collection);
       setSelectedPresetId(presetId);
-      const newConfig = {
-        ...config, // Keep current dimensions
-        ...preset.config,
-        shapes: preset.config.shapes || [],
-        baseColor: preset.config.baseColor || config.baseColor,
-        // Only update noise if NOT locked
-        noise: isGrainLocked ? config.noise : (preset.config.noise ?? config.noise),
-        noiseScale: isGrainLocked ? config.noiseScale : (preset.config.noiseScale ?? config.noiseScale),
-        animation: { ...(config.animation || {}), ...preset.config.animation },
-        vignette: { ...(config.vignette || {}), ...preset.config.vignette }
-      };
+      const newConfig = mergeConfigWithPartial(preset.config, getPresetBaseConfig());
       setConfig(newConfig);
-      // Immediate variation generation
-      setVariations(generateVariations(newConfig, activeCollection));
     }
-  }, [config, activeCollection, isGrainLocked, setConfig]);
+  }, [getPresetBaseConfig, mergeConfigWithPartial, setConfig]);
 
   const handleApplyVariation = useCallback((variantConfig: WallpaperConfig) => {
     setConfig(prevConfig => ({
@@ -186,16 +207,25 @@ export default function App() {
 
   // Improved Color Logic for Randomization
   const handleRandomize = useCallback(() => {
-    setSelectedPresetId('custom-random'); 
-    
     const engine = getEngine(activeCollection);
-    
+
     if (engine && engine.randomizer) {
-        const randomConfig = engine.randomizer(config, { isGrainLocked });
+        const randomConfig = engine.randomizer(config, { isGrainLocked, presetId: selectedPresetId });
         setConfig(randomConfig);
-        setVariations(generateVariations(randomConfig, activeCollection));
     }
-  }, [config, activeCollection, isGrainLocked, setConfig]);
+  }, [activeCollection, config, isGrainLocked, selectedPresetId, setConfig]);
+
+  const handleSelectEngine = useCallback((collectionId: CollectionId) => {
+    setActiveCollection(collectionId);
+
+    const collectionPresets = getCollectionPresets(collectionId);
+    const firstPreset = collectionPresets[0] ?? null;
+
+    if (firstPreset?.config) {
+      setSelectedPresetId(firstPreset.id);
+      setConfig(mergeConfigWithPartial(firstPreset.config, getPresetBaseConfig()));
+    }
+  }, [getCollectionPresets, getPresetBaseConfig, mergeConfigWithPartial, setConfig]);
 
   const handleResize = useCallback((width: number, height: number) => {
     setConfig(prev => ({ ...prev, width, height }));
@@ -205,15 +235,19 @@ export default function App() {
   const generateFilename = useCallback((ext: string) => {
     const prefix = preferences.filenamePrefix || 'AuraWall';
     const collection = activeCollection;
+    const preset = selectedPresetId ? PRESETS.find(item => item.id === selectedPresetId) : null;
+    const presetSlug = preset?.name
+      ? `-${preset.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`
+      : '';
     const isAnimated = config.animation?.enabled;
     const animSuffix = isAnimated ? t('suffix_animated') : '';
     
-    // Format: YYYY-MM-DD_HH-mm
+    // Format: YYYY-MM-DD_HH-mm-ss
     const now = new Date();
-    const dateStr = now.toISOString().slice(0, 16).replace('T', '_').replace(/:/g, '-');
+    const dateStr = now.toISOString().slice(0, 19).replace('T', '_').replace(/:/g, '-');
     
-    return `${prefix}-${collection}${animSuffix}-${dateStr}.${ext}`;
-  }, [preferences.filenamePrefix, activeCollection, config.animation, t]);
+    return `${prefix}-${collection}${presetSlug}${animSuffix}-${dateStr}.${ext}`;
+  }, [preferences.filenamePrefix, activeCollection, selectedPresetId, config.animation, t]);
 
   // New function for direct SVG file download
   const handleDownloadSvgFile = useCallback(() => {
@@ -326,9 +360,7 @@ export default function App() {
                 setPreferences={setPreferences}
                 selectedPresetId={selectedPresetId}
                 activeCollection={activeCollection}
-                setActiveCollection={setActiveCollection}
-                enabledEngines={enabledEngines}
-                setEnabledEngines={setEnabledEngines}
+                onSelectEngine={handleSelectEngine}
                 setConfig={setConfig}
                 undo={undo}
                 redo={redo}

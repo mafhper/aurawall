@@ -1,306 +1,105 @@
 # AuraWall
 
-**Procedural Vector Wallpaper Generator**
-
-AuraWall is a client-side web application that generates abstract, high-resolution wallpapers using procedural algorithms and vector graphics. Unlike AI-based generators, AuraWall creates deterministic, mathematically harmonious images that are infinitely scalable and lightweight.
+AuraWall is a vector-first wallpaper generator built with React, TypeScript and SVG. The editor and the promo site are both static deployments, so the full product works without a backend and can be published on GitHub Pages.
 
 ![AuraWall Interface](public/og-image.jpg)
 
----
+## What Exists Today
 
-## Table of Contents
+- 10 visual engines: `boreal`, `chroma`, `lava`, `midnight`, `geometrica`, `glitch`, `sakura`, `ember`, `oceanic`, `astra`
+- 1 engine active at a time in the editor
+- 3 curated library presets per engine
+- `Randomizar Motor Atual` that preserves the identity of the selected preset when one is active
+- `Variacoes Inspiradas` generated from the current canvas, not from an unrelated engine default
+- real preset thumbnails rendered from the same SVG config used by the canvas
+- export to `JPG`, `PNG` and source `SVG`
 
-- [Overview](#overview)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Customization](#customization)
-- [Contributing](#contributing)
-- [License](#license)
+## Product Model
 
----
+AuraWall has two surfaces:
 
-## Overview
+- `src/`: the main editor app
+- `website/`: the promo site
 
-AuraWall operates entirely in the browser with zero server dependencies. The application uses a JSON-based configuration system (`WallpaperConfig`) that describes shapes, colors, filters, and animations. This configuration is rendered reactively as SVG, then rasterized via Canvas API for export.
+The editor is driven by `WallpaperConfig`. Engines generate and transform that config, `WallpaperRenderer` turns it into SVG, and export flows rasterize when needed.
 
-### Key Principles
+## Engine Workflow
 
-- **Deterministic Generation**: Same seed produces identical output every time
-- **Vector-First**: All rendering happens in SVG until final export
-- **Procedural Intelligence**: Curated randomness ensures aesthetic consistency
-- **Zero Dependencies**: No backend, no AI APIs, no external services
+Each engine has:
 
----
+- engine metadata in `src/engines/*.ts`
+- 3 curated library presets in `src/constants.ts`
+- engine-specific randomization rules
+- inspired variation transforms derived from the current canvas
 
-## Features
+Canonical promo imagery is also preset-based. Each engine maps to one official preset through `CANONICAL_ENGINE_PRESET_IDS` in `src/constants.ts`, and the promo/site background SVGs are regenerated from those presets.
 
-### Generation Engines
-
-| Engine | Aesthetic | Characteristics |
-|--------|-----------|-----------------|
-| **Boreal** | Ethereal, soft | High blur, analogous colors, multiply/screen blend modes |
-| **Chroma** | Liquid, acidic | Low blur, complementary colors, difference/exclusion blend modes |
-| **Lava** | Psychedelic, warm | Retro fluid motion, warm palettes, blob shapes |
-| **Midnight** | Cosmic, deep | Dark backgrounds, nebula clouds, star particles |
-| **Geometrica** | Bauhaus, grid | Strict grid alignment, primary colors, sharp shapes |
-| **Glitch** | Digital chaos | RGB split (chromatic aberration), artifacts, digital noise |
-| **Sakura** | Floral, gentle | Pastel pinks, petal shapes, wind simulation |
-| **Ember** | Fire, ash | Dark coals, bright orange sparks, rising smoke |
-| **Oceanic** | Aquatic, deep | Deep blues, organic fluid motion, underwater feel |
-| **Animation** | Kinetic, flowing | CSS keyframe animations for drift, pulse, rotate, noise |
-
-### Controls
-
-- **Shape Management**: Add, remove, and configure individual layers
-- **Color Science**: Base gradients, hue constraints, harmonic selection
-- **Color Palette Extractor**: Extract and copy the exact hex codes used in the composition
-- **Post-Processing**: Vignette effect, procedural grain, blur intensity
-- **Motion Physics**: Animation speed, flow direction, turbulence
-- **Zen Mode**: Hide the UI for an immersive digital frame experience
-
-### Export Options
-
-| Format | Use Case |
-|--------|----------|
-| PNG | Lossless, transparent background support |
-| JPG | Smaller file size, configurable quality |
-| SVG | Vector source for editing in Illustrator/Figma |
-
-### Resolution Presets
-
-- Desktop: 1920x1080, 2560x1440, 3840x2160 (4K)
-- Mobile: iPhone, Android, iPad
-- Custom: Any aspect ratio
-
----
-
-## Technology Stack
-
-| Category | Technology |
-|----------|------------|
-| Core | React 19, TypeScript |
-| Build | Vite 6, PostCSS |
-| Styling | Tailwind CSS v4 |
-| Graphics | Native SVG DOM, Canvas API |
-| i18n | i18next (8 languages) |
-| Testing | Vitest, Playwright |
-
----
-
-## Installation
+## Development
 
 ### Prerequisites
 
-- Node.js 18 or higher (Node.js 20+ recommended)
-- npm or yarn
+- Node.js 20+
+- npm
 
-### Local Development
+### Install
 
 ```bash
-# Clone the repository
-git clone https://github.com/mafhper/aurawall.git
-cd aurawall
-
-# Install dependencies
 npm install
-
-# Start development server (Main App + Promo Site concurrently)
-npm run dev
-
-# OR start them individually:
-# Main Application
-npm run app
-
-# Promotional Website
-npm run promo
 ```
 
-The application will be available at `http://localhost:5173`.
-
-### Production Build
+### Run
 
 ```bash
-# Build both applications
-npm run build
-
-# Build main application only
-npm run build-app
-
-# Build promotional website only
-npm run build-promo
-
-# Preview production build
-npm run preview
+npm run dev
 ```
 
----
+### Main Scripts
 
-## Development & Quality
-
-AuraWall includes a comprehensive suite of scripts to ensure code quality, performance, and stability.
-
-### Health Checks
-- `npm run health`: Full system check (clean, install, build, test).
-- `npm run health:fast`: Quick check (build validation + lint/structure tests).
-
-### Testing
-- `npm run test:lint`: Run ESLint static analysis.
-- `npm run test:structure`: Verify file/folder structure integrity.
-- `npm run test:i18n`: Validate translation keys parity.
-- `npm run test:contrast`: Check color contrast compliance (WCAG AA).
-
-### Performance Audits
-- `npm run audit`: Run Lighthouse audits on both App and Promo site.
-- `npm run perf:analyze`: Analyze performance trends from reports.
-
-See [scripts/README.md](scripts/README.md) for detailed documentation on automation scripts.
-
----
-
-## Usage
-
-### Quick Start
-
-1. Open the application in your browser
-2. Select a generation engine (Boreal or Chroma)
-3. Adjust parameters using the control panel
-4. Click "Generate" or use the randomizer
-5. Export in your preferred format and resolution
-
-### URL Sharing
-
-Configurations can be shared via URL. The application uses `lz-string` compression to encode the entire `WallpaperConfig` object into a shareable link.
-
-```
-https://aurawall.com/app/?config=N4IgDgTg...
+```bash
+npm run lint
+npm run build:app
+npm run build:promo
+npm run generate:engine-samples
+npm run generate:promo-assets
 ```
 
-### Preset Gallery
+## CLI Image Generation
 
-Access the gallery to browse curated presets. Each preset can be:
-- Downloaded directly as PNG (1920x1080)
-- Opened in the editor for customization
-- Used as a starting point for new creations
+The repo includes a CLI renderer for sampling engines without opening the UI:
 
----
-
-## Project Structure
-
-```
-aurawall/
-├── src/                      # Main application source
-│   ├── components/           # React components
-│   │   ├── WallpaperRenderer.tsx   # Core SVG renderer
-│   │   ├── ControlPanel/     # UI controls
-│   │   └── ExportModal.tsx   # Export functionality
-│   ├── services/             # Business logic
-│   │   ├── svgGenerator.ts   # Procedural generation
-│   │   ├── colorService.ts   # Color harmony algorithms
-│   │   └── variationService.ts # Preset variations
-│   ├── constants.ts          # Presets and defaults
-│   ├── types.ts              # TypeScript definitions
-│   └── App.tsx               # Application root
-│
-├── website/                  # Promotional site (separate build)
-│   ├── src/
-│   │   ├── pages/            # Landing, Gallery, About, etc.
-│   │   ├── components/       # Site-specific components
-│   │   └── i18n.ts           # Translations
-│   └── vite.config.ts        # Site build configuration
-│
-├── public/                   # Static assets
-│   ├── icon.svg              # Application icon
-│   ├── og-image.png          # Social sharing image
-│   └── bg-*.svg              # Background textures
-│
-├── _desenvolvimento/         # Internal documentation (Portuguese)
-│   └── docs/                 # Technical guides
-│
-├── vite.config.ts            # Main app build configuration
-├── tailwind.config.js        # Tailwind CSS configuration
-└── package.json              # Dependencies and scripts
+```bash
+npm run generate:engine-samples -- --engines=midnight,glitch,sakura --count=2 --width=2560 --height=1440 --formats=jpg
 ```
 
----
+This uses the real engine definitions and the real `WallpaperRenderer`, and writes outputs to `.dev/img/cli-samples/`.
 
-## Customization
+## Promo Asset Generation
 
-### Adding New Presets
+The promo site does not invent engine illustrations separately. Instead, it consumes canonical SVGs generated from one official preset per engine:
 
-Presets are defined in `src/constants.ts`:
-
-```typescript
-export const PRESETS: Preset[] = [
-  {
-    id: 'my-preset',
-    name: 'My Custom Preset',
-    collection: 'boreal', // or 'chroma'
-    config: {
-      baseColor: '#1a0a2e',
-      shapes: [...],
-      animation: { enabled: true, speed: 2 },
-      // ...
-    }
-  }
-];
+```bash
+npm run generate:promo-assets
 ```
 
-### Creating Custom Engines
+This updates both:
 
-Engines are now modular and defined in `src/engines/`. To create a new engine:
+- `public/bg-*.svg`
+- `website/public/bg-*.svg`
 
-1. Create a new file (e.g., `src/engines/myEngine.ts`) implementing the `EngineDefinition` interface.
-2. Define metadata, default configuration, and a `randomizer` function.
-3. Register the engine in `src/engines/index.ts`.
+## Key Files
 
-```typescript
-// src/engines/myEngine.ts
-export const myEngine: EngineDefinition = {
-  id: 'my-engine',
-  meta: { name: 'My Engine', ... },
-  randomizer: (config) => { ... },
-  variations: [ ... ]
-};
+- `src/constants.ts`: defaults, preset library, canonical promo preset mapping
+- `src/engines/*.ts`: engine metadata, randomizers, inspired variation rules
+- `src/components/WallpaperRenderer.tsx`: SVG renderer
+- `src/App.tsx`: editor flow, preset selection, randomization, export
+- `website/src/data/engines.ts`: promo catalog metadata
+
+## Quality Gates
+
+Before shipping changes, run:
+
+```bash
+npm run lint
+npm run build:app
+npm run build:promo
 ```
-
-### Extending the Promo Site
-
-The promotional website is a separate Vite project in `/website`. It shares components from the main application:
-
-```typescript
-// Import from main app
-import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
-import { PRESETS } from '../../../src/constants';
-```
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit changes: `git commit -m 'Add your feature'`
-4. Push to branch: `git push origin feature/your-feature`
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow existing code style and patterns
-- Add translations for any user-facing text
-- Test across multiple browsers
-- Update documentation as needed
-
----
-
-## License
-
-MIT License - See [LICENSE](LICENSE) file for details.
-
----
-
-**Author**: [@mafhper](https://github.com/mafhper)
-
-**Repository**: [github.com/mafhper/aurawall](https://github.com/mafhper/aurawall)

@@ -78,7 +78,8 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
         }
         
         #shape-${shape.id} {
-          transform-origin: ${shape.x}% ${shape.y}%;
+          transform-box: fill-box;
+          transform-origin: center;
           animation: move-${shape.id} ${duration}s ease-in-out infinite alternate;
           animation-delay: ${delay}s;
           ${anim.colorCycle ? `filter: hue-rotate(0deg); animation: move-${shape.id} ${duration}s ease-in-out infinite alternate, hue-rotate ${colorAnimDuration}s linear infinite; animation-delay: ${delay}s, ${colorAnimDelay}s;` : ''}
@@ -135,6 +136,45 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
       return { ...shape, isBlob: false };
     });
   }, [shapes, width]); // Re-calculate only if dimensions or shapes change
+
+  const getShapeTransform = (shape: WallpaperConfig['shapes'][number], pixelSize?: number) => {
+    const rotation = shape.rotation || 0;
+    const scaleX = shape.scaleX ?? 1;
+    const scaleY = shape.scaleY ?? 1;
+    const centerX = (shape.x / 100) * width;
+    const centerY = (shape.y / 100) * height;
+    const transformSteps: string[] = [];
+
+    if (shape.type === 'blob') {
+      const size = pixelSize || (shape.size / 100) * width;
+      const localCenter = size / 2;
+      transformSteps.push(`translate(${centerX - localCenter} ${centerY - localCenter})`);
+
+      if (rotation) {
+        transformSteps.push(`rotate(${rotation} ${localCenter} ${localCenter})`);
+      }
+
+      if (scaleX !== 1 || scaleY !== 1) {
+        transformSteps.push(`translate(${localCenter} ${localCenter})`);
+        transformSteps.push(`scale(${scaleX} ${scaleY})`);
+        transformSteps.push(`translate(${-localCenter} ${-localCenter})`);
+      }
+
+      return transformSteps.join(' ');
+    }
+
+    if (rotation) {
+      transformSteps.push(`rotate(${rotation} ${centerX} ${centerY})`);
+    }
+
+    if (scaleX !== 1 || scaleY !== 1) {
+      transformSteps.push(`translate(${centerX} ${centerY})`);
+      transformSteps.push(`scale(${scaleX} ${scaleY})`);
+      transformSteps.push(`translate(${-centerX} ${-centerY})`);
+    }
+
+    return transformSteps.length > 0 ? transformSteps.join(' ') : undefined;
+  };
 
   return (
     <svg
@@ -228,54 +268,90 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
 
           if (shape.isBlob) {
              return (
-               <path
-                 key={shape.id} // Pass key directly
-                 id={`shape-${shape.id}`}
-                 d={shape.pathData}
-                 fill={shape.color}
-                 opacity={shape.opacity}
-                 filter={`url(#blur-${shape.id})`}
-                 style={{ 
-                   mixBlendMode: shape.blendMode,
-                   transformBox: 'fill-box',
-                   transform: `translate(${(shape.x / 100) * width - shape.pixelSize!/2}px, ${(shape.y / 100) * height - shape.pixelSize!/2}px)`
-                 }}
-               >
-                 {anim.colorCycle && !paused && (
-                   <animate 
-                     attributeName="fill"
-                     values={`${shape.color};${shiftColor(shape.color, 60, 0, 0)};${shiftColor(shape.color, 120, 0, 0)};${shape.color}`}
-                     dur={`${colorAnimDuration}s`}
-                     begin={`${colorAnimDelay}s`}
-                     repeatCount="indefinite"
-                   />
-                 )}
-               </path>
+               <g key={shape.id} transform={getShapeTransform(shape, shape.pixelSize)}>
+                 <g id={`shape-${shape.id}`}>
+                   <path
+                     d={shape.pathData}
+                     fill={shape.color}
+                     opacity={shape.opacity}
+                     filter={`url(#blur-${shape.id})`}
+                     style={{ 
+                       mixBlendMode: shape.blendMode,
+                       transformBox: 'fill-box'
+                     }}
+                   >
+                     {anim.colorCycle && !paused && (
+                       <animate 
+                         attributeName="fill"
+                         values={`${shape.color};${shiftColor(shape.color, 60, 0, 0)};${shiftColor(shape.color, 120, 0, 0)};${shape.color}`}
+                         dur={`${colorAnimDuration}s`}
+                         begin={`${colorAnimDelay}s`}
+                         repeatCount="indefinite"
+                       />
+                     )}
+                   </path>
+                 </g>
+               </g>
              );
+          }
+
+          if (shape.type === 'rect') {
+            const rectWidth = (shape.size / 100) * width;
+            const rectHeight = rectWidth * 0.72;
+
+            return (
+              <g key={shape.id} transform={getShapeTransform(shape)}>
+                <g id={`shape-${shape.id}`}>
+                  <rect
+                    x={(shape.x / 100) * width - rectWidth / 2}
+                    y={(shape.y / 100) * height - rectHeight / 2}
+                    width={rectWidth}
+                    height={rectHeight}
+                    rx={Math.min(rectWidth, rectHeight) * 0.08}
+                    fill={shape.color}
+                    opacity={shape.opacity}
+                    filter={`url(#blur-${shape.id})`}
+                    style={{ mixBlendMode: shape.blendMode, transformBox: 'fill-box' }}
+                  >
+                    {anim.colorCycle && !paused && (
+                      <animate
+                        attributeName="fill"
+                        values={`${shape.color};${shiftColor(shape.color, 60, 0, 0)};${shiftColor(shape.color, 120, 0, 0)};${shape.color}`}
+                        dur={`${colorAnimDuration}s`}
+                        begin={`${colorAnimDelay}s`}
+                        repeatCount="indefinite"
+                      />
+                    )}
+                  </rect>
+                </g>
+              </g>
+            );
           }
           
           return (
-            <circle
-              key={shape.id} // Pass key directly
-              id={`shape-${shape.id}`}
-              cx={`${shape.x}%`}
-              cy={`${shape.y}%`}
-              r={`${shape.size / 2}%`} 
-              fill={shape.color}
-              opacity={shape.opacity}
-              filter={`url(#blur-${shape.id})`}
-              style={{ mixBlendMode: shape.blendMode }}
-            >
-              {anim.colorCycle && !paused && (
-                 <animate 
-                   attributeName="fill"
-                   values={`${shape.color};${shiftColor(shape.color, 60, 0, 0)};${shiftColor(shape.color, 120, 0, 0)};${shape.color}`}
-                   dur={`${colorAnimDuration}s`}
-                   begin={`${colorAnimDelay}s`}
-                   repeatCount="indefinite"
-                 />
-              )}
-            </circle>
+            <g key={shape.id} transform={getShapeTransform(shape)}>
+              <g id={`shape-${shape.id}`}>
+                <circle
+                  cx={`${shape.x}%`}
+                  cy={`${shape.y}%`}
+                  r={`${shape.size / 2}%`} 
+                  fill={shape.color}
+                  opacity={shape.opacity}
+                  filter={`url(#blur-${shape.id})`}
+                  style={{ mixBlendMode: shape.blendMode, transformBox: 'fill-box' }}
+                >
+                  {anim.colorCycle && !paused && (
+                     <animate 
+                       attributeName="fill"
+                       values={`${shape.color};${shiftColor(shape.color, 60, 0, 0)};${shiftColor(shape.color, 120, 0, 0)};${shape.color}`}
+                       dur={`${colorAnimDuration}s`}
+                       begin={`${colorAnimDelay}s`}
+                       repeatCount="indefinite"
+                     />
+                  )}
+                </circle>
+              </g>
+            </g>
           );
         })}
       </g>
