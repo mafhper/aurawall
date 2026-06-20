@@ -68,7 +68,7 @@
         "eslint": "^9.39.4",
         "eslint-plugin-react-hooks": "^7.0.1",
         "eslint-plugin-react-refresh": "^0.5.2",
-        "globals": "^16.5.0",
+        "globals": "^17.6.0",
         "lighthouse": "^13.0.3",
         "parse5": "^8.0.1",
         "postcss": "^8.5.8",
