@@ -24,6 +24,13 @@ import { DEFAULT_ANIMATION } from '../../../src/constants';
 
 const HERO_PRESET_ROTATION = ['oil-slick', 'soul-glow', 'phoenix-rise', 'thermal-vision', 'magma-lamp'];
 
+const subscribeToClientSnapshot = () => () => {};
+const getServerHeroPresetSnapshot = () => HERO_PRESET_ROTATION[0];
+const getClientHeroPresetSnapshot = () => {
+  const index = Math.floor(Date.now() / 1000) % HERO_PRESET_ROTATION.length;
+  return HERO_PRESET_ROTATION[index];
+};
+
 // Pipeline Card with animated background on hover (styled like GalleryCard)
 const PipelineCard = ({ 
   item, 
@@ -87,13 +94,11 @@ export default function Tech() {
   const { t } = useTranslation();
   
   // Rotate hero preset - deterministic initial value to avoid hydration mismatch
-  const [heroPresetId, setHeroPresetId] = React.useState(HERO_PRESET_ROTATION[0]);
-  
-  React.useEffect(() => {
-    // Select preset based on current time (client-side only)
-    const index = Math.floor(Date.now() / 1000) % HERO_PRESET_ROTATION.length;
-    setHeroPresetId(HERO_PRESET_ROTATION[index]);
-  }, []);
+  const heroPresetId = React.useSyncExternalStore(
+    subscribeToClientSnapshot,
+    getClientHeroPresetSnapshot,
+    getServerHeroPresetSnapshot
+  );
 
   return (
     <div className="min-h-screen bg-black text-white animate-in fade-in slide-in-from-bottom-4 duration-700">

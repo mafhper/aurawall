@@ -20,6 +20,10 @@ const CreationAnimation = lazy(() => import('./pages/CreationAnimation'));
 const CreationProcedural = lazy(() => import('./pages/CreationProcedural'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+const subscribeToClientSnapshot = () => () => {};
+const getClientMountedSnapshot = () => true;
+const getServerMountedSnapshot = () => false;
+
 // Loading Component
 const LoadingSpinner = () => {
   const { t } = useTranslation();
@@ -158,11 +162,11 @@ const MobileNav = ({ items }: { items: Array<{ to: string, label: string, icon?:
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = React.useSyncExternalStore(
+    subscribeToClientSnapshot,
+    getClientMountedSnapshot,
+    getServerMountedSnapshot
+  );
 
   // Prevent background scroll when menu is open
   React.useEffect(() => {
