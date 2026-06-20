@@ -34,6 +34,7 @@ const fsPromises = require('fs').promises;
 const path = require('path');
 const http = require('http');
 const { spawn } = require('child_process');
+const { stripHtmlDelimiters } = require('../../utils/text-sanitization.cjs');
 
 // Configurações
 const CONFIG = {
@@ -545,7 +546,7 @@ function displayOpportunities(lhr) {
         log(`      Economia estimada: ${Math.round(savings)}ms`, 'yellow');
       }
       if (audit.description) {
-        const desc = audit.description.replace(/<[^>]*>/g, '').substring(0, 100);
+        const desc = stripHtmlDelimiters(audit.description).substring(0, 100);
         log(`      ${desc}...`, 'dim');
       }
     });
