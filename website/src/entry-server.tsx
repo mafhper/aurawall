@@ -6,9 +6,7 @@ import { Writable } from 'node:stream';
 import App from './App';
 
 export function render(url: string) {
-  const helmetContext: { helmet?: unknown } = {};
-  
-  return new Promise<{ html: string; helmet: unknown }>((resolve, reject) => {
+  return new Promise<{ html: string }>((resolve, reject) => {
     let html = '';
     const stream = new Writable({
       write(chunk, _encoding, cb) {
@@ -19,7 +17,7 @@ export function render(url: string) {
 
     const { pipe } = renderToPipeableStream(
       <React.StrictMode>
-        <HelmetProvider context={helmetContext}>
+        <HelmetProvider>
           <StaticRouter location={url} basename={import.meta.env.BASE_URL}>
             <App />
           </StaticRouter>
@@ -36,7 +34,7 @@ export function render(url: string) {
     );
     
     stream.on('finish', () => {
-      resolve({ html, helmet: helmetContext.helmet });
+      resolve({ html });
     });
   });
 }

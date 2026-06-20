@@ -18,11 +18,21 @@ export default defineConfig(() => {
     build: {
       outDir: 'dist/app',
       emptyOutDir: true,
-      rollupOptions: {
+      rolldownOptions: {
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom'],
-            ui: ['lucide-react']
+          codeSplitting: {
+            groups: [
+              {
+                name: 'vendor',
+                test: /node_modules[\\/](?:react|react-dom)[\\/]/,
+                priority: 20,
+              },
+              {
+                name: 'ui',
+                test: /node_modules[\\/]lucide-react[\\/]/,
+                priority: 10,
+              },
+            ],
           }
         }
       }
