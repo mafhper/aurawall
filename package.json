@@ -34,7 +34,7 @@
         "generate:promo-assets": "node scripts/ops/render-promo-assets.mjs",
         "logs": "node scripts/ops/fetch-changelog.js",
         "test:structure": "node scripts/test/structure.cjs",
-        "test:security": "npm audit --audit-level=high",
+        "test:security": "npm audit --audit-level=high && node --test scripts/test/security-sanitization.test.cjs",
         "test:i18n": "node scripts/test/i18n.cjs",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "test:lint": "node scripts/test/lint.cjs",
