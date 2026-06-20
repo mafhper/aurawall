@@ -38,13 +38,13 @@ Canonical promo imagery is also preset-based. Each engine maps to one official p
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 20.19+ or 22.12+
 - npm
 
 ### Install
 
 ```bash
-npm install
+npm ci
 ```
 
 ### Run

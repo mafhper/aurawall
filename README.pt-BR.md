@@ -94,8 +94,8 @@ O AuraWall opera inteiramente no navegador sem dependências de servidor. A apli
 
 ### Pré-requisitos
 
-- Node.js 18 ou superior (Node.js 20+ recomendado)
-- npm ou yarn
+- Node.js 20.19 ou superior, ou Node.js 22.12+
+- npm
 
 ### Desenvolvimento Local
 
@@ -105,7 +105,7 @@ git clone https://github.com/mafhper/aurawall.git
 cd aurawall
 
 # Instale as dependências
-npm install
+npm ci
 
 # Inicie o servidor de desenvolvimento (App Principal + Site Promo concorrentemente)
 npm run dev
