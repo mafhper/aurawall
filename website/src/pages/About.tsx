@@ -1,7 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { Github, ExternalLink, Rss, PenTool, Database, User } from 'lucide-react';
+import { ExternalLink, Rss, PenTool, Database, User } from 'lucide-react';
+import GithubIcon from '../components/GithubIcon';
 import HeroBackground from '../components/HeroBackground';
 
 const projects = [
@@ -101,7 +102,7 @@ export default function About() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-full text-sm font-medium transition-colors"
                 >
-                  <Github size={16} />
+                  <GithubIcon size={16} />
                   GitHub
                 </a>
               </div>
@@ -189,7 +190,7 @@ export default function About() {
                       rel="noopener noreferrer"
                       className={`flex items-center justify-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 py-2 px-3 rounded-lg text-xs font-bold transition-colors ${project.demoUrl ? '' : 'flex-1'}`}
                     >
-                      <Github size={12} />
+                      <GithubIcon size={12} />
                       GitHub
                     </a>
                   </div>
@@ -211,7 +212,7 @@ export default function About() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-white text-black hover:bg-zinc-200 px-8 py-3 rounded-full font-bold transition-all"
           >
-            <Github size={20} />
+            <GithubIcon size={20} />
             {t('about.repo_link')}
           </a>
         </div>

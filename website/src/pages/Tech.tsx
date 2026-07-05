@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Code, Layers, Palette, Download, Share2, Globe, Zap, TestTube2, ArrowRight, Github, Binary } from 'lucide-react';
+import { Code, Layers, Palette, Download, Share2, Globe, Zap, TestTube2, ArrowRight, Binary } from 'lucide-react';
+import GithubIcon from '../components/GithubIcon';
 import CodeWindow from '../components/CodeWindow';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
 import { PRESETS } from '../../../src/constants';
@@ -15,7 +16,7 @@ const stackItems = [
   { key: 'i18n', icon: Globe, color: 'cyan', reason: 'i18next oferece detecção automática de idioma e interpolação segura.' },
   { key: 'build', icon: Zap, color: 'yellow', reason: 'Vite 6 oferece HMR instantâneo e builds otimizados.' },
   { key: 'test', icon: TestTube2, color: 'orange', reason: 'Vitest & Playwright garantem a integridade visual e lógica de cada build.' },
-  { key: 'github', icon: Github, color: 'gray', reason: 'GitHub Actions automatiza CI/CD, Pages hospeda o site estático, e Workflows gerencia releases.' },
+  { key: 'github', icon: GithubIcon, color: 'gray', reason: 'GitHub Actions automatiza CI/CD, Pages hospeda o site estático, e Workflows gerencia releases.' },
   { key: 'compress', icon: Binary, color: 'teal', reason: 'lz-string com Array Notation V2 compacta configurações para compartilhamento via URL com redução de até 78%.' },
 ];
 
