@@ -92,6 +92,7 @@ _dev/
 # Codex local private files
 AGENTS.md
 .codex/
+.clawpatch/
 .gemini/
 .claude/
 .qwen/

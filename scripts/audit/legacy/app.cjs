@@ -19,6 +19,7 @@ const fsSync = require('fs');
 const path = require('path');
 const http = require('http');
 const { spawn } = require('child_process');
+const { stripHtmlDelimiters } = require('../../utils/text-sanitization.cjs');
 
 // ============================================================================ 
 // CONFIGURAÇÃO PADRÃO
@@ -478,7 +479,7 @@ async function generateMarkdownReport(data) {
             if (opp.details?.overallSavingsMs) {
                 md += `**Economia estimada:** ${formatDuration(opp.details.overallSavingsMs)}\n`;
             }
-            md += `${opp.description.replace(/<[^>]*>/g, '').trim()}\n\n`;
+            md += `${stripHtmlDelimiters(opp.description).trim()}\n\n`;
         });
     }
 
