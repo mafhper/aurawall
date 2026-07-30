@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Zap, Shield, Maximize, Play, Palette, Download, ArrowRight, Wand2, RefreshCw } from 'lucide-react';
 import { PRESETS, HERO_PRESETS, DEFAULT_CONFIG, DEFAULT_ANIMATION } from '../../../src/constants';

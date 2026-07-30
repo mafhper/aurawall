@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Code, Layers, Palette, Download, Share2, Globe, Zap, TestTube2, ArrowRight, Binary } from 'lucide-react';
 import GithubIcon from '../components/GithubIcon';
 import CodeWindow from '../components/CodeWindow';

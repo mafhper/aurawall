@@ -5,12 +5,12 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig(({ command }) => ({
   plugins: [react()],
-  root: path.resolve(__dirname),
+  root: path.resolve(import.meta.dirname),
   // Separate cache for website to avoid conflict with main app when running concurrently
-  cacheDir: path.resolve(__dirname, '../node_modules/.vite-website'),
+  cacheDir: path.resolve(import.meta.dirname, '../node_modules/.vite-website'),
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
   server: {

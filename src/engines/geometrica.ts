@@ -1,7 +1,7 @@
 import { EngineDefinition, Shape } from '../types';
 import { ensureVisibility, applyGrainLock } from '../utils/engineUtils';
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
-const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
+const pick = <T,>(items: readonly T[]) => items[Math.floor(Math.random() * items.length)];
 
 export const geometricaEngine: EngineDefinition = {
   id: 'geometrica',

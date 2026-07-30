@@ -4,7 +4,7 @@ import { toHslStr } from '../utils/colorUtils';
 
 const getHSL = (h: number, s: number, l: number) => toHslStr({ h, s, l });
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
-const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
+const pick = <T,>(items: readonly T[]) => items[Math.floor(Math.random() * items.length)];
 
 export const midnightEngine: EngineDefinition = {
   id: 'midnight',

@@ -130,10 +130,10 @@ const WallpaperRendererInner = forwardRef<SVGSVGElement, WallpaperRendererProps>
            ...shape,
            pixelSize,
            pathData,
-           isBlob: true
+           isBlob: true as const
          };
       }
-      return { ...shape, isBlob: false };
+      return { ...shape, isBlob: false as const };
     });
   }, [shapes, width]); // Re-calculate only if dimensions or shapes change
 

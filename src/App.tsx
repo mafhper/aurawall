@@ -87,7 +87,7 @@ export default function App() {
   useEffect(() => {
     if (!isZenMode) return;
 
-    let cursorTimer: number;
+    let cursorTimer: ReturnType<typeof setTimeout>;
     const hideCursor = () => {
       document.documentElement.style.cursor = 'none';
     };
