@@ -995,7 +995,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                       <span className="text-[10px] text-zinc-500 block mb-1">{t('shape_type')}</span>
                       <select 
                         value={shape.type}
-                        onChange={(e) => updateShape(shape.id, 'type', e.target.value)}
+                        onChange={(e) => updateShape(shape.id, 'type', e.target.value as Shape['type'])}
                         className="w-full bg-zinc-900 border border-zinc-700 text-xs text-zinc-300 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500"
                       >
                         <option value="circle">{t('circle')}</option>

@@ -1,6 +1,6 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { createPortal } from 'react-dom';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, Aperture, Play, Menu, X, Shuffle, Loader2 } from 'lucide-react';
 import { getAppUrl } from './utils/appUrl';

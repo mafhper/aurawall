@@ -72,8 +72,8 @@ export interface WallpaperConfig {
   noiseScale: number; // 1-100
   baseColor: string | BackgroundConfig;
   shapes: Shape[];
-  animation?: AnimationSettings;
-  vignette?: VignetteSettings;
+  animation: AnimationSettings;
+  vignette: VignetteSettings;
 }
 
 export type CollectionId = string;

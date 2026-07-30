@@ -1,7 +1,7 @@
 import { EngineDefinition, Shape } from '../types';
 import { clamp, applyGrainLock, ensureVisibility } from '../utils/engineUtils';
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
-const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
+const pick = <T,>(items: readonly T[]) => items[Math.floor(Math.random() * items.length)];
 
 export const glitchEngine: EngineDefinition = {
   id: 'glitch',

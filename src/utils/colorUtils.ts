@@ -13,36 +13,40 @@ export const toHslStr = ({ h, s, l }: { h: number, s: number, l: number }) => {
 
 // Helper: Hex to HSL
 export const hexToHsl = (hex: string) => {
-  let r = 0, g = 0, b = 0;
+  let red: number;
+  let green: number;
+  let blue: number;
   // Handle #RGB format
   if (hex.length === 4) {
-    r = parseInt(hex[1] + hex[1], 16);
-    g = parseInt(hex[2] + hex[2], 16);
-    b = parseInt(hex[3] + hex[3], 16);
+    red = parseInt(hex[1] + hex[1], 16);
+    green = parseInt(hex[2] + hex[2], 16);
+    blue = parseInt(hex[3] + hex[3], 16);
   } 
   // Handle #RRGGBB format
   else if (hex.length === 7) {
-    r = parseInt(hex.substring(1, 3), 16);
-    g = parseInt(hex.substring(3, 5), 16);
-    b = parseInt(hex.substring(5, 7), 16);
+    red = parseInt(hex.substring(1, 3), 16);
+    green = parseInt(hex.substring(3, 5), 16);
+    blue = parseInt(hex.substring(5, 7), 16);
   } else {
     // Default to black if format is unknown
     return { h: 0, s: 0, l: 0 };
   }
 
-  r /= 255; g /= 255; b /= 255;
+  const r = red / 255;
+  const g = green / 255;
+  const b = blue / 255;
   const cmin = Math.min(r,g,b), cmax = Math.max(r,g,b), delta = cmax - cmin;
-  let h = 0, s = 0, l = 0;
+  let hue: number;
 
-  if (delta === 0) h = 0;
-  else if (cmax === r) h = ((g - b) / delta) % 6;
-  else if (cmax === g) h = (b - r) / delta + 2;
-  else h = (r - g) / delta + 4;
+  if (delta === 0) hue = 0;
+  else if (cmax === r) hue = ((g - b) / delta) % 6;
+  else if (cmax === g) hue = (b - r) / delta + 2;
+  else hue = (r - g) / delta + 4;
 
-  h = Math.round(h * 60);
+  let h = Math.round(hue * 60);
   if (h < 0) h += 360;
-  l = (cmax + cmin) / 2;
-  s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+  const l = (cmax + cmin) / 2;
+  const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
   
   return { h, s: Math.round(s * 100), l: Math.round(l * 100) };
 };

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Zap } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';

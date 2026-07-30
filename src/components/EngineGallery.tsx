@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getAllEngines, EngineDefinition } from '../engines';
+import { getAllEngines } from '../engines';
 import WallpaperRenderer from './WallpaperRenderer';
 import { X, Check, Aperture } from 'lucide-react';
-import { WallpaperConfig } from '../types';
+import { EngineDefinition, WallpaperConfig } from '../types';
 import { DEFAULT_CONFIG } from '../constants';
 import { useTranslation } from 'react-i18next';
 
