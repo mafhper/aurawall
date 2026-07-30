@@ -15,7 +15,6 @@ const REQUIRED_DIRS = [
     'src',
     'public',
     'website',
-    '.dev',
     '.github'
 ];
 
