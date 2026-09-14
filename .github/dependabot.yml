@@ -15,6 +15,11 @@ updates:
       semver-patch-days: 3
       semver-minor-days: 7
       semver-major-days: 30
+    # TypeScript 7 blocked: typescript-eslint@8.x peer range is ">=4.8.4 <6.1.0".
+    # Remove once typescript-eslint ships TS 7 support.
+    ignore:
+      - dependency-name: "typescript"
+        versions: [">= 7.0.0"]
     groups:
       npm-minor-and-patch:
         patterns:
