@@ -7,7 +7,8 @@
       "path": "docs/images/releases",
       "required": true,
       "granularity": "minor",
-      "upload": true
+      "upload": true,
+      "title_in_body": false
     },
     "notes": {
       "granularity": "tag"
