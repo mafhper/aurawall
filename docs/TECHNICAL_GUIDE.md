@@ -80,6 +80,17 @@ Two behaviours are deliberate and worth keeping:
 
 Generates the canonical promo SVGs from `CANONICAL_ENGINE_PRESET_IDS` and writes them to both `public/` and `website/public/`.
 
+### `scripts/ops/clean-dist.cjs` and `scripts/ops/organize-dist.cjs`
+
+`npm run build:dist` is the shape Pages actually deploys, and it is two scripts:
+
+- `clean-dist.cjs` removes `dist/` first. The promo build declares `outDir: '../dist'` with `emptyOutDir: true`, but Vite does not empty an `outDir` outside the project root — so `dist/app` and `dist/client` get cleaned by their own builds and **the root never does**. Once `organize-dist` has put files at the root, a plain `npm run build` leaves them there, and the next run measures last run's leftovers as if they were current output.
+- `organize-dist.cjs` moves `dist/client/*` to the root of `dist/` and removes `dist/client`. It is **idempotent** — a deploy re-run is the normal recovery path for Pages, and a step that is not idempotent fails on the second run.
+
+Both are covered by `scripts/test/organize-dist.test.cjs`, which runs against a synthetic `dist/` rather than the real build.
+
+`scripts/test/perf.cjs` measures **everything in `dist/` except `dist/server/`**, which is what Pages serves. It used to measure `dist/app` + `dist/client`, a shape nothing deploys: the flatten step deleted `dist/client` *after* measurement, so 57 files and 0.69 MB of the promo payload would have stopped being counted while the gate stayed green.
+
 ## Commands
 
 ### Main
@@ -87,6 +98,7 @@ Generates the canonical promo SVGs from `CANONICAL_ENGINE_PRESET_IDS` and writes
 - `npm run dev`
 - `npm run build:app`
 - `npm run build:promo`
+- `npm run build:dist`
 - `npm run lint`
 
 ### Visual Tooling

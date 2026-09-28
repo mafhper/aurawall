@@ -59,9 +59,28 @@ npm run dev
 npm run lint
 npm run build:app
 npm run build:promo
+npm run build:dist        # what Pages deploys
 npm run generate:engine-samples
 npm run generate:promo-assets
 ```
+
+### Build targets
+
+`npm run build` produces `dist/app`, `dist/client` and `dist/server`, and leaves the root of
+`dist/` empty.
+
+`npm run build:dist` is the shape that is actually published: it cleans `dist/`, runs the
+build, then moves `dist/client/*` to the root. What you get:
+
+```
+dist/           →  the promo site (index.html, bg-*.svg, prerendered about/, architecture/, …)
+dist/app/       →  the editor, served at /aurawall/app/
+dist/server/    →  the SSR bundle
+```
+
+The step that does the move lives in `scripts/ops/organize-dist.cjs`, not in the deploy
+workflow, so you can reproduce the published tree locally. It is idempotent, which matters
+because a deploy re-run is the normal recovery path for Pages.
 
 ## CLI Image Generation
 

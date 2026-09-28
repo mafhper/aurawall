@@ -33,14 +33,11 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
-
-      - name: Organize Dist Structure
-        run: |
-          if [ -d "dist/client" ]; then
-            cp -r dist/client/* dist/
-            rm -rf dist/client
-          fi
+        # build:dist produz a MESMA árvore que o Pages recebe: o site promo na
+        # raiz, o editor em dist/app/, o bundle SSR em dist/server/. O passo de
+        # aplanar saiu daqui para o manifesto, onde dá para rodar localmente —
+        # `npm run build` sozinho deixa a raiz de dist/ vazia.
+        run: npm run build:dist
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
