@@ -138,7 +138,6 @@ AuraWall incluye un conjunto completo de scripts para asegurar la calidad, el re
 - `npm run health:fast`: Chequeo rapido (validacion de la construccion + pruebas de lint/estructura).
 
 ### Pruebas
-- `npm run test:lint`: Ejecutar analisis estatico (ESLint).
 - `npm run test:structure`: Verificar la integridad de la estructura de archivos/carpetas.
 - `npm run test:i18n`: Validar la paridad de las claves de traduccion.
 - `npm run test:contrast`: Comprobar el cumplimiento del contraste de color (WCAG AA).

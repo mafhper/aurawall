@@ -9,6 +9,9 @@ Este diretório contém os scripts responsáveis pela execução de testes está
 ### Arquivos
 - `contrast.cjs`: Verifica o contraste de cores no projeto para conformidade com as diretrizes WCAG AA.
 - `i18n.cjs`: Garante a integridade da internacionalização, verificando a paridade de chaves de tradução entre os idiomas e a detecção de textos hardcoded.
-- `lint.cjs`: Executa a ferramenta ESLint para análise estática do código, identificando erros e problemas de estilo.
 - `perf.cjs`: Analisa o tamanho final do bundle de produção para garantir que não exceda os limites definidos, prevenindo builds excessivamente grandes.
+- `security-sanitization.test.cjs`: Testa a sanitização de texto que previne injeção de markup.
 - `structure.cjs`: Verifica se arquivos e diretórios essenciais do projeto existem, garantindo a conformidade com a estrutura esperada.
+
+A análise estática é o `npm run lint` (ESLint direto), que roda no CI e no gate da release. Houve
+um `lint.cjs` aqui que apenas envolvia esse comando — removido por ser duplicação.

@@ -2,6 +2,14 @@
 /**
  * Audit Configuration
  * Defines all targets to be audited by the Universal Audit Runner.
+ *
+ * ATENCAO aos thresholds: os valores abaixo sao calibrados para os SERVIDORES DE
+ * DESENVOLVIMENTO (as urls daqui apontam para localhost). O bundle de dev do Vite e
+ * maior e nao cacheia, entao `performance` low nao indica problema em producao.
+ *
+ * Para medir o que o usuario recebe de verdade, use o alvo de producao:
+ *     AUDIT_URL=https://mafhper.github.io/aurawall npm run audit
+ * e compare com os limites de producao que aparecem no README da camada de auditoria.
  */
 module.exports = {
     // Global Settings

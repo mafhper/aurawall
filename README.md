@@ -96,6 +96,31 @@ This updates both:
 
 ## Quality Gates
 
+There are three layers of verification, and only the first two run automatically.
+
+| Layer | Command | Measures | Needs a browser | Runs on |
+|---|---|---|---|---|
+| **Bundle size** | `npm run test:perf` | size of `dist/app` + `dist/client` against hardcoded limits | no | **CI and every release** |
+| **Browser audits** | `npm run audit` | Lighthouse scores for accessibility, best-practices and SEO | yes | manually |
+| **Navigation regressions** | `npm run perf:gate` | LCP / TBT / CLS against `performance/baseline/` | yes | manually |
+
+`test:perf` is the automatic gate. The other two are manual by design: they need a browser, so
+they would be the slowest job in the pipeline, and the navigation baseline has to be regenerated
+whenever a build legitimately changes.
+
+To run the manual layers: the audits write to `performance-reports/<type>/<date>/` (git-ignored) —
+a Markdown summary plus the raw Lighthouse JSON in a `raw/` subfolder. `perf:gate` takes that
+JSON and compares it against `performance/baseline/`:
+
+```bash
+npm run audit:promo:prod
+npm run perf:gate -- performance-reports/promo/<date>/raw/Audit_<timestamp>_OK.json
+```
+
+The `<type>` matches the `type` field of the target in `scripts/config/audit.config.cjs`
+(`promo` or `app`), and the baseline is chosen from the form factor
+(`performance/baseline/navigation.desktop.json` or `.mobile.json`).
+
 Before shipping changes, run:
 
 ```bash

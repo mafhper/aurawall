@@ -692,7 +692,7 @@ async function main() {
     const summary = await generateSummary(lhr, bundleStats, depsAnalysis);
 
     // 6. Generate Reports (Refactored)
-    const { saveReport, minifyMarkdown } = require('./utils/audit-helpers.cjs');
+    const { saveReport, minifyMarkdown } = require('../../utils/audit-helpers.cjs');
 
     // Status Logic
     const failedCategories = Object.keys(lhr.categories).filter(key => {
