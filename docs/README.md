@@ -6,7 +6,8 @@ Esta pasta documenta o estado atual do AuraWall, nao o historico completo de exp
 
 - `README.md`: visao rapida da documentacao disponivel
 - `TECHNICAL_GUIDE.md`: arquitetura atual do app, promo e pipeline visual
-- `change.log`: log cronologico de mudancas relevantes
+
+O historico de versoes vive nas Releases do GitHub, geradas por tag.
 
 ## Escopo Atual
 
