@@ -71,7 +71,7 @@ The repo includes a CLI renderer for sampling engines without opening the UI:
 npm run generate:engine-samples -- --engines=midnight,glitch,sakura --count=2 --width=2560 --height=1440 --formats=jpg
 ```
 
-This uses the real engine definitions and the real `WallpaperRenderer`, and writes outputs to `.dev/img/cli-samples/`.
+This uses the real engine definitions and the real `WallpaperRenderer`, and writes outputs to `node_modules/.cache/aurawall/cli-samples/` (override with `--output=<dir>`). That directory is a regenerable, git-ignored build artifact — nothing you need to keep.
 
 ## Promo Asset Generation
 

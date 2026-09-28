@@ -13,7 +13,10 @@ const DEFAULT_COUNT = 6;
 const DEFAULT_WIDTH = 1600;
 const DEFAULT_HEIGHT = 900;
 const DEFAULT_QUALITY = 92;
-const DEFAULT_OUTPUT_ROOT = path.join(repoRoot, '.dev', 'img', 'cli-samples');
+// Saida padrao num cache ignorado pelo git, nao no workspace de desenvolvimento:
+// o workspace e local-only, e uma ferramenta que depende dele quebra em clone limpo.
+// node_modules/.cache/ e ignorado e se autossustenta. Sobrescreva com --output=<caminho>.
+const DEFAULT_OUTPUT_ROOT = path.join(repoRoot, 'node_modules', '.cache', 'aurawall', 'cli-samples');
 
 const formatRunTimestamp = () => {
   const now = new Date();
