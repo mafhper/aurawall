@@ -6,6 +6,7 @@ import { Code, Layers, Palette, Download, Share2, Globe, Zap, TestTube2, ArrowRi
 import GithubIcon from '../components/GithubIcon';
 import CodeWindow from '../components/CodeWindow';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 import { PRESETS } from '../../../src/constants';
 
 const stackItems = [
@@ -21,7 +22,6 @@ const stackItems = [
 ];
 
 import HeroBackground from '../components/HeroBackground';
-import { DEFAULT_ANIMATION } from '../../../src/constants';
 
 const HERO_PRESET_ROTATION = ['oil-slick', 'soul-glow', 'phoenix-rise', 'thermal-vision', 'magma-lamp'];
 
@@ -46,16 +46,9 @@ const PipelineCard = ({
   
   const config = useMemo(() => {
     if (!preset) return null;
-    return {
-      ...preset.config,
-      animation: {
-        ...DEFAULT_ANIMATION,
-        ...preset.config.animation,
-        enabled: true,
-        speed: 2,
-        flow: 2,
-      }
-    };
+    return resolveWallpaperConfig(preset.config, {
+      animation: { enabled: true, speed: 2, flow: 2 }
+    });
   }, [preset]);
 
   return (
