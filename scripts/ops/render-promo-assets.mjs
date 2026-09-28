@@ -82,7 +82,9 @@ const bundleRenderer = async (tmpDir) => {
 const main = async () => {
   const width = 1600;
   const height = 900;
-  const tmpDir = path.join(repoRoot, '.dev', 'img', 'promo-assets-tmp');
+  // Bundle intermediates num cache ignorado pelo git, nao no workspace de
+  // desenvolvimento: e um artefato de execucao, reconstruivel a cada rodada.
+  const tmpDir = path.join(repoRoot, 'node_modules', '.cache', 'aurawall', 'promo-assets-tmp');
 
   await ensureDir(tmpDir);
   const bundlePath = await bundleRenderer(tmpDir);

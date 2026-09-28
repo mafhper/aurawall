@@ -118,7 +118,9 @@ async function runLighthouse(url, timeout = 120000) {
             setTimeout(() => reject(new Error(`Lighthouse timeout após ${timeout / 1000}s`)), timeout)
         );
 
-        const chromeProfileRoot = path.join(process.cwd(), '.dev', 'tmp', 'lighthouse');
+        // Perfil descartavel do Chrome, num cache ignorado pelo git. Um perfil em
+        // pasta local-only quebraria em clone limpo, porque ela nao e reconstruida.
+        const chromeProfileRoot = path.join(process.cwd(), 'node_modules', '.cache', 'aurawall', 'lighthouse');
         fs.mkdirSync(chromeProfileRoot, { recursive: true });
         userDataDir = fs.mkdtempSync(path.join(chromeProfileRoot, 'profile-'));
 
