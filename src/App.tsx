@@ -342,7 +342,7 @@ export default function App() {
           </React.Suspense>
         </div>
 
-        <div className="hidden md:block absolute bottom-6 left-6 text-zinc-500 text-xs font-mono">
+        <div className="hidden md:block absolute bottom-6 left-6 text-zinc-400 text-xs font-mono">
           {config.width}x{config.height}px
         </div>
       </div>

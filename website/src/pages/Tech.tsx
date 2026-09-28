@@ -439,7 +439,7 @@ interface Shape {
                     <div className="text-2xl mb-2">{item.icon}</div>
                     <div className="text-xs font-bold">{item.label}</div>
                   </div>
-                  {index < 5 && <span className="text-zinc-600">→</span>}
+                  {index < 5 && <span className="text-zinc-400">→</span>}
                 </React.Fragment>
               ))}
             </div>

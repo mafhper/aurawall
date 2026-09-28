@@ -36,7 +36,7 @@
         "generate:promo-assets": "node scripts/ops/render-promo-assets.mjs",
         "test:structure": "node scripts/test/structure.cjs",
         "test:security": "npm audit --audit-level=high && node --test scripts/test/security-sanitization.test.cjs",
-        "test": "npm run test:structure && npm run test:i18n && node --test scripts/test/security-sanitization.test.cjs",
+        "test": "npm run test:structure && npm run test:i18n && npm run test:contrast && node --test scripts/test/security-sanitization.test.cjs scripts/test/contrast.test.cjs",
         "test:i18n": "node scripts/test/i18n.cjs",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "type-check": "tsc --noEmit",

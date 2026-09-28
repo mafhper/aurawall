@@ -159,7 +159,7 @@ export default function CreationEngines() {
         <div className="mb-6 flex items-center justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold">{t('gallery.full_collection')}</h2>
-            <p className="mt-1 text-sm text-zinc-500">{t('engines.collection_summary', { count: grid.length + 1 })}</p>
+            <p className="mt-1 text-sm text-zinc-400">{t('engines.collection_summary', { count: grid.length + 1 })}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

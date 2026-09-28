@@ -85,7 +85,7 @@ const CodeExportModal: React.FC<CodeExportModalProps> = ({ svgContent, config, o
 
         {/* Footer */}
         <div className="p-4 border-t border-white/10 bg-zinc-900 rounded-b-2xl">
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             {activeTab === 'svg' 
               ? "Raw SVG vector data. Perfect for Illustrator, Figma, or direct embedding."
               : "Optimized CSS-based implementation. Lightweight and performant for web backgrounds."}

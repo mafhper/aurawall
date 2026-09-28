@@ -108,7 +108,7 @@ const CollapsibleSection = ({
           {rightElement}
           <ChevronDown 
             size={14} 
-            className={`text-zinc-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
+            className={`text-zinc-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
           />
         </div>
       </div>
@@ -360,42 +360,42 @@ const ControlsInner: React.FC<ControlsProps> = ({
         <button 
           onClick={() => setActiveTab('adjust')}
           aria-label={t('tab_adjust')}
-          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'adjust' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
+          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'adjust' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-400 hover:text-zinc-300'}`}
         >
           <Settings2 size={16} /> <span className="hidden xs:inline">{t('tab_adjust')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('shapes')}
           aria-label={t('tab_shapes')}
-          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'shapes' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
+          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'shapes' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-400 hover:text-zinc-300'}`}
         >
           <Layers size={16} /> <span className="hidden xs:inline">{t('tab_shapes')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('motion')}
           aria-label={t('tab_motion')}
-          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'motion' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
+          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'motion' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-400 hover:text-zinc-300'}`}
         >
           <Play size={16} /> <span className="hidden xs:inline">{t('tab_motion')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('sizes')}
           aria-label={t('tab_size')}
-          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'sizes' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
+          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'sizes' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-400 hover:text-zinc-300'}`}
         >
           <Monitor size={16} /> <span className="hidden xs:inline">{t('tab_size')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('favorites')}
           aria-label={t('tab_favorites')}
-          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'favorites' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
+          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'favorites' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-400 hover:text-zinc-300'}`}
         >
           <Star size={16} /> <span className="hidden xs:inline">{t('tab_favorites')}</span>
         </button>
         <button 
           onClick={() => setActiveTab('preferences')}
           aria-label={t('preferences')}
-          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'preferences' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-500 hover:text-zinc-300'}`}
+          className={`flex-1 py-3 text-xs md:text-sm font-medium flex justify-center items-center gap-2 ${activeTab === 'preferences' ? 'text-white border-b-2 border-purple-500' : 'text-zinc-400 hover:text-zinc-300'}`}
         >
           <SlidersHorizontal size={16} /> <span className="hidden xs:inline">{t('preferences')}</span>
         </button>
@@ -418,11 +418,11 @@ const ControlsInner: React.FC<ControlsProps> = ({
                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider block">
                  {t('favorites_title')}
                </label>
-               <span className="text-[10px] text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded-full">{favorites.length}</span>
+               <span className="text-[10px] text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded-full">{favorites.length}</span>
              </div>
              
              {favorites.length === 0 ? (
-               <div className="text-center py-10 text-zinc-500 text-sm border border-dashed border-white/10 rounded-lg">
+               <div className="text-center py-10 text-zinc-400 text-sm border border-dashed border-white/10 rounded-lg">
                  <Heart size={24} className="mx-auto mb-2 opacity-50" />
                  {t('no_favorites')}
                </div>
@@ -456,7 +456,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
         {activeTab === 'adjust' && (
           <div> {/* Container for all 'adjust' tab content */}
             <div className="rounded-xl border border-white/10 bg-zinc-900/70 p-3 mb-6">
-              <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-3">
+              <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-400 mb-3">
                 {t('current_engine')}
               </div>
               <div className="flex items-center gap-2 min-w-0">
@@ -543,7 +543,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                     });
 
                     if (items.length === 0) {
-                      return <div className="col-span-3 text-center text-xs text-zinc-500 py-4">{t('no_presets_category')}</div>;
+                      return <div className="col-span-3 text-center text-xs text-zinc-400 py-4">{t('no_presets_category')}</div>;
                     }
 
                     return items;
@@ -599,7 +599,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                         key={t}
                         onClick={() => updateBackground({ type: t })}
                         className={`flex-1 py-1.5 text-[10px] uppercase font-bold tracking-wider rounded transition-colors ${
-                          bgConfig.type === t ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-zinc-300'
+                          bgConfig.type === t ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-300'
                         }`}
                       >
                         {t}
@@ -784,7 +784,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                   {/* Shape X */}
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('shape_x_horizontal')}</span>
                       <span>{vig.shapeX}%</span>
                     </div>
@@ -800,7 +800,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                   {/* Shape Y */}
                   <div>
-                    <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                    <div className="flex justify-between text-xs text-zinc-400 mb-2">
                       <span>{t('shape_y_vertical')}</span>
                       <span>{vig.shapeY}%</span>
                     </div>
@@ -816,7 +816,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                   {/* Inverted Toggle */}
                   <div className="flex items-center justify-between">
-                     <span className="text-[10px] text-zinc-500">{t('invert_mask_spotlight')}</span>
+                     <span className="text-[10px] text-zinc-400">{t('invert_mask_spotlight')}</span>
                      <div className="relative inline-block w-10 mr-1 align-middle select-none">
                        <input 
                          type="checkbox" 
@@ -847,7 +847,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                            e.stopPropagation();
                            onToggleGrainLock();
                            }}
-                           className={`p-1.5 rounded transition-all duration-200 ${isGrainLocked ? 'text-purple-400 bg-purple-500/20' : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'}`}
+                           className={`p-1.5 rounded transition-all duration-200 ${isGrainLocked ? 'text-purple-400 bg-purple-500/20' : 'text-zinc-400 hover:text-zinc-300 hover:bg-white/5'}`}
                            title={isGrainLocked ? t('parameters_locked_randomization_ignored') : t('parameters_unlocked')}
                            >
                            {isGrainLocked ? <Lock size={14} /> : <Unlock size={14} />}
@@ -917,7 +917,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                     </div>
                     <button 
                       onClick={() => removeShape(shape.id)}
-                      className="text-zinc-500 hover:text-red-400 transition-colors p-1"
+                      className="text-zinc-400 hover:text-red-400 transition-colors p-1"
                     >
                       <Trash2 size={14} />
                     </button>
@@ -980,7 +980,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                         <div className="w-full h-full" style={{ backgroundColor: shape.color }} />
                     </div>
                     <div className="flex-1">
-                       <span className="text-[10px] text-zinc-500 block mb-1">{t('opacity')}</span>
+                       <span className="text-[10px] text-zinc-400 block mb-1">{t('opacity')}</span>
                       <input 
                         type="range" min="0" max="1" step="0.05"
                         value={shape.opacity} onChange={(e) => updateShape(shape.id, 'opacity', Number(e.target.value))}
@@ -992,7 +992,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   {/* Shape Type & Blend Mode */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <span className="text-[10px] text-zinc-500 block mb-1">{t('shape_type')}</span>
+                      <span className="text-[10px] text-zinc-400 block mb-1">{t('shape_type')}</span>
                       <select 
                         value={shape.type}
                         onChange={(e) => updateShape(shape.id, 'type', e.target.value as Shape['type'])}
@@ -1004,7 +1004,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                       </select>
                     </div>
                     <div>
-                      <span className="text-[10px] text-zinc-500 block mb-1">{t('blend_mode')}</span>
+                      <span className="text-[10px] text-zinc-400 block mb-1">{t('blend_mode')}</span>
                       <select 
                         value={shape.blendMode || 'normal'}
                         onChange={(e) => updateShape(shape.id, 'blendMode', e.target.value as BlendMode)}
@@ -1029,7 +1029,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   {/* Blob Complexity (Only if blob) */}
                   {shape.type === 'blob' && (
                     <div>
-                       <span className="text-[10px] text-zinc-500 block mb-1">{t('complexity_edges')}</span>
+                       <span className="text-[10px] text-zinc-400 block mb-1">{t('complexity_edges')}</span>
                       <input 
                         type="range" min="3" max="10" step="1"
                         value={shape.complexity || 6} onChange={(e) => updateShape(shape.id, 'complexity', Number(e.target.value))}
@@ -1150,7 +1150,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
 
                 {/* Color Cycle Toggle */}
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-zinc-500">{t('color_cycle_shapes')}</span>
+                  <span className="text-[10px] text-zinc-400">{t('color_cycle_shapes')}</span>
                   <div className="relative inline-block w-10 mr-1 align-middle select-none">
                     <input 
                       type="checkbox" 
@@ -1171,7 +1171,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                 </div>
                  {/* Color Cycle Speed */}
                  <div className={`${anim.colorCycle ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
-                    <div className="flex justify-between text-[10px] text-zinc-500 mb-1">
+                    <div className="flex justify-between text-[10px] text-zinc-400 mb-1">
                       <span>{t('color_cycle_speed')}</span>
                       <span>{anim.colorCycleSpeed}</span>
                     </div>
@@ -1206,7 +1206,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                        {size.width > size.height ? <Monitor size={18} className="text-zinc-400"/> : <Smartphone size={18} className="text-zinc-400"/>}
                        <div className="text-left">
                          <div className="text-sm font-medium text-white">{size.name}</div>
-                         <div className="text-xs text-zinc-500">{size.width} x {size.height}</div>
+                         <div className="text-xs text-zinc-400">{size.width} x {size.height}</div>
                        </div>
                     </div>
                     {config.width === size.width && config.height === size.height && (
@@ -1231,7 +1231,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-xs text-zinc-500">Width (px)</label>
+                  <label className="text-xs text-zinc-400">Width (px)</label>
                   <input
                     type="number"
                     min="100"
@@ -1254,7 +1254,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-zinc-500">Height (px)</label>
+                  <label className="text-xs text-zinc-400">Height (px)</label>
                   <input
                     type="number"
                     min="100"

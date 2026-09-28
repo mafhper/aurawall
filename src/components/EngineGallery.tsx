@@ -113,7 +113,7 @@ export default function EngineGallery({ onClose, onEquip, activeEngineId, equipp
                <Aperture className="text-purple-500" /> {t('engine_gallery_title')}
              </h2>
              <p className="text-sm text-zinc-400 mt-1">{t('engine_gallery_desc')}</p>
-             <p className="text-xs text-zinc-500 mt-2">{t('engine_selected_slot', { name: selectedSlotName })}</p>
+             <p className="text-xs text-zinc-400 mt-2">{t('engine_selected_slot', { name: selectedSlotName })}</p>
            </div>
            <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
              <X size={24} className="text-zinc-400" />
