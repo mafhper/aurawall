@@ -67,7 +67,14 @@ Responsible for:
 
 ### `scripts/ops/render-engine-samples.mjs`
 
-CLI renderer for batch engine sampling. Use it to inspect visual differentiation without opening the app UI.
+CLI renderer for batch engine sampling. Use it to inspect visual differentiation without opening the app UI. Run with no arguments for the interactive picker, or pass flags (`--engines=`, `--count=`, `--random`, `--formats=`, `--include-presets`, `--quick`); `--help` lists everything.
+
+The logic lives in `scripts/ops/lib/engine-samples/` — one module per concern, so the entry point stays readable. `paths.mjs` resolves the repo root by walking up to the `package.json` rather than counting `../..` levels, and is also the single place that decides the output and cache locations (`node_modules/.cache/aurawall`, per ADR-004: tooling must not write into the private workspace).
+
+Two behaviours are deliberate and worth keeping:
+
+- **Invalid flags fail, they are not coerced.** `--count=abc` exits 1 instead of silently running the default count. The parser collects `parseErrors` and `validator.mjs` reports them.
+- **One failing sample does not abort the run.** Failures are collected into the manifest, which is written even when some renders failed.
 
 ### `scripts/ops/render-promo-assets.mjs`
 
