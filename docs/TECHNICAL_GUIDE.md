@@ -102,6 +102,6 @@ When engine behavior, preset flow, or promo asset generation changes, update:
 
 - `README.md`
 - `docs/TECHNICAL_GUIDE.md`
-- `docs/change.log`
 
-The docs should describe the current system as shipped, not intermediate experiments.
+The docs should describe the current system as shipped, not intermediate experiments. Version
+history lives in the GitHub Releases, which the release workflow generates per tag.

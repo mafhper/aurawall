@@ -100,7 +100,8 @@ Automação do GitHub Actions.
 ### \`docs/\` - Memória do Projeto
 Documentação técnica e registros de decisão.
 - \`docs/tasks.md\`: Controle de tarefas e backlog.
-- \`docs/change.log\`: Histórico de mudanças.
+
+O histórico de versões vive nas Releases do GitHub, geradas por tag.
 
 ---
 
