@@ -85,7 +85,7 @@ function spawnCommand(command, args, options) {
 }
 
 function generateReport(results, duration) {
-    const { saveReport, minifyMarkdown } = require('./utils/audit-helpers.cjs');
+
 
     const failedTasks = results.filter(r => r.status === 'failed');
     const warningTasks = results.filter(r => r.status === 'warning');

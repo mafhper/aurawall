@@ -4,11 +4,12 @@
  * Verifica o contraste de cores em arquivos CSS/TSX do projeto
  * seguindo as diretrizes WCAG 2.1 AA (4.5:1 para texto normal, 3:1 para texto grande)
  * 
- * Usage: node scripts/check-contrast.cjs [--fix]
+ * Usage: node scripts/test/contrast.cjs
  */
 
-const fs = require('fs');
-const path = require('path');
+// Sem imports: o main() não lê arquivo algum — ele itera a lista KNOWN_PAIRS.
+// A varredura de arquivos do projeto estava em analyzeFile(), que nunca foi
+// chamada. Ver a nota AWR-N11.
 
 // ANSI Colors
 const RESET = '\x1b[0m';
@@ -83,38 +84,6 @@ function checkWcagAA(ratio, isLargeText = false) {
         threshold,
         level: ratio >= 7 ? 'AAA' : ratio >= 4.5 ? 'AA' : ratio >= 3 ? 'AA-Large' : 'FAIL'
     };
-}
-
-// Find problematic color patterns in file content
-function analyzeFile(filePath) {
-    const content = fs.readFileSync(filePath, 'utf-8');
-    const issues = [];
-
-    // Pattern: text-zinc-500 or similar low-contrast grays without proper background
-    const lowContrastPatterns = [
-        { pattern: /text-zinc-500/g, color: '#71717a', name: 'zinc-500' },
-        { pattern: /text-zinc-600/g, color: '#52525b', name: 'zinc-600' },
-        { pattern: /text-gray-500/g, color: '#6b7280', name: 'gray-500' },
-    ];
-
-    lowContrastPatterns.forEach(({ pattern, color, name }) => {
-        const matches = content.match(pattern);
-        if (matches) {
-            const ratio = getContrastRatio(color, '#000000');
-            const check = checkWcagAA(ratio);
-            if (!check.passes) {
-                issues.push({
-                    file: filePath,
-                    color: name,
-                    ratio: ratio.toFixed(2),
-                    level: check.level,
-                    count: matches.length
-                });
-            }
-        }
-    });
-
-    return issues;
 }
 
 // Main execution

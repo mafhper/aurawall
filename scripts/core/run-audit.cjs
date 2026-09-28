@@ -30,7 +30,7 @@ async function cleanupChromeProfile(userDataDir) {
         try {
             fs.rmSync(userDataDir, { recursive: true, force: true, maxRetries: 10 });
             return;
-        } catch (error) {
+        } catch {
             if (attempt === 2) {
                 log(`Aviso: não foi possível remover perfil temporário do Lighthouse (${userDataDir}).`, 'yellow');
                 return;
@@ -149,12 +149,13 @@ async function runLighthouse(url, timeout = 120000) {
         await cleanupChromeProfile(userDataDir);
         return lhr;
     } catch (e) {
-        // Cleanup do Chrome em caso de erro
+        // Cleanup do Chrome em caso de erro. O kill é best-effort: se ele
+        // falhar, o erro que importa é o do Lighthouse, não o da limpeza.
         if (chrome) {
-            try { await chrome.kill(); } catch { }
+            try { await chrome.kill(); } catch { /* best-effort */ }
         }
         await cleanupChromeProfile(userDataDir);
-        throw new Error(`Running Lighthouse failed: ${e.message}`);
+        throw new Error(`Running Lighthouse failed: ${e.message}`, { cause: e });
     }
 }
 
@@ -263,7 +264,7 @@ async function runAudit(target) {
                 } else {
                     process.kill(-serverProcess.pid, 'SIGTERM');
                 }
-            } catch (e) {
+            } catch {
                 log(`Aviso: não foi possível parar servidor (pid ${serverProcess.pid})`, 'yellow');
             }
         }
