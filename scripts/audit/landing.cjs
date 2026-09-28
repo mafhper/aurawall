@@ -1,31 +1,24 @@
 /**
- * Script de Análise de Desempenho Web (CommonJS)
- * 
- * @deprecated Este script é LEGADO. Use `npm run audit:promo` (audit-runner.cjs) em vez disso.
- * Este arquivo será removido em versões futuras.
+ * Auditoria Lighthouse de uma URL (CommonJS)
  *
- * Automatiza a análise de desempenho de aplicações web utilizando Lighthouse
- * e outras ferramentas de auditoria. Gera relatórios detalhados sobre:
- * - Performance, Acessibilidade, SEO e Boas Práticas
- * - Tempos de carregamento e métricas Core Web Vitals
+ * NAO e legado. Este script e o unico caminho para auditar o site PUBLICADO --
+ * o runner.cjs so tem alvos localhost, porque a auditoria de producao depende de
+ * medir o que o Pages entrega, nao o servidor de desenvolvimento.
+ *
+ * Automatiza a analise de desempenho de aplicacoes web utilizando Lighthouse.
+ * Gera relatorios detalhados sobre:
+ * - Performance, Acessibilidade, SEO e Boas Praticas
+ * - Tempos de carregamento e metricas Core Web Vitals
  * - Tamanhos de bundle e recursos carregados
- * - Problemas de segurança e otimizações sugeridas
+ * - Problemas de seguranca e otimizacoes sugeridas
  *
- * Uso: npm run analyze ou node scripts/performance-audit.cjs
- * 
- * Melhorias implementadas:
- * - Tratamento robusto de erros com try-catch específicos
- * - Validação de entrada de configurações
- * - Verificação automática de servidor com timeout configurável
- * - Limpeza adequada de recursos (Chrome)
- * - Códigos de saída apropriados
- * - Logging estruturado com níveis
- * - Suporte a múltiplos formatos de relatório
- * - Gestão assíncrona de operações de I/O
+ * Uso:
+ *   npm run audit:promo            # dev server em localhost:5173
+ *   npm run audit:promo:mobile    # dev server, com emulacao de mobile
+ *   npm run audit:promo:prod      # site publicado, via AUDIT_URL
+ *
+ * Os relatorios vao para performance-reports/raw-data/ (ignorado pelo git).
  */
-
-console.warn('\n⚠️  AVISO: Este script (audit-landing.cjs) é LEGADO.');
-console.warn('   Use `npm run audit:promo` (audit-runner.cjs) em vez disso.\n');
 
 const { default: lighthouse } = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
@@ -34,7 +27,7 @@ const fsPromises = require('fs').promises;
 const path = require('path');
 const http = require('http');
 const { spawn } = require('child_process');
-const { stripHtmlDelimiters } = require('../../utils/text-sanitization.cjs');
+const { stripHtmlDelimiters } = require('../utils/text-sanitization.cjs');
 
 // Configurações
 const CONFIG = {
@@ -692,7 +685,7 @@ async function main() {
     const summary = await generateSummary(lhr, bundleStats, depsAnalysis);
 
     // 6. Generate Reports (Refactored)
-    const { saveReport, minifyMarkdown } = require('../../utils/audit-helpers.cjs');
+    const { saveReport, minifyMarkdown } = require('../utils/audit-helpers.cjs');
 
     // Status Logic
     const failedCategories = Object.keys(lhr.categories).filter(key => {

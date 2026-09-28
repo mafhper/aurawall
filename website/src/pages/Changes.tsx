@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GitCommit, Calendar, Wrench, AlertTriangle, Rocket, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { GitCommit, Rocket, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import HeroBackground from '../components/HeroBackground';
 
 // GitHub commit interface
@@ -16,39 +16,10 @@ interface GitHubCommit {
   html_url: string;
 }
 
-// This will be populated by the fetch-changelog script during build
-interface ChangelogEntry {
-  version: string;
-  date: string;
-  title: string;
-  description: string;
-  type: 'feature' | 'fix' | 'breaking' | 'refactor';
-}
-
-// Static changelog data - used as fallback and for version milestones
-const staticChangelog: ChangelogEntry[] = [
-  {
-    version: '0.2.0',
-    date: '2024-12-10',
-    title: 'Promo Site e Sistema de Collections',
-    description: 'Lançamento do site promocional integrado com galeria de presets, páginas de documentação arquitetural, sistema de collections para organização de presets, e suporte a compartilhamento de configurações via URL.',
-    type: 'feature',
-  },
-  {
-    version: '0.1.1',
-    date: '2024-12-09',
-    title: 'Documentação Técnica e Sementes Procedurais',
-    description: 'Implementação do sistema de sementes para geração determinística de wallpapers, permitindo reprodutibilidade exata. Adição de documentação técnica detalhada sobre algoritmos de geração.',
-    type: 'refactor',
-  },
-  {
-    version: '0.1.0',
-    date: '2024-12-08',
-    title: 'Lançamento Inicial',
-    description: 'Primeira versão pública do AuraWall com engines Boreal e Chroma, sistema de animação CSS em tempo real, exportação multi-formato (PNG, JPG, SVG) e internacionalização para 8 idiomas.',
-    type: 'feature',
-  },
-];
+// O histórico de VERSÕES do projeto não fica aqui: é o release-core que o publica,
+// um Release por tag, em https://github.com/mafhper/aurawall/releases.
+// Essa página mostra atividade real (commits do GitHub) e, se a API falhar,
+// manda o leitor para o Releases — em vez de exibir um histórico inventado.
 
 const roadmapItems = [
   {
@@ -76,20 +47,6 @@ const roadmapItems = [
     status: 'in-progress' as const,
   },
 ];
-
-const typeIcons = {
-  feature: Rocket,
-  fix: Wrench,
-  breaking: AlertTriangle,
-  refactor: GitCommit,
-};
-
-const typeColors = {
-  feature: 'bg-green-500/10 text-green-400 border-green-500/30',
-  fix: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-  breaking: 'bg-red-500/10 text-red-400 border-red-500/30',
-  refactor: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
-};
 
 const statusColors = {
   'completed': 'bg-green-500',
@@ -271,34 +228,18 @@ export default function Changes() {
               </div>
             </div>
           ) : (
-            /* Fallback to static changelog */
-            <div className="space-y-6">
-              {staticChangelog.map((entry, index) => {
-                const Icon = typeIcons[entry.type];
-                return (
-                  <div 
-                    key={index}
-                    className="glass-panel rounded-2xl p-8 border-l-4 border-l-purple-500 card-hover card-glow animate-in fade-in slide-in-from-bottom-8 duration-700"
-                  >
-                    <div className="flex flex-wrap items-center gap-3 mb-6">
-                      <span className="bg-purple-500/20 text-purple-300 px-4 py-1.5 rounded-full text-base font-mono font-bold shadow-inner shadow-purple-500/20">
-                        v{entry.version}
-                      </span>
-                      <span className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border ${typeColors[entry.type]}`}>
-                        <Icon size={12} />
-                        {entry.type}
-                      </span>
-                      <span className="flex items-center gap-1 text-zinc-400 text-sm ml-auto">
-                        <Calendar size={14} />
-                        {entry.date}
-                      </span>
-                    </div>
-                    
-                    <h3 className="text-2xl font-bold mb-3">{entry.title}</h3>
-                    <p className="text-zinc-400 leading-relaxed text-lg">{entry.description}</p>
-                  </div>
-                );
-              })}
+            /* A API falhou. Não inventar histórico: manda para o Releases, que é real. */
+            <div className="glass-panel rounded-2xl p-8 text-center space-y-4">
+              <p className="text-zinc-400">{t('changes.commits_unavailable')}</p>
+              <a
+                href="https://github.com/mafhper/aurawall/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-purple-400 transition-colors"
+              >
+                {t('changes.view_releases')}
+                <ExternalLink size={14} />
+              </a>
             </div>
           )}
         </div>

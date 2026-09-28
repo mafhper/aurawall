@@ -24,7 +24,6 @@ A análise estática é o `npm run lint` (ESLint direto), que roda no CI e no ga
 Operações de build e geração de assets.
 - `generate-bgs.cjs`: Gera os SVGs de background estáticos.
 - `distribute-icons.cjs`: Copia e otimiza ícones para pastas públicas.
-- `fetch-changelog.js`: Baixa commits do GitHub para o changelog do site.
 - `prerender-promo.js`: Gera HTML estático para o site promocional (SSG).
 - `optimize-images.cjs`: Otimiza imagens usando Sharp.
 
