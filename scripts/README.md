@@ -8,15 +8,17 @@ Este diretório contém todos os scripts utilitários para build, teste, auditor
 Ferramentas de auditoria de qualidade e performance.
 - `runner.cjs`: Executor universal de auditorias (Lighthouse).
 - `links.cjs`: Verificador de links quebrados.
-- `legacy/`: Scripts antigos mantidos para compatibilidade (serão removidos futuramente).
+- `legacy/`: Nome herdado. `landing.cjs` continua sendo o entry point de `audit:promo:mobile` e `audit:promo:prod`, então não é código morto apesar do diretório.
 
 ### `test/`
 Testes estáticos e de integridade do código.
-- `lint.cjs`: Wrapper para o ESLint.
 - `structure.cjs`: Verifica se arquivos e pastas obrigatórios existem.
 - `i18n.cjs`: Garante paridade de chaves de tradução entre idiomas.
 - `contrast.cjs`: Verifica contraste de cores (WCAG AA).
 - `perf.cjs`: Monitora o tamanho do bundle final.
+- `security-sanitization.test.cjs`: Testa a sanitização de texto.
+
+A análise estática é o `npm run lint` (ESLint direto), que roda no CI e no gate da release.
 
 ### `ops/`
 Operações de build e geração de assets.

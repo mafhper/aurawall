@@ -241,7 +241,7 @@ function runTask(task) {
     tasks.push(new Task('Test: File Structure', 'npm', ['run', 'test:structure']));
     tasks.push(new Task('Test: Security Audit', 'npm', ['run', 'test:security']));
     tasks.push(new Task('Test: i18n Integrity', 'npm', ['run', 'test:i18n']));
-    tasks.push(new Task('Test: Linting', 'npm', ['run', 'test:lint'])); // NEW
+    tasks.push(new Task('Test: Linting', 'npm', ['run', 'lint']));
     tasks.push(new Task('Test: Performance', 'npm', ['run', 'test:perf']));
 
     // Execute Sequentially

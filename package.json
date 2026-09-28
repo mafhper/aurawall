@@ -41,7 +41,6 @@
         "test:i18n": "node scripts/test/i18n.cjs",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "type-check": "tsc --noEmit",
-        "test:lint": "node scripts/test/lint.cjs",
         "test:perf": "node scripts/test/perf.cjs",
         "test:contrast": "node scripts/test/contrast.cjs",
         "perf:gate": "node scripts/performance-gate/run.cjs",
