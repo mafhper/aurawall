@@ -3,8 +3,9 @@ import { useParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Zap } from 'lucide-react';
 import WallpaperRenderer from '../../../src/components/WallpaperRenderer';
+import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 import { ENGINES } from '../data/engines';
-import { PRESETS, DEFAULT_ANIMATION } from '../../../src/constants';
+import { PRESETS } from '../../../src/constants';
 import { getAppUrl } from '../utils/appUrl';
 import HeroBackground from '../components/HeroBackground';
 
@@ -12,11 +13,8 @@ import HeroBackground from '../components/HeroBackground';
 const PresetCard = ({ preset }: { preset: typeof PRESETS[0] }) => {
   const [isHovered, setIsHovered] = useState(false);
   
-  const config = useMemo(() => ({
-    ...preset.config,
+  const config = useMemo(() => resolveWallpaperConfig(preset.config, {
     animation: {
-      ...DEFAULT_ANIMATION,
-      ...preset.config.animation,
       enabled: true,
       speed: preset.config.animation?.speed || 1,
       flow: preset.config.animation?.flow || 1,
@@ -52,14 +50,9 @@ const PreviewCard = React.memo(({ preset }: { preset: typeof PRESETS[0] | null }
   // useMemo must be called before any early return
   const config = useMemo(() => {
     if (!preset) return null;
-    return {
-      ...preset.config,
-      animation: {
-        ...DEFAULT_ANIMATION,
-        ...preset.config.animation,
-        enabled: true,
-      }
-    };
+    return resolveWallpaperConfig(preset.config, {
+      animation: { enabled: true }
+    });
   }, [preset]);
 
   if (!preset || !config) return null;

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Zap, Shield, Maximize, Play, Palette, Download, ArrowRight, Wand2, RefreshCw } from 'lucide-react';
 import { PRESETS, HERO_PRESETS, DEFAULT_CONFIG, DEFAULT_ANIMATION } from '../../../src/constants';
 import GalleryCard from '../components/GalleryCard';
+import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 import LazySection from '../components/LazySection';
 import { getAppUrl } from '../utils/appUrl';
 import { encodeConfigCompact } from '../../../src/utils/compactUrlEncoder';
@@ -104,15 +105,18 @@ export default function Home() {
   const borealPreset = useMemo(() => PRESETS.find(p => p.id === 'angel-aura') || PRESETS[0], []);
   const chromaPreset = useMemo(() => PRESETS.find(p => p.id === 'liquid-metal') || PRESETS[1], []);
 
-  const borealConfig = useMemo(() => ({
-    ...borealPreset.config,
-    animation: { ...borealPreset.config.animation, enabled: true, speed: 2, flow: 4 }
-  }), [borealPreset]);
+  // Preset.config é Partial<WallpaperConfig> e o WallpaperRenderer exige o tipo
+  // completo. resolveWallpaperConfig faz a fusão com os defaults — o mesmo
+  // construtor que GalleryCard e CreationBoreal já usavam.
+  const borealConfig = useMemo(() =>
+    resolveWallpaperConfig(borealPreset.config, {
+      animation: { enabled: true, speed: 2, flow: 4 },
+    }), [borealPreset]);
 
-  const chromaConfig = useMemo(() => ({
-    ...chromaPreset.config,
-    animation: { ...chromaPreset.config.animation, enabled: true, speed: 3, flow: 3 }
-  }), [chromaPreset]);
+  const chromaConfig = useMemo(() =>
+    resolveWallpaperConfig(chromaPreset.config, {
+      animation: { enabled: true, speed: 3, flow: 3 },
+    }), [chromaPreset]);
 
   const handleRandomize = () => {
     setIsRotating(true);
@@ -122,15 +126,13 @@ export default function Home() {
     const availablePresets = PRESETS.filter(p => !p.config.baseColor || p.config !== heroConfig); 
     const randomPreset = availablePresets[Math.floor(Math.random() * availablePresets.length)] || PRESETS[0];
     
-    setHeroConfig({
-      ...randomPreset.config,
+    setHeroConfig(resolveWallpaperConfig(randomPreset.config, {
       animation: {
-        ...randomPreset.config.animation,
         enabled: true,
         speed: Math.random() * 1.5 + 1.0, // Min 1.0
         flow: Math.random() * 1.5 + 1.0   // Min 1.0
       }
-    });
+    }));
 
     // Cycle text
     setActionIndex((prev) => (prev + 1) % RANDOM_ACTIONS.length);

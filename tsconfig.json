@@ -28,7 +28,8 @@
     "noEmit": true
   },
   "include": [
-    "src"
+    "src",
+    "website/src"
   ],
   "exclude": [
     "node_modules",

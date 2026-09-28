@@ -9,10 +9,13 @@ import HeroBackground from '../components/HeroBackground';
 import { resolveWallpaperConfig } from '../utils/resolveWallpaperConfig';
 
 // Helper to get specific preset configs
-const getPresetConfig = (id: string) => {
-  const preset = PRESETS.find(p => p.id === id);
-  return preset ? preset.config : PRESETS[0].config;
-};
+// Preset.config é Partial<WallpaperConfig> e os blocos animation dos presets
+// são parciais de propósito. resolveWallpaperConfig faz a fusão com os
+// defaults — o mesmo caminho que GalleryCard e CreationBoreal já usavam, e o
+// mesmo que src/Controls.tsx:172 faz a mão. Usar o construtor em vez de
+// repetir o spread é o que impede o próximo de reintroduzir o bug.
+const getPresetConfig = (id: string): WallpaperConfig =>
+  resolveWallpaperConfig(PRESETS.find(p => p.id === id)?.config ?? PRESETS[0].config);
 
 interface CreationMode {
   id: string;
@@ -20,7 +23,7 @@ interface CreationMode {
   icon: React.ElementType;
   titleKey: string;
   desc: string;
-  config: Partial<WallpaperConfig>;
+  config: WallpaperConfig;
   accentColor: 'purple' | 'blue';
   isReverse: boolean;
 }
