@@ -85,7 +85,7 @@ AuraWall opera completamente en el navegador sin dependencias de servidor. La ap
 
 ### Prerequisitos
 
-- Node.js 20.19 o superior, o Node.js 22.12+
+- Node.js 22.12+
 - npm
 
 ### Desarrollo Local
