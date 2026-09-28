@@ -1,10 +1,12 @@
 {
-    "name": "aurawall-v0.1",
-    "version": "0.0.0",
+    "name": "aurawall",
+    "version": "1.0.0",
     "private": true,
     "type": "module",
+    "packageManager": "npm@11.6.0",
     "engines": {
-        "node": ">=22.22.0"
+        "node": ">=22.22.0",
+        "npm": ">=11"
     },
     "scripts": {
         "dev": "concurrently \"npm run app\" \"npm run promo\"",
