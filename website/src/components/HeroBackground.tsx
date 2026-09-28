@@ -123,12 +123,15 @@ export default function HeroBackground({
              ...finalConfig,
              width: 960, // Optimize: Render at HD 
              height: 540, // Upscaled by CSS
-             animation: {
-                 speed: 1,
-                 flow: 1,
-                 ...finalConfig.animation,
-                 enabled: true
-             }
+              animation: {
+                  // speed e flow vinham aqui como 1/1, antes do spread. Como
+                  // AnimationSettings exige os dois e finalConfig.animation ja os
+                  // preenche (DEFAULT_ANIMATION: 5/2, sobrescrito pelo preset), os
+                  // literais nunca valiam -- o hero animava a 5/2. Removidos para
+                  // o codigo dizer o que ele faz.
+                  ...finalConfig.animation,
+                  enabled: true
+              }
          }}
          className="w-full h-full block scale-110" 
          lowQuality={false}
