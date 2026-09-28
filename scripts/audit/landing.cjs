@@ -556,34 +556,6 @@ function displayOpportunities(lhr) {
 }
 
 /**
- * Gera resumo final em JSON
- */
-async function generateSummary(lighthouseResults, bundleStats, depsAnalysis) {
-  const timestamp = new Date().toISOString();
-
-  const summary = {
-    timestamp,
-    url: CONFIG.url,
-    lighthouse: {
-      performance: Math.round(lighthouseResults.categories.performance.score * 100),
-      accessibility: Math.round(lighthouseResults.categories.accessibility.score * 100),
-      bestPractices: Math.round(lighthouseResults.categories['best-practices'].score * 100),
-      seo: Math.round(lighthouseResults.categories.seo.score * 100),
-    },
-    metrics: lighthouseResults.audits.metrics?.details?.items?.[0] || null,
-    bundle: bundleStats,
-    dependencies: depsAnalysis,
-  };
-
-  const summaryPath = path.join(CONFIG.outputDir, 'latest-summary.json');
-  await fsPromises.writeFile(summaryPath, JSON.stringify(summary, null, 2));
-
-  log(`\n✓ Resumo salvo: ${summaryPath}`, 'green');
-
-  return summary;
-}
-
-/**
  * Função principal
  */
 
@@ -680,12 +652,6 @@ async function main() {
     // allPassed é o retorno de displayScores(), que já foi chamado pelo efeito
     // colateral de imprimir as notas. O retorno não é usado.
     const { lhr } = await runLighthouseAudit();
-
-    // generateSummary grava performance-reports/latest-summary.json e loga o
-    // caminho. O objeto que ele devolve não é usado — só o efeito importa.
-    // (Esse arquivo não é lido por nada no repo: saíram diagnóstico. Removê-lo
-    // é decisão de produto, não correção de lint.)
-    await generateSummary(lhr, bundleStats, depsAnalysis);
 
     // 6. Generate Reports (Refactored)
     const { saveReport, minifyMarkdown } = require('../utils/audit-helpers.cjs');
