@@ -60,7 +60,7 @@ const ColorPaletteExtractor: React.FC<ColorPaletteExtractorProps> = ({ config })
   return (
     <div className="bg-zinc-800/30 p-3 rounded-lg border border-white/5 space-y-3">
       {extractColors.length === 0 ? (
-        <p className="text-zinc-500 text-xs">{t('palette_empty_desc', 'Nenhuma cor detectada na configuração atual.')}</p>
+        <p className="text-zinc-400 text-xs">{t('palette_empty_desc', 'Nenhuma cor detectada na configuração atual.')}</p>
       ) : (
         <div className="grid grid-cols-3 gap-2">
           {extractColors.map(color => (

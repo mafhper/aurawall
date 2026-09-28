@@ -63,7 +63,7 @@ const PreferencesMenu: React.FC<PreferencesMenuProps> = ({ onClose, preferences,
                 <button
                   onClick={() => handleFormatChange('jpg')}
                   className={`flex-1 py-2 text-xs font-medium rounded transition-colors ${
-                    preferences.format === 'jpg' ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-zinc-300'
+                    preferences.format === 'jpg' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-300'
                   }`}
                 >
                   JPG
@@ -71,7 +71,7 @@ const PreferencesMenu: React.FC<PreferencesMenuProps> = ({ onClose, preferences,
                 <button
                   onClick={() => handleFormatChange('png')}
                   className={`flex-1 py-2 text-xs font-medium rounded transition-colors ${
-                    preferences.format === 'png' ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-zinc-300'
+                    preferences.format === 'png' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-300'
                   }`}
                 >
                   PNG
@@ -82,7 +82,7 @@ const PreferencesMenu: React.FC<PreferencesMenuProps> = ({ onClose, preferences,
             {/* Quality Slider (JPG Only) */}
             {preferences.format === 'jpg' && (
               <div className="animate-in fade-in slide-in-from-top-2 duration-300">
-                <div className="flex justify-between text-xs text-zinc-500 mb-2">
+                <div className="flex justify-between text-xs text-zinc-400 mb-2">
                   <span className="font-semibold uppercase tracking-wider">{t('pref_quality')}</span>
                   <span>{Math.round(preferences.quality * 100)}%</span>
                 </div>
@@ -134,7 +134,7 @@ const PreferencesMenu: React.FC<PreferencesMenuProps> = ({ onClose, preferences,
                 </option>
               ))}
             </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-500">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-zinc-400">
               <ChevronDown size={16} />
             </div>
           </div>
