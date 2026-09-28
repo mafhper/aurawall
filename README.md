@@ -96,7 +96,7 @@ This updates both:
 
 ## Quality Gates
 
-There are three layers of verification, and only the first two run automatically.
+There are three layers of verification, and only the first one runs automatically.
 
 | Layer | Command | Measures | Needs a browser | Runs on |
 |---|---|---|---|---|
@@ -108,18 +108,33 @@ There are three layers of verification, and only the first two run automatically
 they would be the slowest job in the pipeline, and the navigation baseline has to be regenerated
 whenever a build legitimately changes.
 
-To run the manual layers: the audits write to `performance-reports/<type>/<date>/` (git-ignored) —
-a Markdown summary plus the raw Lighthouse JSON in a `raw/` subfolder. `perf:gate` takes that
-JSON and compares it against `performance/baseline/`:
+## Running the manual layers
+
+`perf:gate` takes a Lighthouse JSON and compares it against `performance/baseline/`. There are two
+audit runners, and they write to different paths — both under `performance-reports/`, which is
+git-ignored.
+
+**`npm run audit`** uses the orchestrator (`scripts/audit/runner.cjs`), whose targets come from
+`scripts/config/audit.config.cjs` and point at `localhost`. It writes a Markdown summary plus the
+raw JSON:
+
+```bash
+npm run audit
+npm run perf:gate -- performance-reports/promo/<YYYY-MM-DD>/raw/Audit_<timestamp>_OK.json
+```
+
+**`npm run audit:promo:prod`** and **`npm run audit:promo:mobile`** use
+`scripts/audit/landing.cjs`, which audits a URL rather than an orchestrator target. This is the
+only way to measure the **published** site, because `runner.cjs` only knows localhost. It writes to
+a flat directory:
 
 ```bash
 npm run audit:promo:prod
-npm run perf:gate -- performance-reports/promo/<date>/raw/Audit_<timestamp>_OK.json
+npm run perf:gate -- performance-reports/raw-data/Audit_<timestamp>_OK.json
 ```
 
-The `<type>` matches the `type` field of the target in `scripts/config/audit.config.cjs`
-(`promo` or `app`), and the baseline is chosen from the form factor
-(`performance/baseline/navigation.desktop.json` or `.mobile.json`).
+The baseline is picked from the form factor:
+`performance/baseline/navigation.desktop.json` or `.mobile.json`.
 
 Before shipping changes, run:
 
