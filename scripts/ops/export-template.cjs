@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+
 
 const PROJECT_ROOT = path.resolve(__dirname, '../../');
 const TEMPLATE_DIR = path.join(PROJECT_ROOT, '_template');

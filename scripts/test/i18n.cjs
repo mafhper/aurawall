@@ -157,7 +157,7 @@ function safeParseObject(objectString) {
         const fn = new Function(`return (${cleanContent});`);
         return fn();
     } catch (e) {
-        throw new Error(`Failed to parse object: ${e.message}`);
+        throw new Error(`Failed to parse object: ${e.message}`, { cause: e });
     }
 }
 
@@ -232,7 +232,7 @@ function runTests() {
     console.log('🌍 Starting i18n Integrity Check...\n');
     let totalErrors = 0;
 
-    for (const [id, project] of Object.entries(CONFIG)) {
+    for (const project of Object.values(CONFIG)) {
         console.log(`📦 checking [${project.name}]...`);
 
         try {
@@ -299,7 +299,7 @@ function runTests() {
     // Phase 2: TSX Scan for hardcoded strings
     console.log('🔍 Scanning TSX files for hardcoded PT-BR strings...\n');
 
-    for (const [key, project] of Object.entries(CONFIG)) {
+    for (const project of Object.values(CONFIG)) {
         if (!project.srcRoot) continue;
 
         console.log(`📂 Scanning [${project.name}]...`);

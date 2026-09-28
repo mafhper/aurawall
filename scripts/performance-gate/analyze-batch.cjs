@@ -179,7 +179,7 @@ function generateMarkdownReport(analysis) {
 function main() {
     const dirPath = process.argv[2];
     const outputArg = process.argv.indexOf('--output');
-    const outputDir = outputArg !== -1 ? process.argv[outputArg + 1] : null;
+
 
     if (!dirPath) {
         console.error(`${colors.red}Usage: node analyze-batch.cjs <directory> [--output <path>]${colors.reset}`);

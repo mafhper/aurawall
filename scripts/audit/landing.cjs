@@ -22,7 +22,6 @@
 
 const { default: lighthouse } = require('lighthouse');
 const chromeLauncher = require('chrome-launcher');
-const fs = require('fs');
 const fsPromises = require('fs').promises;
 const path = require('path');
 const http = require('http');
@@ -212,9 +211,17 @@ async function startServer() {
         }
       }
 
-      // Timeout - encerra e tenta próximo comando
+      // Timeout - encerra e tenta próximo comando.
+      // O stderr do servidor é anexado: sem ele o operador só vê "Timeout"
+      // e não tem como saber por que o boot falhou.
       await killProcess(serverProcess);
-      log(`Timeout com comando 'npm ${args.join(' ')}', tentando próximo...`, 'yellow', 'DEBUG');
+      const stderr = serverError.trim();
+      log(
+        `Timeout com comando 'npm ${args.join(' ')}', tentando próximo...` +
+          (stderr ? `\n   stderr: ${stderr.split('\n').slice(-5).join('\n           ')}` : ' (sem stderr capturado)'),
+        'yellow',
+        'DEBUG'
+      );
 
     } catch (error) {
       log(`Falha ao executar 'npm ${args.join(' ')}': ${error.message}`, 'yellow', 'DEBUG');
@@ -579,22 +586,13 @@ async function generateSummary(lighthouseResults, bundleStats, depsAnalysis) {
 /**
  * Função principal
  */
-// ... existing imports ...
-
-// Helper for formatted timestamp
-const getFormattedTimestamp = () => {
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  return `${day}-${month}-${year}_${hours}-${minutes}`;
-};
 
 
 async function generateMarkdownReport(data) {
-  const { url, timestamp, environment, lighthouse: lhr, bundle, dependencies } = data;
+  // bundle e dependencies chegam em data, mas o corpo do relatório nunca os
+  // renderizou — só o `environment.bundler`. Tirados do destructuring para
+  // o código dizer o que ele usa. Os dados continuam no objeto, à disposição.
+  const { url, timestamp, environment, lighthouse: lhr } = data;
   const dateStr = new Date(timestamp).toLocaleString('pt-BR');
 
   // Fallback if environment is missing (it is not in the original script)
@@ -679,10 +677,15 @@ async function main() {
     }
 
     // Auditoria Lighthouse
-    const { lhr, allPassed } = await runLighthouseAudit();
+    // allPassed é o retorno de displayScores(), que já foi chamado pelo efeito
+    // colateral de imprimir as notas. O retorno não é usado.
+    const { lhr } = await runLighthouseAudit();
 
-    // Gera resumo
-    const summary = await generateSummary(lhr, bundleStats, depsAnalysis);
+    // generateSummary grava performance-reports/latest-summary.json e loga o
+    // caminho. O objeto que ele devolve não é usado — só o efeito importa.
+    // (Esse arquivo não é lido por nada no repo: saíram diagnóstico. Removê-lo
+    // é decisão de produto, não correção de lint.)
+    await generateSummary(lhr, bundleStats, depsAnalysis);
 
     // 6. Generate Reports (Refactored)
     const { saveReport, minifyMarkdown } = require('../utils/audit-helpers.cjs');

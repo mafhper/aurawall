@@ -69,7 +69,8 @@ const toHslStr = ({ h, s, l }) => {
 const getHSL = (h, s, l) => toHslStr({ h, s, l });
 
 const hexToHsl = (hex) => {
-  let r = 0, g = 0, b = 0;
+  // Sem inicializador: os dois ramos atribuem antes de ler, e o else retorna.
+  let r, g, b;
   if (hex.length === 4) {
     r = parseInt(hex[1] + hex[1], 16);
     g = parseInt(hex[2] + hex[2], 16);
@@ -82,7 +83,7 @@ const hexToHsl = (hex) => {
 
   r /= 255; g /= 255; b /= 255;
   const cmin = Math.min(r,g,b), cmax = Math.max(r,g,b), delta = cmax - cmin;
-  let h = 0, s = 0, l = 0;
+  let h, s, l;
 
   if (delta === 0) h = 0;
   else if (cmax === r) h = ((g - b) / delta) % 6;
@@ -96,7 +97,6 @@ const hexToHsl = (hex) => {
   return { h, s: Math.round(s * 100), l: Math.round(l * 100) };
 };
 
-const jitter = (val, amount) => val + (Math.random() * amount - (amount / 2));
 const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
 
 const shiftColor = (color, dH, dS, dL) => {
