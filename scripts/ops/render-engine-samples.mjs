@@ -1,495 +1,403 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import sharp from 'sharp';
-import { build } from 'esbuild';
+import { pathToFileURL } from 'node:url';
+import crypto from 'node:crypto';
+import { confirm } from '@inquirer/prompts';
+import { parseArguments } from './lib/engine-samples/cli-parser.mjs';
+import { interactiveSetup } from './lib/engine-samples/interactive-config.mjs';
+import { getOrCreateBundle } from './lib/engine-samples/renderer-bundler.mjs';
+import { writeVariants } from './lib/engine-samples/image-writer.mjs';
+import { buildContactSheet } from './lib/engine-samples/contact-sheet.mjs';
+import { generateHtmlGallery } from './lib/engine-samples/html-gallery.mjs';
+import { validateOptions } from './lib/engine-samples/validator.mjs';
+import { runWithConcurrency } from './lib/engine-samples/concurrency.mjs';
+import {
+  stopSpinner,
+  logInfo,
+  logSuccess,
+  logWarning,
+  logError,
+  updateProgress,
+} from './lib/engine-samples/logger.mjs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, '..', '..');
-
-const DEFAULT_ENGINES = ['midnight', 'astra', 'sakura', 'ember', 'oceanic'];
-const DEFAULT_COUNT = 6;
-const DEFAULT_WIDTH = 1600;
-const DEFAULT_HEIGHT = 900;
-const DEFAULT_QUALITY = 92;
-// Saida padrao num cache ignorado pelo git, nao no workspace de desenvolvimento:
-// o workspace e local-only, e uma ferramenta que depende dele quebra em clone limpo.
-// node_modules/.cache/ e ignorado e se autossustenta. Sobrescreva com --output=<caminho>.
-const DEFAULT_OUTPUT_ROOT = path.join(repoRoot, 'node_modules', '.cache', 'aurawall', 'cli-samples');
-
-const formatRunTimestamp = () => {
-  const now = new Date();
-  const pad = (value) => String(value).padStart(2, '0');
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+const randomSeeds = (count) => Array.from({ length: count }, () => crypto.randomInt(1, 2 ** 31));
+const timestampCompacto = () => {
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
 };
 
-const formatElapsed = (startedAt) => {
-  const totalSeconds = Math.max(0, Math.round((Date.now() - startedAt) / 1000));
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}m ${String(seconds).padStart(2, '0')}s`;
-};
-
-const parseArgs = (args) => {
-  const options = {
-    engines: [...DEFAULT_ENGINES],
-    count: DEFAULT_COUNT,
-    width: DEFAULT_WIDTH,
-    height: DEFAULT_HEIGHT,
-    formats: ['svg', 'jpg'],
-    outputRoot: DEFAULT_OUTPUT_ROOT,
-    isGrainLocked: false,
-    quality: DEFAULT_QUALITY,
-    seeds: [],
-    includePresets: false,
-  };
-
-  for (const arg of args) {
-    if (arg === '--grain-lock') {
-      options.isGrainLocked = true;
-      continue;
-    }
-    if (arg === '--include-presets') {
-      options.includePresets = true;
-      continue;
-    }
-
-    if (!arg.startsWith('--')) continue;
-    const [rawKey, rawValue = ''] = arg.slice(2).split('=');
-    const key = rawKey.trim();
-    const value = rawValue.trim();
-
-    if (key === 'engines' && value) {
-      options.engines = value.split(',').map((item) => item.trim()).filter(Boolean);
-    } else if (key === 'count' && value) {
-      const parsedCount = Number.parseInt(value, 10);
-      options.count = Number.isFinite(parsedCount) ? Math.max(0, parsedCount) : DEFAULT_COUNT;
-    } else if (key === 'width' && value) {
-      options.width = Math.max(320, Number.parseInt(value, 10) || DEFAULT_WIDTH);
-    } else if (key === 'height' && value) {
-      options.height = Math.max(320, Number.parseInt(value, 10) || DEFAULT_HEIGHT);
-    } else if (key === 'formats' && value) {
-      options.formats = value.split(',').map((item) => item.trim().toLowerCase()).filter(Boolean);
-    } else if (key === 'output' && value) {
-      options.outputRoot = path.resolve(repoRoot, value);
-    } else if (key === 'quality' && value) {
-      options.quality = Math.min(100, Math.max(40, Number.parseInt(value, 10) || DEFAULT_QUALITY));
-    } else if (key === 'seeds' && value) {
-      options.seeds = value
-        .split(',')
-        .map((item) => Number.parseInt(item.trim(), 10))
-        .filter((item) => Number.isFinite(item));
-    }
+async function verificarDependencias() {
+  try {
+    await import('sharp');
+    await import('esbuild');
+  } catch {
+    logError('Dependências ausentes. Execute: npm install');
+    process.exit(1);
   }
+}
 
-  if (options.seeds.length === 0 && options.count > 0) {
-    options.seeds = Array.from({ length: options.count }, (_, index) => 101 + index * 137);
-  } else if (options.seeds.length > 0) {
-    options.count = options.seeds.length;
-  }
+async function main() {
+  const inicioGlobal = Date.now();
+  await verificarDependencias();
 
-  return options;
-};
+  const cliOpts = parseArguments(process.argv.slice(2));
+  const temArgs = process.argv.slice(2).length > 0;
+  const usarInterativo = cliOpts.interactive || (!temArgs && !cliOpts.quick);
 
-const renderModuleSource = `
-  import React from 'react';
-  import { renderToStaticMarkup } from 'react-dom/server';
-  import WallpaperRenderer from './src/components/WallpaperRenderer.tsx';
-  import { DEFAULT_CONFIG, PRESETS } from './src/constants.ts';
-  import { engines } from './src/engines/index.ts';
+  let opcoes;
 
-  const normalizeSeed = (seed) => {
-    let value = Number.isFinite(seed) ? Math.abs(Math.floor(seed)) : 1;
-    if (value === 0) value = 1;
-    return value >>> 0;
-  };
-
-  const mulberry32 = (seed) => {
-    let a = normalizeSeed(seed);
-    return () => {
-      let t = a += 0x6D2B79F5;
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  };
-
-  const withSeed = (seed, fn) => {
-    const originalRandom = Math.random;
-    Math.random = mulberry32(seed);
-    try {
-      return fn();
-    } finally {
-      Math.random = originalRandom;
-    }
-  };
-
-  const cloneConfig = (width, height) => {
-    const base = structuredClone(DEFAULT_CONFIG);
-    base.width = width;
-    base.height = height;
-    return base;
-  };
-
-  const applyPreset = (preset, width, height) => {
-    const base = cloneConfig(width, height);
-    return {
-      ...base,
-      ...preset.config,
-      width,
-      height,
-      baseColor: preset.config.baseColor ?? base.baseColor,
-      shapes: preset.config.shapes ?? base.shapes,
-      noise: preset.config.noise ?? base.noise,
-      noiseScale: preset.config.noiseScale ?? base.noiseScale,
-      animation: {
-        ...base.animation,
-        ...(preset.config.animation || {}),
-      },
-      vignette: {
-        ...base.vignette,
-        ...(preset.config.vignette || {}),
-      },
-    };
-  };
-
-  export const availableEngines = Object.keys(engines);
-  export const presetsByEngine = PRESETS.reduce((acc, preset) => {
-    if (!acc[preset.collection]) acc[preset.collection] = [];
-    acc[preset.collection].push({
-      id: preset.id,
-      name: preset.name,
-      category: preset.category,
-    });
-    return acc;
-  }, {});
-
-  export const renderEngineSample = ({ engineId, width, height, seed, isGrainLocked }) => {
-    const engine = engines[engineId];
-    if (!engine) {
-      throw new Error('Unknown engine: ' + engineId);
-    }
-
-    const config = withSeed(seed, () => {
-      const nextConfig = engine.randomizer(cloneConfig(width, height), { isGrainLocked });
-      return {
-        ...nextConfig,
-        width,
-        height,
-      };
-    });
-
-    const shapeTypeCounts = config.shapes.reduce((acc, shape) => {
-      acc[shape.type] = (acc[shape.type] || 0) + 1;
-      return acc;
-    }, {});
-
-    const svg = renderToStaticMarkup(
-      React.createElement(WallpaperRenderer, {
-        config,
-        paused: true,
-      })
-    );
-
-    return {
-      svg,
-      meta: {
-        engineId,
-        seed,
-        baseColor: config.baseColor,
-        noise: config.noise,
-        noiseScale: config.noiseScale,
-        shapeCount: config.shapes.length,
-        shapeTypeCounts,
-      }
-    };
-  };
-
-  export const renderPresetSample = ({ presetId, width, height }) => {
-    const preset = PRESETS.find((item) => item.id === presetId);
-    if (!preset) {
-      throw new Error('Unknown preset: ' + presetId);
-    }
-
-    const config = applyPreset(preset, width, height);
-    const shapeTypeCounts = config.shapes.reduce((acc, shape) => {
-      acc[shape.type] = (acc[shape.type] || 0) + 1;
-      return acc;
-    }, {});
-
-    const svg = renderToStaticMarkup(
-      React.createElement(WallpaperRenderer, {
-        config,
-        paused: true,
-      })
-    );
-
-    return {
-      svg,
-      meta: {
-        engineId: preset.collection,
-        presetId: preset.id,
-        presetName: preset.name,
-        presetCategory: preset.category,
-        baseColor: config.baseColor,
-        noise: config.noise,
-        noiseScale: config.noiseScale,
-        shapeCount: config.shapes.length,
-        shapeTypeCounts,
-      }
-    };
-  };
-`;
-
-const ensureDir = async (targetPath) => {
-  await fs.mkdir(targetPath, { recursive: true });
-};
-
-const writeVariant = async (formats, svg, outputBasePath, quality) => {
-  const buffer = Buffer.from(svg);
-
-  if (formats.includes('svg')) {
-    await fs.writeFile(`${outputBasePath}.svg`, buffer);
-  }
-
-  if (formats.includes('jpg') || formats.includes('jpeg')) {
-    await sharp(buffer)
-      .flatten({ background: '#000000' })
-      .jpeg({ quality, mozjpeg: true })
-      .toFile(`${outputBasePath}.jpg`);
-  }
-};
-
-const buildSheet = async (engineId, jpgPaths, sheetPath) => {
-  if (jpgPaths.length === 0) return;
-
-  const meta = await Promise.all(jpgPaths.map((jpgPath) => sharp(jpgPath).metadata()));
-  const cellWidth = Math.max(...meta.map((item) => item.width || 0));
-  const cellHeight = Math.max(...meta.map((item) => item.height || 0));
-  const columns = Math.min(3, jpgPaths.length);
-  const rows = Math.ceil(jpgPaths.length / columns);
-  const padding = 28;
-  const titleHeight = 74;
-  const captionHeight = 42;
-  const sheetWidth = columns * cellWidth + (columns + 1) * padding;
-  const sheetHeight = titleHeight + rows * (cellHeight + captionHeight) + (rows + 1) * padding;
-
-  const overlays = [];
-  const background = sharp({
-    create: {
-      width: sheetWidth,
-      height: sheetHeight,
-      channels: 4,
-      background: { r: 8, g: 8, b: 12, alpha: 1 }
-    }
-  });
-
-  const escapeXml = (value) => value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;');
-
-  const titleSvg = Buffer.from(`
-    <svg width="${sheetWidth}" height="${titleHeight}" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100%" height="100%" fill="#08080c"/>
-      <text x="${padding}" y="34" fill="#f5f7fb" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">${escapeXml(engineId)}</text>
-      <text x="${padding}" y="58" fill="#a9b0bd" font-size="15" font-family="Segoe UI, Arial, sans-serif">CLI samples rendered from the current source engine and SVG renderer</text>
-    </svg>
-  `);
-
-  overlays.push({ input: titleSvg, top: 0, left: 0 });
-
-  for (let index = 0; index < jpgPaths.length; index += 1) {
-    const column = index % columns;
-    const row = Math.floor(index / columns);
-    const left = padding + column * (cellWidth + padding);
-    const top = titleHeight + padding + row * (cellHeight + captionHeight);
-    const labelTop = top + cellHeight + 10;
-    const fileName = path.basename(jpgPaths[index]);
-
-    overlays.push({ input: jpgPaths[index], top, left });
-
-    const captionSvg = Buffer.from(`
-      <svg width="${cellWidth}" height="${captionHeight}" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" fill="#08080c"/>
-        <text x="0" y="24" fill="#dce2ea" font-size="18" font-family="Segoe UI, Arial, sans-serif" font-weight="600">${escapeXml(fileName)}</text>
-      </svg>
-    `);
-    overlays.push({ input: captionSvg, top: labelTop, left });
-  }
-
-  await background.composite(overlays).jpeg({ quality: 92, mozjpeg: true }).toFile(sheetPath);
-};
-
-const bundleRenderer = async (tmpDir) => {
-  const bundlePath = path.join(tmpDir, 'engine-sample-renderer.mjs');
-
-  await build({
-    stdin: {
-      contents: renderModuleSource,
-      resolveDir: repoRoot,
-      sourcefile: 'engine-sample-renderer.tsx',
-      loader: 'tsx'
-    },
-    bundle: true,
-    format: 'esm',
-    platform: 'node',
-    outfile: bundlePath,
-    external: ['react', 'react-dom/server', 'react/jsx-runtime'],
-    logLevel: 'silent'
-  });
-
-  return bundlePath;
-};
-
-const main = async () => {
-  const startedAt = Date.now();
-  const options = parseArgs(process.argv.slice(2));
-  const runDir = path.join(options.outputRoot, formatRunTimestamp());
-  const tmpDir = path.join(runDir, '.tmp');
-
-  console.log(`[engine-samples] Starting run`);
-  console.log(`[engine-samples] Output: ${runDir}`);
-  console.log(`[engine-samples] Engines: ${options.engines.join(', ')}`);
-  console.log(`[engine-samples] Size: ${options.width}x${options.height}`);
-  console.log(`[engine-samples] Formats: ${options.formats.join(', ')}`);
-  console.log(`[engine-samples] Seeds: ${options.seeds.join(', ')}`);
-  console.log(`[engine-samples] Include presets: ${options.includePresets ? 'yes' : 'no'}`);
-
-  await ensureDir(runDir);
-  await ensureDir(tmpDir);
-
-  const bundlePath = await bundleRenderer(tmpDir);
+  // Bundle para obter engines
+  const bundlePath = await getOrCreateBundle();
   const renderModule = await import(pathToFileURL(bundlePath).href);
-  const availableEngines = new Set(renderModule.availableEngines);
-  const presetsByEngine = renderModule.presetsByEngine || {};
+  const availableEngines = renderModule.availableEngines;
+  const presetsByEngine = renderModule.presetsByEngine ?? {};
 
-  const requestedEngines = options.engines.filter((engineId) => availableEngines.has(engineId));
-  const missingEngines = options.engines.filter((engineId) => !availableEngines.has(engineId));
+  if (usarInterativo) {
+    opcoes = await interactiveSetup(availableEngines);
+    if (opcoes.random && opcoes.count > 0) {
+      opcoes.seeds = randomSeeds(opcoes.count);
+    } else if (!opcoes.random && opcoes.seeds.length === 0 && opcoes.count > 0) {
+      opcoes.seeds = Array.from({ length: opcoes.count }, (_, i) => 101 + i * 137);
+    }
+    console.log('\n📋 Resumo:');
+    console.log(`   Engines: ${opcoes.engines.join(', ')}`);
+    console.log(`   Resolução: ${opcoes.width}x${opcoes.height}`);
+    console.log(`   Amostras aleatórias: ${opcoes.count > 0 ? opcoes.count + ' por engine' : 'nenhuma'}`);
+    console.log(`   Seeds: ${opcoes.random ? 'aleatórias' : (opcoes.seeds.length ? opcoes.seeds.join(',') : 'não se aplica')}`);
+    console.log(`   Presets: ${opcoes.includePresets ? 'sim' : 'não'}`);
+    console.log(`   Formatos: ${opcoes.formats.join(', ')}`);
+    console.log(`   Qualidade: ${opcoes.quality}`);
+    console.log(`   Folhas de contato: ${opcoes.sheets ? 'sim' : 'não'}`);
+    console.log(`   Estrutura: ${opcoes.nested ? 'pastas por engine' : 'todos na mesma pasta'}`);
+    console.log(`   Concorrência: ${opcoes.concurrency} tarefas simultâneas`);
+    console.log(`   Pasta: ${opcoes.outputRoot}`);
 
-  if (requestedEngines.length === 0) {
-    throw new Error('No valid engines requested.');
+    const confirmado = await confirm({ message: 'Deseja iniciar a geração?', default: true });
+    if (!confirmado) {
+      console.log('Operação cancelada.');
+      process.exit(0);
+    }
+  } else {
+    opcoes = cliOpts;
+    const erros = validateOptions(opcoes);
+    if (erros.length > 0) {
+      logError('Erros de validação:');
+      erros.forEach(e => console.error(`  - ${e}`));
+      process.exit(1);
+    }
+    if (opcoes.random) {
+      opcoes.seeds = randomSeeds(opcoes.count);
+    } else if (opcoes.seeds.length === 0 && opcoes.count > 0) {
+      opcoes.seeds = Array.from({ length: opcoes.count }, (_, i) => 101 + i * 137);
+    }
+    if (!opcoes.yes) {
+      console.log('\n📋 Resumo:');
+      console.log(`   Engines: ${opcoes.engines.join(', ')}`);
+      console.log(`   Resolução: ${opcoes.width}x${opcoes.height}`);
+      console.log(`   Amostras aleatórias: ${opcoes.count > 0 ? opcoes.count + ' por engine' : 'nenhuma'}`);
+      console.log(`   Seeds: ${opcoes.random ? 'aleatórias' : (opcoes.seeds.length ? opcoes.seeds.join(',') : 'não se aplica')}`);
+      console.log(`   Presets: ${opcoes.includePresets ? 'sim' : 'não'}`);
+      console.log(`   Formatos: ${opcoes.formats.join(', ')}`);
+      console.log(`   Qualidade: ${opcoes.quality}`);
+      console.log(`   Folhas: ${opcoes.sheets ? 'sim' : 'não'}`);
+      console.log(`   Estrutura: ${opcoes.nested ? 'pastas por engine' : 'todos na mesma pasta'}`);
+      console.log(`   Concorrência: ${opcoes.concurrency}`);
+      console.log(`   Pasta: ${opcoes.outputRoot}`);
+
+      const confirmado = await confirm({ message: 'Deseja iniciar?', default: true });
+      if (!confirmado) {
+        console.log('Cancelado.');
+        process.exit(0);
+      }
+    }
   }
 
-  if (missingEngines.length > 0) {
-    console.log(`[engine-samples] Skipping unknown engines: ${missingEngines.join(', ')}`);
+  const enginesSolicitadas = opcoes.engines.filter(id => availableEngines.includes(id));
+  const enginesDesconhecidas = opcoes.engines.filter(id => !availableEngines.includes(id));
+  if (enginesSolicitadas.length === 0) {
+    logError('Nenhuma engine válida selecionada.');
+    process.exit(1);
+  }
+  if (enginesDesconhecidas.length) {
+    logWarning(`Engines ignoradas: ${enginesDesconhecidas.join(', ')}`);
   }
 
-  const manifest = {
+  const runTimestamp = timestampCompacto();
+  const runDir = path.join(opcoes.outputRoot, runTimestamp);
+  const tmpDir = path.join(runDir, '.tmp');
+  await fs.mkdir(runDir, { recursive: true });
+  await fs.mkdir(tmpDir, { recursive: true });
+
+  const manifesto = {
     createdAt: new Date().toISOString(),
     outputDir: runDir,
-    width: options.width,
-    height: options.height,
-    formats: options.formats,
-    quality: options.quality,
-    isGrainLocked: options.isGrainLocked,
-    requestedEngines,
-    missingEngines,
-    includePresets: options.includePresets,
-    samples: []
+    width: opcoes.width,
+    height: opcoes.height,
+    formats: opcoes.formats,
+    quality: opcoes.quality,
+    concurrency: opcoes.concurrency,
+    grainLock: opcoes.grainLock,
+    includePresets: opcoes.includePresets,
+    sheets: opcoes.sheets,
+    nested: opcoes.nested,
+    engines: enginesSolicitadas,
+    missingEngines: enginesDesconhecidas,
+    samples: [],
+    performance: {},
   };
 
-  for (const engineId of requestedEngines) {
-    const engineDir = path.join(runDir, engineId);
-    await ensureDir(engineDir);
-    const jpgPaths = [];
-    console.log(`[engine-samples] Engine ${engineId}: ${options.seeds.length} sample(s)`);
-
-    for (const seed of options.seeds) {
-      console.log(`[engine-samples] Rendering ${engineId} seed=${seed}...`);
-      const sample = renderModule.renderEngineSample({
-        engineId,
-        width: options.width,
-        height: options.height,
-        seed,
-        isGrainLocked: options.isGrainLocked
-      });
-
-      const baseName = `${engineId}-seed-${seed}`;
-      const outputBasePath = path.join(engineDir, baseName);
-      await writeVariant(options.formats, sample.svg, outputBasePath, options.quality);
-      console.log(`[engine-samples] Saved ${baseName}.${options.formats.includes('jpg') || options.formats.includes('jpeg') ? 'jpg' : 'svg'}`);
-
-      const jpgPath = `${outputBasePath}.jpg`;
-      if (options.formats.includes('jpg') || options.formats.includes('jpeg')) {
-        jpgPaths.push(jpgPath);
-      }
-
-      manifest.samples.push({
-        ...sample.meta,
-        kind: 'random',
-        files: {
-          svg: options.formats.includes('svg') ? `${outputBasePath}.svg` : null,
-          jpg: (options.formats.includes('jpg') || options.formats.includes('jpeg')) ? jpgPath : null
-        }
-      });
+  const getBasePath = (engineId, filename, subfolder = '') => {
+    if (opcoes.nested) {
+      const dir = path.join(runDir, engineId, subfolder);
+      return path.join(dir, filename);
+    } else {
+      return path.join(runDir, `${engineId}_${subfolder ? subfolder + '_' : ''}${filename}`);
     }
+  };
 
-    if (jpgPaths.length > 0) {
-      console.log(`[engine-samples] Building contact sheet for ${engineId}...`);
-      await buildSheet(engineId, jpgPaths, path.join(engineDir, `${engineId}-sheet.jpg`));
-    }
+  const ensureDir = async (dir) => { await fs.mkdir(dir, { recursive: true }); };
 
-    if (options.includePresets) {
-      const enginePresets = presetsByEngine[engineId] || [];
-      const presetDir = path.join(engineDir, 'presets');
-      const presetJpgPaths = [];
-
-      await ensureDir(presetDir);
-      console.log(`[engine-samples] Engine ${engineId}: ${enginePresets.length} preset(s)`);
-
-      for (const preset of enginePresets) {
-        console.log(`[engine-samples] Rendering preset ${engineId}/${preset.id}...`);
-        const sample = renderModule.renderPresetSample({
-          presetId: preset.id,
-          width: options.width,
-          height: options.height,
-        });
-
-        const baseName = `${engineId}-preset-${preset.id}`;
-        const outputBasePath = path.join(presetDir, baseName);
-        await writeVariant(options.formats, sample.svg, outputBasePath, options.quality);
-        console.log(`[engine-samples] Saved ${baseName}.${options.formats.includes('jpg') || options.formats.includes('jpeg') ? 'jpg' : 'svg'}`);
-
-        const jpgPath = `${outputBasePath}.jpg`;
-        if (options.formats.includes('jpg') || options.formats.includes('jpeg')) {
-          presetJpgPaths.push(jpgPath);
-        }
-
-        manifest.samples.push({
-          ...sample.meta,
-          kind: 'preset',
-          files: {
-            svg: options.formats.includes('svg') ? `${outputBasePath}.svg` : null,
-            jpg: (options.formats.includes('jpg') || options.formats.includes('jpeg')) ? jpgPath : null
-          }
-        });
+  // Monta lista de tarefas
+  const randomTasks = [];
+  const presetTasks = [];
+  if (opcoes.count > 0 && opcoes.seeds.length > 0) {
+    for (const engineId of enginesSolicitadas) {
+      for (const seed of opcoes.seeds) {
+        randomTasks.push({ engineId, seed, type: 'random' });
       }
-
-      if (presetJpgPaths.length > 0) {
-        console.log(`[engine-samples] Building preset sheet for ${engineId}...`);
-        await buildSheet(`${engineId} presets`, presetJpgPaths, path.join(presetDir, `${engineId}-presets-sheet.jpg`));
+    }
+  }
+  if (opcoes.includePresets) {
+    for (const engineId of enginesSolicitadas) {
+      const presets = presetsByEngine[engineId] || [];
+      for (const preset of presets) {
+        presetTasks.push({ engineId, presetId: preset.id, presetName: preset.name, category: preset.category, type: 'preset' });
       }
     }
   }
 
-  await fs.writeFile(path.join(runDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
+  const totalTasks = randomTasks.length + presetTasks.length;
+
+  // Aviso de alto volume
+  const ALTO_VOLUME_THRESHOLD = 20;
+  const ALTA_RESOLUCAO_THRESHOLD = 1920 * 1080;
+  const pixels = opcoes.width * opcoes.height;
+  if (totalTasks > ALTO_VOLUME_THRESHOLD && pixels > ALTA_RESOLUCAO_THRESHOLD) {
+    logWarning(`Você solicitou ${totalTasks} tarefas em resolução ${opcoes.width}x${opcoes.height}. Isso pode levar bastante tempo.`);
+    logWarning(`Considere usar --quick ou reduzir a quantidade de amostras/resolução.`);
+    if (!opcoes.yes && !usarInterativo) {
+      const prosseguir = await confirm({ message: 'Deseja continuar mesmo assim?', default: false });
+      if (!prosseguir) {
+        console.log('Cancelado.');
+        process.exit(0);
+      }
+    }
+  }
+
+  const temposTarefas = [];
+  const falhas = [];
+  const logsDetalhados = [];
+  let totalSegundos = 0; // <-- CORREÇÃO: declarada aqui para escopo global
+
+  if (totalTasks > 0) {
+    const tasksStartTime = Date.now();
+    let completed = 0;
+    updateProgress(0, totalTasks, 'Renderizando', tasksStartTime, '');
+
+    const taskFunctions = [];
+
+    for (const task of randomTasks) {
+      taskFunctions.push(async () => {
+        const { engineId, seed } = task;
+        const inicio = Date.now();
+        try {
+          const sample = renderModule.renderEngineSample({
+            engineId,
+            width: opcoes.width,
+            height: opcoes.height,
+            seed,
+            isGrainLocked: opcoes.grainLock,
+          });
+          const baseName = `${engineId}-seed-${seed}_${runTimestamp}`;
+          const basePath = getBasePath(engineId, baseName);
+          await ensureDir(path.dirname(basePath));
+          await writeVariants(opcoes.formats, sample.svg, basePath, opcoes.quality);
+
+          const jpgPath = (opcoes.formats.includes('jpg') || opcoes.formats.includes('jpeg')) ? `${basePath}.jpg` : null;
+          const entry = {
+            ...sample.meta,
+            type: 'random',
+            files: {
+              svg: opcoes.formats.includes('svg') ? `${basePath}.svg` : null,
+              jpg: jpgPath,
+            },
+          };
+          manifesto.samples.push(entry);
+          const duracao = Date.now() - inicio;
+          temposTarefas.push(duracao);
+          if (opcoes.verbose) logsDetalhados.push(`Seed ${seed} (${engineId}) → ${jpgPath || basePath + '.svg'} (${duracao}ms)`);
+          return { engineId, seed, jpgPath, entry, duracao };
+        } catch (err) {
+          falhas.push(`Seed ${seed} (${engineId}): ${err.message}`);
+          temposTarefas.push(0);
+          return { engineId, seed, error: err.message };
+        }
+      });
+    }
+
+    for (const task of presetTasks) {
+      taskFunctions.push(async () => {
+        const { engineId, presetId, presetName } = task;
+        const inicio = Date.now();
+        try {
+          const sample = renderModule.renderPresetSample({
+            presetId,
+            width: opcoes.width,
+            height: opcoes.height,
+          });
+          const baseName = `${engineId}-preset-${presetId}_${runTimestamp}`;
+          const basePath = getBasePath(engineId, baseName, 'presets');
+          await ensureDir(path.dirname(basePath));
+          await writeVariants(opcoes.formats, sample.svg, basePath, opcoes.quality);
+
+          const jpgPath = (opcoes.formats.includes('jpg') || opcoes.formats.includes('jpeg')) ? `${basePath}.jpg` : null;
+          const entry = {
+            ...sample.meta,
+            type: 'preset',
+            files: {
+              svg: opcoes.formats.includes('svg') ? `${basePath}.svg` : null,
+              jpg: jpgPath,
+            },
+          };
+          manifesto.samples.push(entry);
+          const duracao = Date.now() - inicio;
+          temposTarefas.push(duracao);
+          if (opcoes.verbose) logsDetalhados.push(`Preset ${presetName} (${engineId}) → ${jpgPath || basePath + '.svg'} (${duracao}ms)`);
+          return { engineId, presetId, jpgPath, entry, duracao };
+        } catch (err) {
+          falhas.push(`Preset ${presetId} (${engineId}): ${err.message}`);
+          temposTarefas.push(0);
+          return { engineId, presetId, error: err.message };
+        }
+      });
+    }
+
+    const wrappedTasks = taskFunctions.map((taskFn) => async () => {
+      const result = await taskFn();
+      completed++;
+      let status = '';
+      if (result.error) {
+        status = `${result.engineId || '?'} : erro`;
+      } else if (result.seed !== undefined) {
+        status = `${result.engineId} seed ${result.seed}`;
+      } else if (result.presetId) {
+        const presetName = result.entry?.meta?.presetName || result.presetId;
+        status = `${result.engineId} preset ${presetName}`;
+      }
+      updateProgress(completed, totalTasks, 'Renderizando', tasksStartTime, status);
+      return result;
+    });
+
+    stopSpinner();
+
+    const results = await runWithConcurrency(wrappedTasks, opcoes.concurrency);
+
+    updateProgress(totalTasks, totalTasks, 'Concluído', tasksStartTime, '');
+    console.log('');
+
+    if (opcoes.verbose && logsDetalhados.length > 0) {
+      console.log('\n📝 Detalhes da renderização:');
+      logsDetalhados.forEach(msg => console.log(`   ${msg}`));
+    }
+
+    if (opcoes.sheets) {
+      const jpgByEngine = {};
+      for (const res of results) {
+        if (res.error) continue;
+        if (res.jpgPath && (opcoes.formats.includes('jpg') || opcoes.formats.includes('jpeg'))) {
+          const eng = res.entry?.meta?.engineId || res.engineId;
+          if (!jpgByEngine[eng]) jpgByEngine[eng] = [];
+          jpgByEngine[eng].push(res.jpgPath);
+        }
+      }
+      for (const [engineId, jpgs] of Object.entries(jpgByEngine)) {
+        if (jpgs.length > 0) {
+          const sheetFileName = `${engineId}-sheet_${runTimestamp}.jpg`;
+          const sheetPath = getBasePath(engineId, sheetFileName);
+          await ensureDir(path.dirname(sheetPath));
+          await buildContactSheet(engineId, jpgs, sheetPath);
+        }
+      }
+    }
+
+    // Relatório de performance
+    const temposValidos = temposTarefas.filter(t => t > 0);
+    if (temposValidos.length > 0) {
+      const media = Math.round(temposValidos.reduce((a, b) => a + b, 0) / temposValidos.length);
+      const max = Math.max(...temposValidos);
+      const min = Math.min(...temposValidos);
+      totalSegundos = Math.round((Date.now() - tasksStartTime) / 1000);
+      const totalMin = Math.floor(totalSegundos / 60);
+      const totalSec = totalSegundos % 60;
+
+      console.log('\n📊 Relatório de performance:');
+      console.log(`   Tarefas concluídas: ${temposValidos.length}/${totalTasks}${falhas.length > 0 ? ` (${falhas.length} falhas)` : ''}`);
+      console.log(`   Tempo total: ${totalMin}m ${totalSec}s`);
+      console.log(`   Tempo médio por tarefa: ${(media / 1000).toFixed(1)}s`);
+      console.log(`   Mais rápido: ${(min / 1000).toFixed(1)}s`);
+      console.log(`   Mais lento: ${(max / 1000).toFixed(1)}s`);
+    }
+
+    // Atualiza manifesto com a variável totalSegundos já definida
+    manifesto.performance = {
+      totalTasks,
+      completed: temposValidos.length,
+      failed: falhas.length,
+      avgMs: temposValidos.length > 0 ? Math.round(temposValidos.reduce((a, b) => a + b, 0) / temposValidos.length) : 0,
+      maxMs: temposValidos.length > 0 ? Math.max(...temposValidos) : 0,
+      minMs: temposValidos.length > 0 ? Math.min(...temposValidos) : 0,
+      totalSec: totalSegundos,
+    };
+
+  } else {
+    logInfo('Nenhuma tarefa para executar.');
+    manifesto.performance = {
+      totalTasks: 0,
+      completed: 0,
+      failed: 0,
+      avgMs: 0,
+      maxMs: 0,
+      minMs: 0,
+      totalSec: 0,
+    };
+  }
+
+  await fs.writeFile(path.join(runDir, 'manifesto.json'), JSON.stringify(manifesto, null, 2));
+  if (opcoes.verbose) console.log(`Manifesto salvo em ${path.join(runDir, 'manifesto.json')}`);
+
+  try {
+    await generateHtmlGallery(runDir, manifesto.samples, opcoes);
+  } catch (err) {
+    logWarning('Não foi possível gerar a galeria HTML: ' + err.message);
+  }
+
   await fs.rm(tmpDir, { recursive: true, force: true });
 
-  console.log(`[engine-samples] Completed in ${formatElapsed(startedAt)}`);
-  console.log(JSON.stringify({
-    outputDir: runDir,
-    requestedEngines,
-    missingEngines,
-    seeds: options.seeds,
-    formats: options.formats
-  }, null, 2));
-};
+  process.on('SIGINT', async () => {
+    console.log('\nOperação interrompida. Limpando temporários...');
+    await fs.rm(tmpDir, { recursive: true, force: true });
+    process.exit(1);
+  });
 
-main().catch((error) => {
-  console.error(error);
+  const tempoTotal = Math.round((Date.now() - inicioGlobal) / 1000);
+  const mins = Math.floor(tempoTotal / 60);
+  const segs = tempoTotal % 60;
+  logSuccess(`Geração concluída em ${mins}m ${segs}s.`);
+  console.log(`📁 Arquivos em: ${runDir}`);
+}
+
+main().catch(err => {
+  console.error('Erro fatal:', err);
   process.exitCode = 1;
 });

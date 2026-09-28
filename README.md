@@ -68,8 +68,34 @@ npm run generate:promo-assets
 The repo includes a CLI renderer for sampling engines without opening the UI:
 
 ```bash
+# interactive: pick engines, resolution, formats, count
+npm run generate:engine-samples
+
+# scripted
 npm run generate:engine-samples -- --engines=midnight,glitch,sakura --count=2 --width=2560 --height=1440 --formats=jpg
 ```
+
+| Option | What it does |
+|---|---|
+| `--help` | Full list of options |
+| `--engines=<list>` | Engines to render. Unknown names are reported and skipped |
+| `--count=<n>` | Samples per engine |
+| `--random` | Random seeds instead of the fixed sequence |
+| `--seeds=<s1,s2>` | Explicit seeds |
+| `--include-presets` | Also render the curated presets |
+| `--formats=<svg,jpg>` | Output formats |
+| `--width=` / `--height=` | Output size (minimum 320) |
+| `--quality=<40-100>` | JPEG quality |
+| `--output=<dir>` | Output directory |
+| `--sheets` / `--no-sheets` | Contact sheet per engine (on by default) |
+| `--nested` / `--flat` | Subfolder per engine, or all in one folder |
+| `--concurrency=<1-10>` | Simultaneous renders (default 4) |
+| `--quick` | Short preset: 3 samples, 1920x1080, JPEG 90, no sheets |
+| `-y`, `--verbose` | Skip confirmation / detailed log |
+
+Each run writes a `manifest.json` with the metadata of every sample, an `index.html` gallery,
+and a contact sheet per engine. A single failing engine or seed is recorded in the manifest
+and does not abort the rest of the run.
 
 This uses the real engine definitions and the real `WallpaperRenderer`, and writes outputs to `node_modules/.cache/aurawall/cli-samples/` (override with `--output=<dir>`). That directory is a regenerable, git-ignored build artifact — nothing you need to keep.
 
