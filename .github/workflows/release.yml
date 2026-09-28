@@ -1,0 +1,45 @@
+# GitHub Release e criada apenas quando uma tag de versao e empurrada
+# (ex.: git tag -a v1.0.0 -m "AuraWall v1.0.0" && git push origin v1.0.0).
+# Pushes em main continuam publicando o site (deploy.yml) e nao criam release.
+#
+# Este arquivo e so o caller: dispara, declara a matrix e chama o release-core.
+# Toolchain, arte, notas, secoes e as fontes de versao vivem em
+# .github/release.config.json.
+#
+# O workflow_dispatch existe para operacao controlada — reexecutar um run que falhou, ou
+# corrigir a arte de uma tag ja publicada. Ele NAO e um segundo mecanismo de versionamento:
+# o release-core rejeita qualquer tag que nao exista (git rev-parse refs/tags/<tag>), entao o
+# dispatch so pode reprocessar uma tag que ja foi criada.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing version tag to release (e.g. v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  # Event-aware de proposito: em `workflow_dispatch` o `github.ref` e a branch padrao, entao um
+  # grupo so com `github.ref` faz todas as execucoes manuais colidirem entre si.
+  group: "release-${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}"
+  # Release nao e job descartavel: um run cancelado no meio deixa a tag nomeada sem release.
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # O GITHUB_TOKEN do caller so pode ser rebaixado, nunca elevado. O Core declara
+    # contents: write como teto; o caller precisa ter o mesmo, ou o rebaixamento falha.
+    permissions:
+      contents: write
+    uses: mafhper/release-core/.github/workflows/release.yml@v1.2.5
+    with:
+      matrix: '[{"os":"ubuntu-latest"}]'
+      tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
