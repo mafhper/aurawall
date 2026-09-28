@@ -26,7 +26,7 @@
       "npm run type-check",
       "npm test"
     ],
-    "command": "npm run build && npm run test:perf"
+    "command": "npm run build:dist && npm run test:perf"
   },
   "versions": {
     "files": []
