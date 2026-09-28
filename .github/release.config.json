@@ -20,7 +20,7 @@
   },
   "build": {
     "package_manager": "npm",
-    "node": "22.22.1",
+    "node": "22",
     "gates": [
       "npm run lint",
       "npm run type-check",
