@@ -107,56 +107,63 @@ Both are covered by `scripts/test/organize-dist.test.cjs`, which runs against a 
 `scripts/welcome.js` (wired as `predev`):
 
 ```
-────────────────────────────────────────────────────────────────────────────────
- AURAWALL  v1.0.0
- Vector-first wallpaper generator. Static editor and promo site, no backend.
+  AURAWALL  v1.0.0  development
+  Vector-first wallpaper generator. Static editor and promo site, no backend.
 
- ──────────────────────────────────────────────────────────────────────────────
+  GIT    main · 4ff6020 · clean
 
- STACK   React · TypeScript · Vite
- REPO    github.com/mafhper/aurawall
- LIVE    mafhper.github.io/aurawall
-────────────────────────────────────────────────────────────────────────────────
+  STACK  React · TypeScript · Vite
+  ENV    npm 11 · node 24.19.0 · win32
+
+  REPO   github.com/mafhper/aurawall
+  LIVE   mafhper.github.io/aurawall
 ```
 
-It answers *"what is this project, and where do I find the code"*, and deliberately stops
-there. Three things it does **not** do, each of which was a mistake in the first version:
+It answers *"which project, which state, which environment"* — everything you want
+to know **before** a server comes up, and that Vite does not tell you. `name`,
+`version` and `description` come from `package.json`; `stack` and `mode` are declared
+at the top of the script, because inferring them from `node_modules` produces an
+implementation inventory rather than a useful line.
 
-- **No surface URLs.** Vite prints `→ Local: http://localhost:3000/` and `:5173/`
-  seconds later. The first version printed them too, and on screen each URL appeared
-  **twice within fifteen lines**.
+**A static header has a ceiling, and it is worth being explicit about it.** It runs
+once, before `concurrently`. It has no service state, no uptime, no HMR tracking. The
+"Developer Runtime UI" the fleet document describes is a **live** process — that is a
+different tool, not a better-styled banner. What this header can do is be short, true,
+and useful; what it cannot do is become a dashboard.
+
+What it deliberately does **not** do, each of which was a real mistake first:
+
+- **No surface URLs.** Vite prints `→ Local:` for each one seconds later. The first
+  version printed them too, and on screen each URL appeared **twice within fifteen lines**.
 - **No decorative tags.** There was a `[web] [docs]` version, carried over from a web
   convention. In a terminal there is nothing to click and nothing explains them.
 - **No duplication of the Vite or `concurrently` log.** "What is happening now" belongs
-  to them; this header is the fixed part.
+  to them.
 
-The visual grammar is deliberate, and each part has one job:
+The visual grammar, and the job of each part:
 
 | Element | Treatment | Why |
 |---|---|---|
-| `AURAWALL` | bold cyan, uppercase | identity — the one thing that should draw the eye |
+| `AURAWALL` | bold cyan, uppercase | identity — the only line that should compete for attention |
 | `v1.0.0` | dim | secondary |
-| description | bright white | read first after the name |
-| `STACK` / `REPO` / `LIVE` | dim gray, uppercase | **interface**, not data |
+| description | dim | context, so it must not compete with the name |
+| `GIT` / `STACK` / `ENV` / `REPO` / `LIVE` | dim gray, uppercase | **interface**, not data |
 | their values | bright white | **data** |
-| rules | dim, one internal | separates identity from metadata instead of walling text off |
+| `clean` / `N uncommitted` | green / yellow | a dirty tree is attention, not neutral information |
 
-The color contrast between label and value is the load-bearing part: without it, `REPO` and
-the URL next to it carry the same weight, and the block stops being scannable.
-
-`name`, `version` and `description` come from `package.json`; `fields` are declared at the
-top of the script, because inferring them from `node_modules` produces an implementation
-inventory instead of a useful line.
+There are **no horizontal rules**. An earlier version had a rule at the top and bottom,
+which walled text off without organising it; groups are separated by blank space instead.
+A rule separates, a panel gives shape.
 
 Two properties are load-bearing and covered by `scripts/test/welcome.test.cjs`:
 
 - **Without a TTY it produces zero bytes** — on `stdout` and on `stderr` — and exits 0.
   CI runs `npm run build`, which does not trigger `predev`.
-- **The TTY guard runs before anything is read**, including `package.json`. The
-  property is "no output", not "output prepared and discarded".
+- **The TTY guard runs before anything is collected**, including `package.json` and
+  `git`. The property is "no output", not "output prepared and discarded".
 
-The suite also pins the three things it must **stop** doing — showing surface URLs,
-showing tags, and repeating `Local:` / `Network:` — because each was a real regression.
+Collection is entirely best-effort: a missing `git` or an unreadable `package.json`
+omits a field and never throws, because a header must not be able to block `dev`.
 
 ### Visual Tooling
 
