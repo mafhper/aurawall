@@ -1,6 +1,6 @@
 {
         "name": "aurawall",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "description": "Vector-first wallpaper generator. Static editor and promo site, no backend.",
         "private": true,
     "type": "module",

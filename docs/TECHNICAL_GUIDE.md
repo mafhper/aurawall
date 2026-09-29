@@ -107,7 +107,7 @@ Both are covered by `scripts/test/organize-dist.test.cjs`, which runs against a 
 `scripts/welcome.js` (wired as `predev`):
 
 ```
-  AURAWALL  v1.0.0  development
+  AURAWALL  v1.1.0  development
   Vector-first wallpaper generator. Static editor and promo site, no backend.
 
   GIT    main · 4ff6020 · clean
