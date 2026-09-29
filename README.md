@@ -54,7 +54,7 @@ npm run dev
 ```
 
 Starts the editor on **:3000** and the promo site on **:5173**, and prints a short
-identity header first — the two surfaces, the stack, and where the project lives.
+identity header first — what the project is, its stack, and where the code lives.
 
 ### Main Scripts
 

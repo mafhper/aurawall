@@ -1,97 +1,96 @@
 /**
  * Cabeçalho de identidade do `npm run dev`.
  *
- * ## O que este script responde — e o que não responde
+ * ## O que este script responde
  *
- * Responde **"o que é este projeto e onde estão as suas superfícies"**. Não responde
- * "o que está acontecendo agora" — isso é do Vite e do `concurrently`, e repetir a saída
- * deles aqui seria duplicar log, não informar.
+ * *"Que projeto é este, e onde eu acho o código."* E só.
  *
- * ## Por que é específico deste projeto
+ * ## O que ele NÃO faz, e por quê
  *
- * Aqui existem **duas frentes** de desenvolvimento: o editor e o site promo. Um cabeçalho
- * genérico, gerado a partir de dependências, não saberia disso — e varrer o `node_modules`
- * produziria uma lista de implementação em vez de uma linha útil.
+ * **Não mostra as URLs das superfícies.** O Vite imprime `→ Local: http://localhost:3000/`
+ * e `http://localhost:5173/` alguns segundos depois. A primeira versão deste cabeçalho
+ * mostrava as duas, e na tela elas apareciam **duas vezes em quinze linhas**. Isso
+ * contrariava a regra que o próprio cabeçalho.following: não repetir o que os programas
+ * que ele inicia vão dizer.
  *
- * ## Guardrails (da crítica à AWR20, ver `.dev/docs/critica-AWR20.md`)
+ * **Não mostra etiquetas decorativas.** Houve uma versão com `[web] [docs]`, copiada de
+ * uma convenção web. Num terminal não há link, não há clique, e nada as explica — eram
+ * três caracteres ocupando largura sem transmitir nada.
  *
- * - **A guarda de TTY vem antes de qualquer leitura**, inclusive do `package.json`. A
- *   propriedade precisa ser "sem TTY → nenhum output", não "saída preparada e descartada".
- * - **`stderr` não é saída alternativa.** Se `stdout` não tem TTY, o script não imprime nada.
- * - **Sem `console.clear()`.** Este projeto convive com terminal integrado, split terminal,
- *   IDE e log de CI. O cabeçalho entra no fluxo; não apaga o que veio antes.
- * - **A largura conta coluna visível, não `String.length`.** Com ANSI no meio, `.length`
- *   erraria o padding — e o erro apareceria na tela, não no teste.
- * - **Stack, tags e links são declarados**, não inferidos. Só `name`, `version` e `description`
- *   vêm do `package.json`, porque a fonte deles é inequívoca.
+ * **Não repete o log do Vite e do `concurrently`.** "O que está acontecendo agora" é
+ * deles. Este cabeçalho é o cenário fixo: identidade e para onde ir.
+ *
+ * ## Guardrails (de `.dev/docs/critica-AWR20.md`)
+ *
+ * - **A guarda de TTY vem antes de qualquer leitura**, inclusive do `package.json`: a
+ *   propriedade é "sem TTY → nenhum output", não "saída preparada e descartada".
+ * - **`stderr` não é saída alternativa.**
+ * - **Sem `console.clear()`** — convive com terminal integrado, split e IDE.
+ * - **A largura conta coluna visível, não `String.length`** — com ANSI no meio, `.length`
+ *   contaria os bytes do escape e o alinhamento sairia errado **na tela**, não no teste.
  */
 
 // ── Configuração local ─────────────────────────────────────────────────────
-// Declarado aqui, não deduzido. Um detector universal de stack é o antipadrão que
-// a investigação da frota encontrou; cada projeto conhece a sua arquitetura melhor
-// do que qualquer heurística.
+// Declarado, não deduzido. Varrer `node_modules` produz inventário de implementação
+// em vez de linha útil.
 
 import { pathToFileURL } from 'node:url';
 
 const HEADER = {
-  tags: ['web', 'docs'],
-  stack: ['React', 'TypeScript', 'Vite'],
-  surfaces: [
-    { name: 'app', label: 'editor', url: 'http://localhost:3000' },
-    { name: 'promo', label: 'site', url: 'http://localhost:5173' },
-  ],
-  links: [
-    { label: 'repo', url: 'https://github.com/mafhper/aurawall' },
-    { label: 'demo', url: 'https://mafhper.github.io/aurawall' },
+  // Lista de rótulo/valor. Tudo na mesma forma, na mesma coluna, pela mesma
+  // regra de cor — é isso que faz o olho ler "rótulo" e "dado" sem precisar ler.
+  fields: [
+    { label: 'STACK', value: 'React · TypeScript · Vite' },
+    { label: 'REPO', value: 'github.com/mafhper/aurawall' },
+    { label: 'LIVE', value: 'mafhper.github.io/aurawall' },
   ],
   width: 80,
+  labelWidth: 7,
 };
 
-// ── Cores ──────────────────────────────────────────────────────────────────
+// ── Cor ─────────────────────────────────────────────────────────────────────
+// Cada cor tem um trabalho. A mais importante é a que separa rótulo de valor:
+// cinza-escuro é interface, cor é dado. Sem isso, `REPO` e a URL nele pesam igual.
 
 const A = {
   reset: '\x1b[0m',
   bold: '\x1b[1m',
   dim: '\x1b[2m',
-  cyan: '\x1b[36m',
+  label: '\x1b[90m',   // cinza: rótulo de interface
+  name: '\x1b[36m',    // ciano: identidade do projeto
+  value: '\x1b[37m',   // branco brilhante: dado
+  rule: '\x1b[90m',    // régua
 };
 
-// Remove os códigos ANSI de uma string, para medir a largura que a pessoa vê.
 const ANSI_RE = /\x1b\[[0-9;]*m/g;
+
+function stripAnsi(text) {
+  return text.replace(ANSI_RE, '');
+}
 
 /** Largura visível: o que ocupa coluna no terminal, depois de remover o ANSI. */
 function visibleWidth(text) {
   return stripAnsi(text).length;
 }
 
-function stripAnsi(text) {
-  return text.replace(ANSI_RE, '');
-}
-
-/** Corta por largura visível, preservando a sequência ANSI de abertura. */
 function truncate(text, max) {
   if (visibleWidth(text) <= max) return text;
   const open = text.match(/^(\x1b\[[0-9;]*m)*/)[0];
   const body = stripAnsi(text);
-  const room = Math.max(0, max - 1);
-  return open + body.slice(0, room) + '…';
+  return open + body.slice(0, Math.max(0, max - 1)) + '…';
 }
 
 const padTo = (text, width) => text + ' '.repeat(Math.max(0, width - visibleWidth(text)));
 
 // ── Guarda de TTY: antes de tudo ───────────────────────────────────────────
 
-/**
- * `stdout` sem TTY significa que ninguém está olhando: CI, pipe, redirecionamento.
- * Aí este script não produz **nenhum** byte. E `stderr` não é saída alternativa —
- * isso imprimiria em CI só escapando do teste de stdout.
- */
+/** Sem TTY significa que ninguém está olhando: CI, pipe, redirecionamento. */
 function hasTty() {
   return process.stdout.isTTY === true;
 }
 
-// ── Leitura do package.json ────────────────────────────────────────────────
-// Só é chamado depois da guarda passar, então em CI nem o arquivo é lido.
+// ── Leitura ────────────────────────────────────────────────────────────────
+// Só depois da guarda passar, então em CI nem o arquivo é aberto.
 
 async function readIdentity() {
   const { readFile } = await import('node:fs/promises');
@@ -101,7 +100,6 @@ async function readIdentity() {
   const here = path.dirname(fileURLToPath(import.meta.url));
   const raw = await readFile(path.join(here, '..', 'package.json'), 'utf-8');
   const pkg = JSON.parse(raw);
-
   return { name: pkg.name, version: pkg.version, description: pkg.description };
 }
 
@@ -109,41 +107,34 @@ async function readIdentity() {
 
 function render({ name, version, description }) {
   const W = HEADER.width;
-  const rule = (ch) => ch.repeat(W);
+  const L = HEADER.labelWidth;
+  const rule = `${A.rule}${'─'.repeat(W)}${A.reset}`;
   const out = [];
 
-  out.push(`${A.dim}${rule('─')}${A.reset}`);
+  // Identidade: nome em destaque, versão como dado secundário.
+  out.push(rule);
+  out.push(` ${A.bold}${A.name}${name.toUpperCase()}${A.reset}  ${A.dim}v${version}${A.reset}`);
+  if (description) out.push(` ${A.value}${truncate(description, W - 1)}${A.reset}`);
 
-  const tags = HEADER.tags.map((t) => `${A.cyan}[${t}]${A.reset}`).join(' ');
-  const title = `${A.bold}${name}${A.reset} ${A.dim}v${version}${A.reset}`;
-  out.push(` ${title}  ${tags}`);
-
-  if (description) {
-    out.push(` ${truncate(description, W - 1)}`);
-  }
-
-  out.push(` ${A.dim}${HEADER.stack.join(' · ')}${A.reset}`);
+  // Régua interna: separa o bloco de identidade do bloco de metadados. Sem ela,
+  // os dois se leem como um muro de texto.
+  out.push('');
+  out.push(` ${A.rule}${'─'.repeat(W - 2)}${A.reset}`);
   out.push('');
 
-  out.push(` ${A.dim}DEV${A.reset}`);
-  for (const s of HEADER.surfaces) {
-    out.push(` ${padTo(s.name, 6)} ${A.dim}${s.label.padEnd(7)}${A.reset} ${truncate(s.url, W - 14)}`);
-  }
-  out.push('');
-
-  for (const l of HEADER.links) {
-    out.push(` ${A.dim}${l.label.padEnd(5)}${A.reset} ${truncate(l.url, W - 6)}`);
+  // Metadados: rótulo em cinza caixa alta, valor em branco. A diferença de cor é
+  // o que faz o olho ler "rótulo" e "dado" sem precisar ler.
+  for (const f of HEADER.fields) {
+    out.push(` ${A.label}${padTo(f.label, L)}${A.reset} ${A.value}${truncate(f.value, W - L - 1)}${A.reset}`);
   }
 
-  out.push(`${A.dim}${rule('─')}${A.reset}`);
+  out.push(rule);
   return out.join('\n');
 }
 
 // ── Entrada ────────────────────────────────────────────────────────────────
 
 async function main() {
-  // Primeira decisão do processo. Antes de importar o fs, antes de ler o
-  // package.json, antes de formatar qualquer coisa.
   if (!hasTty()) {
     process.exit(0);
   }
@@ -152,17 +143,14 @@ async function main() {
   try {
     identity = await readIdentity();
   } catch {
-    // Um cabeçalho é conveniência, nunca pré-requisito: se o package.json não
-    // estiver legível, o dev server sobe igual.
+    // Cabeçalho é conveniência, nunca pré-requisito: se o package.json não estiver
+    // legível, o dev server sobe igual.
     identity = { name: 'aurawall', version: '?', description: null };
   }
 
   process.stdout.write(render(identity) + '\n');
 }
 
-// `import.meta.main` não existe no Node 24 de forma estável, e comparar
-// `import.meta.url` com uma string montada à mão quebra no Windows — o
-// pathToFileURL normaliza os dois lados.
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main();
 }

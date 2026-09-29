@@ -104,39 +104,24 @@ test('o que já cabe não é cortado', async () => {
 
 test('o padding é calculado com a largura visível', async () => {
   const mod = await m();
-  // Se o padding usasse String.length, um rótulo com ANSI desalinharia a coluna.
-  const out = mod.stripAnsi(mod.render(identidade));
-  const linhas = out.split('\n');
-  const dev = linhas.find((l) => /app\s+editor/.test(l));
-  const promo = linhas.find((l) => /promo\s+site/.test(l));
-  assert.equal(dev.indexOf('http'), promo.indexOf('http'), 'as URLs alinham entre si');
+  // Se o padding usasse String.length, um rótulo com ANSI desalinharia a coluna
+  // de valores. Este é o teste do erro que só apareceria na tela.
+  const sem = mod.render(identidade).split('\n').map((l) => mod.stripAnsi(l));
+  const cols = sem
+    .filter((l) => mod.HEADER.fields.some((f) => l.includes(f.label)))
+    .map((l) => l.indexOf(mod.HEADER.fields.find((f) => l.includes(f.label)).value));
+  assert.ok(cols.every((c) => c === cols[0]), `colunas de valor desalinhadas: ${cols.join(', ')}`);
 });
 
 // ── O conteúdo: o que o cabeçalho promete ─────────────────────────────────
 
-test('o cabeçalho declara as duas superfícies deste projeto', async () => {
+test('NÃO mostra as URLs das superfícies — o Vite já imprime', async () => {
+  // A primeira versão mostrava as duas, e na tela elas apareciam duas vezes em
+  // quinze linhas. O Vite imprime `→ Local: http://localhost:3000/` logo abaixo.
   const mod = await m();
   const out = mod.stripAnsi(mod.render(identidade));
-  assert.match(out, /app\s+editor\s+http:\/\/localhost:3000/);
-  assert.match(out, /promo\s+site\s+http:\/\/localhost:5173/);
-});
-
-test('identidade vem do package.json — inclusive a descrição', async () => {
-  const pkg = JSON.parse(fs.readFileSync(path.join(repo, 'package.json'), 'utf-8'));
-  assert.ok(pkg.description, 'o cabeçalho mostra descrição, então ela tem que existir');
-  const mod = await m();
-  const out = mod.stripAnsi(mod.render(identidade));
-  assert.ok(out.includes(pkg.name), 'nome');
-  assert.ok(out.includes('v' + pkg.version), 'versão');
-  assert.ok(out.includes(identidade.description), 'descrição');
-});
-
-test('a stack é declarada, não inferida do node_modules', async () => {
-  const mod = await m();
-  const out = mod.stripAnsi(mod.render(identidade));
-  assert.match(out, /React · TypeScript · Vite/);
-  // o antipadrão que a investigação da frota encontrou: despejar dependências
-  assert.ok(!/sharp|eslint|postcss/i.test(out), 'não deve listar dependências de implementação');
+  assert.ok(!/localhost/.test(out), 'nenhuma URL de superfície: o Vite já mostra');
+  assert.ok(!/5173|3000/.test(out), 'nenhuma porta: o Vite já mostra');
 });
 
 test('não repete o que o Vite e o concurrently vão dizer', async () => {
@@ -144,6 +129,72 @@ test('não repete o que o Vite e o concurrently vão dizer', async () => {
   const out = mod.stripAnsi(mod.render(identidade));
   assert.ok(!/starting vite/i.test(out), '"o que está acontecendo agora" é do Vite');
   assert.ok(!/watching for file changes/i.test(out), 'nem o log de watch');
+  assert.ok(!/local:|network:/i.test(out), 'nem as linhas de Local/Network');
+});
+
+test('não tem etiquetas decorativas', async () => {
+  // Houve uma versão com `[web] [docs]`, copiada de uma convenção web. Num terminal
+  // não há link, não há clique, e nada as explica.
+  const mod = await m();
+  const out = mod.stripAnsi(mod.render(identidade));
+  assert.ok(!/\[(web|docs|cli|library)\]/i.test(out), 'etiqueta entre colchetes não diz nada aqui');
+});
+
+test('rótulos em caixa alta, valores não', async () => {
+  // Interface que se confunde com dado é o que torna um cabeçalho ilegível.
+  const mod = await m();
+  const out = mod.stripAnsi(mod.render(identidade));
+  for (const f of mod.HEADER.fields) {
+    assert.equal(f.label, f.label.toUpperCase(), `rótulo ${f.label} deveria estar em caixa alta`);
+  }
+  const linha = out.split('\n').find((l) => /REPO/.test(l));
+  assert.match(linha, /REPO\s+github\.com/, 'rótulo alto, valor em minúsculas preservado');
+});
+
+test('interface e dado são visualmente distintos, e a coluna de valores alinha', async () => {
+  const mod = await m();
+  const comAnsi = mod.render(identidade).split('\n');
+  const sem = comAnsi.map((l) => mod.stripAnsi(l));
+
+  // Coluna de valor: a posição do PRÓPRIO valor de cada campo, não "a primeira
+  // letra minúscula" — que em "React" seria o 'e', uma coluna à direita.
+  const cols = [];
+  for (const f of mod.HEADER.fields) {
+    const linha = sem.find((l) => l.includes(f.label));
+    assert.ok(linha, `a linha do campo ${f.label} existe`);
+    cols.push(linha.indexOf(f.value));
+  }
+  assert.equal(new Set(cols).size, 1, `valores desalinhados: ${cols.join(', ')}`);
+
+  // E a distinção é de cor, não de sortimento: o rótulo carrega o código de
+  // interface; se alguém o tirar, o cabeçalho perde a leitura rótulo/dado.
+  for (const f of mod.HEADER.fields) {
+    const linha = comAnsi.find((l) => mod.stripAnsi(l).includes(f.label));
+    assert.ok(linha.includes('\x1b[90m'), `${f.label} deveria usar a cor de interface`);
+  }
+});
+
+test('tem régua separando os blocos, não só uma caixa em volta', async () => {
+  const mod = await m();
+  const out = mod.render(identidade);
+  const reguas = out.split('\n').filter((l) => /─/.test(l));
+  assert.equal(reguas.length, 3, 'régua de topo, régua interna e régua de base');
+  // a régua interna é menor que as externas: é divisória, não borda
+  const larguras = reguas.map((l) => mod.visibleWidth(l));
+  assert.ok(larguras[1] < larguras[0], 'a régua interna é mais curta que a de topo');
+});
+
+test('a descrição vem do package.json e cabe inteira', async () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(repo, 'package.json'), 'utf-8'));
+  const mod = await m();
+  const out = mod.stripAnsi(mod.render({ ...identidade, description: pkg.description }));
+  assert.ok(out.includes(pkg.description), 'a descrição aparece inteira, sem reticência');
+});
+
+test('o nome do projeto vai em caixa alta', async () => {
+  const mod = await m();
+  const out = mod.stripAnsi(mod.render(identidade));
+  assert.match(out, /AURAWALL/, 'identidade em destaque, como nome de projeto');
 });
 
 test('sem console.clear — entra no fluxo, não apaga o anterior', () => {
