@@ -134,7 +134,8 @@ Two rules that follow from the order, and that are easy to get wrong:
 - **The `v` is part of the name.** The art is `release-v1.0.webp`, not `release-1.0.webp`. The
   editorial notes pattern does *not* carry the `v`; the art does.
 - **A `-new` file is a correction, not a second artwork.** It is the way to fix the image of a tag
-  that is already published. It resolves first, and the asset keeps the canonical name.
+  that is already published. It resolves first, and the `-new` suffix is stripped when the asset is
+  uploaded — **the previously published asset is not deleted**, so see the warning below.
 
 ### Adding art for a new tag
 
@@ -147,9 +148,28 @@ and the release workflow fails without it. So `v1.1.0` needs `release-v1.1.0.web
 1. Commit `<the resolved name>-new.webp` to the default branch.
 2. Re-run that tag's workflow (`gh workflow run release.yml -f tag=<tag>`).
 
-**The tag is not moved and nothing is re-versioned.** Re-running is what makes the correction
-take effect — the workflow reads the `-new` file from the default branch, uploads it, and the
-release body points at the asset.
+**The tag is not moved and nothing is re-versioned.** Re-running is what makes the correction take
+effect: the workflow fetches the `-new` file from the **default branch** (not from the tag — that is
+the whole point, it is what allows fixing art without moving the tag), uploads it, and rewrites the
+release body to point at the new asset.
+
+#### The asset name changes, and the old one stays
+
+This is the part worth knowing before you correct art, and it was learned by doing it on `v1.0.0`.
+
+The uploaded asset is the resolved filename **with `-new` removed**. A correction therefore
+publishes the **tag-specific** name, even when the release had previously published the line name:
+
+| | before the correction | after |
+|---|---|---|
+| committed file used | `release-v1.0.webp` (from the tag, position 4) | `release-v1.0.0-new.webp` (from the default branch, position 1) |
+| uploaded asset | `release-v1.0.webp` | **`release-v1.0.0.webp`** |
+| body points at | `release-v1.0.webp` | `release-v1.0.0.webp` |
+
+So a corrected release ends up carrying **both** assets: the new one the body references, and the
+stale one from before. Nothing deletes it — deleting a published asset is a separate, deliberate
+step (`gh release delete-asset <tag> -n <name>`), and it is not automatic because the stale file
+may still be the thing some reader already bookmarked.
 
 Replacing `release-v1.0.webp` alone does **not** fix an already published release. That is the whole
 reason the `-new` convention exists: the body of a published release points at the file pinned in
