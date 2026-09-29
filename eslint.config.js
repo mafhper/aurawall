@@ -75,6 +75,12 @@ export default tseslint.config(
       ...js.configs.recommended.rules,
       'no-unused-vars': ['error', { args: 'none', varsIgnorePattern: '^_' }],
       'no-undef': 'error',
+      // \x1b é o escape de cor do console. Aqui ele é necessário em REGEX, não
+      // só em string: `scripts/welcome.js` casa sequências ANSI para medir a
+      // largura visível de uma linha antes de aplicar o padding. Sem isso o
+      // padding contaria os bytes do escape e a caixa sairia torta.
+      // Mesma justificativa do bloco .cjs acima.
+      'no-control-regex': 'off',
     },
   },
 );
