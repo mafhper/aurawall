@@ -21,7 +21,7 @@ const repo = path.join(__dirname, '..', '..');
 const welcome = path.join(repo, 'scripts', 'welcome.js');
 
 const ESC = String.fromCharCode(27);
-const A = { reset: ESC + '[0m', dim: ESC + '[2m', muted: ESC + '[90m', name: ESC + '[36m', data: ESC + '[37m', clean: ESC + '[32m', dirty: ESC + '[33m' };
+const A = { reset: ESC + '[0m', dim: ESC + '[2m', muted: ESC + '[90m', name: ESC + '[36m', data: ESC + '[37m', ok: ESC + '[32m', warn: ESC + '[33m' };
 
 /** O módulo é ESM; de um teste .cjs só dá para carregar por import() dinâmico. */
 const m = () => import('../welcome.js');
@@ -81,14 +81,67 @@ test('visibleWidth conta colunas, não bytes de escape', async () => {
   assert.equal(mod.visibleWidth(colored), 8, 'a largura visível é só o texto que se vê');
 });
 
-test('nenhuma linha excede 80 colunas visíveis', async () => {
+test('é um painel fechado: moldura com cantos certainos, todas as linhas com borda', async () => {
+  // A versão anterior tinha réguas soltas no topo e embaixo — cercavam o texto
+  // sem organizar. Agora é um painel: cantos de cima e de base diferentes, e
+  // nenhuma linha interna fica sem as duas bordas.
+  const mod = await m();
+  const out = mod.stripAnsi(mod.render({ pkg, repo: repoLimpo })).split('\n');
+  assert.match(out[0], new RegExp('^' + mod.BOX.tl + '─+' + mod.BOX.tr + '$'), 'topo abre para a direita');
+  assert.match(out[out.length - 1], new RegExp('^' + mod.BOX.bl + '─+' + mod.BOX.br + '$'), 'base abre para a esquerda');
+  for (const l of out.slice(1, -1)) {
+    assert.ok(l.startsWith(mod.BOX.v) && l.endsWith(mod.BOX.v), `linha sem as duas bordas: ${JSON.stringify(l)}`);
+  }
+  assert.equal(new Set(out.map((l) => l.length)).size, 1, 'todas as linhas têm a mesma largura');
+});
+
+test('todas as linhas cabem em 80 colunas visíveis', async () => {
   const mod = await m();
   const out = mod.render({
     pkg: { ...pkg, description: 'Vector-first wallpaper generator. Static editor and promo site, no backend.' },
     repo: { branch: 'feature/uma-branch-bem-comprida-para-teste', commit: 'abcdef1234', changes: 42 },
   });
   for (const l of out.split('\n')) {
-    assert.ok(mod.visibleWidth(l) <= 80, `linha de ${mod.visibleWidth(l)} excede 80: ${JSON.stringify(mod.stripAnsi(l))}`);
+    assert.equal(mod.visibleWidth(l), 80, `linha de ${mod.visibleWidth(l)}: ${mod.stripAnsi(l)}`);
+  }
+});
+
+test('o marcador de estado só aparece onde houve verificação', async () => {
+  // ENV e GIT são checados de verdade. STACK e os links são declarados — e a
+  // bolinha neles seria enfeite, não informação. A diferença é o que impede a
+  // bolinha de virar carnaval.
+  const mod = await m();
+  const out = mod.render({ pkg, repo: repoLimpo }).split('\n');
+  for (const lbl of ['ENV', 'GIT']) {
+    const l = out.find((x) => mod.stripAnsi(x).includes(lbl));
+    assert.ok(l.includes(A.ok), `${lbl} é verificado e ganha marcador`);
+  }
+  for (const lbl of ['STACK', 'REPO', 'LIVE']) {
+    const l = out.find((x) => mod.stripAnsi(x).includes(lbl));
+    assert.ok(!l.includes(A.ok), `${lbl} é declarado e não ganha marcador`);
+    assert.ok(mod.stripAnsi(l).includes('  ' + lbl), `${lbl} fica recuado onde o marcador não está`);
+  }
+});
+
+test('o badge de versão fica à direita, alinhado com a borda', async () => {
+  // O olho vai para o canto direito procurando a versão. Se ela encostar no
+  // nome, os dois competem; se não alinhar na borda, o alinhamento denuncia.
+  const mod = await m();
+  const out = mod.stripAnsi(mod.render({ pkg, repo: repoLimpo })).split('\n');
+  const titulo = out.find((l) => l.includes('AURAWALL'));
+  assert.ok(titulo.includes(mod.HEADER.mode), 'o modo aparece na primeira linha');
+  assert.ok(titulo.includes('v' + pkg.version), 'a versão aparece na primeira linha');
+  const semBadge = out.find((l) => l.includes(pkg.description));
+  assert.ok(titulo.length === semBadge.length, 'a linha do título tem a largura do painel');
+  assert.ok(titulo.trimEnd().endsWith('│'), 'e encosta na borda direita');
+});
+
+test('a identidade é a única linha com cor de destaque', async () => {
+  const mod = await m();
+  const out = mod.render({ pkg, repo: repoLimpo }).split('\n');
+  const titulo = out.find((l) => mod.stripAnsi(l).includes('AURAWALL'));
+  for (const l of out.filter((x) => x !== titulo)) {
+    assert.ok(!l.includes(A.name), 'só o nome usa a cor de identidade');
   }
 });
 
@@ -125,14 +178,17 @@ test('truncate corta por largura visível, não por String.length', async () => 
 
 test('a coluna de valor alinha em todos os campos', async () => {
   const mod = await m();
-  const linhas = mod.stripAnsi(
-    mod.render({ pkg, repo: repoLimpo })
-  ).split('\n');
-  const cols = linhas
-    .filter((l) => /^\s{2}(GIT|STACK|ENV|REPO|LIVE)\s/.test(l))
-    .map((l) => /^\s{2}[A-Z]+\s+/.exec(l)[0].length);
-  assert.ok(cols.length >= 5, `esperava pelo menos 5 campos rotulados, achei ${cols.length}`);
-  assert.equal(new Set(cols).size, 1, `colunas desalinhadas: ${cols.join(', ')}`);
+  const campos = ['ENV', 'GIT', 'STACK', 'REPO', 'LIVE'];
+  const linhas = mod
+    .stripAnsi(mod.render({ pkg, repo: repoLimpo }))
+    .split('\n');
+  const cols = campos.map((c) => {
+    const l = linhas.find((x) => x.includes(c));
+    assert.ok(l, `a linha do campo ${c} existe`);
+    // a coluna do valor é onde o rótulo termina, sem contar o marcador de estado
+    return l.replace(new RegExp('^\\s*│\\s*(●\\s)?' + c + '\\s*'), '').length;
+  });
+  assert.equal(new Set(cols).size, 1, `colunas de valor desalinhadas: ${cols.join(', ')}`);
 });
 
 // ── As regressões que já aconteceram ─────────────────────────────────────
@@ -155,14 +211,17 @@ test('não tem etiquetas decorativas', async () => {
   assert.ok(!/\[(web|docs|cli|library)\]/i.test(out), 'etiqueta entre colchetes não diz nada num terminal');
 });
 
-test('não é uma mura: não há régua em volta, e sim espaços entre grupos', async () => {
-  // A primeira versão tinha réguas no topo e embaixo, o que cercava o texto sem
-  // organizar. O princípio do documento: cada pedaço recebe um espaço semântico.
-  const out = await plain();
-  assert.ok(!/[─━═-]{20,}/.test(out), 'não deve haver régua horizontal');
-  // e os grupos são separados por linha em branco
-  const grupos = out.split(/\n\s*\n/).filter((g) => g.trim());
-  assert.ok(grupos.length >= 4, `esperava grupos separados, achei ${grupos.length}`);
+test('nada é empurrado para fora do painel, nem com campo enorme', async () => {
+  // A primeira versão tinha réguas soltas, e a segunda não tinha moldura nenhuma.
+  // O painel é o que dá forma: cada linha precisa caber entre as duas bordas.
+  const mod = await m();
+  const out = mod.render({
+    pkg: { ...pkg, description: 'x'.repeat(200) },
+    repo: { branch: 'feature/'.concat('y'.repeat(120)), commit: 'abcdef1234', changes: 999 },
+  });
+  for (const l of out.split('\n')) {
+    assert.equal(mod.visibleWidth(l), 80, `linha de ${mod.visibleWidth(l)}: ${mod.stripAnsi(l).slice(0, 50)}`);
+  }
 });
 
 test('a identidade é a única linha em caixa alta e acesa', async () => {
@@ -187,9 +246,11 @@ test('os rótulos são interface: caixa alta e cor apagada', async () => {
   const mod = await m();
   const out = mod.render({ pkg, repo: repoLimpo }).split('\n');
   for (const lbl of ['GIT', 'STACK', 'ENV', 'REPO', 'LIVE']) {
-    const l = out.find((x) => mod.stripAnsi(x).trimStart().startsWith(lbl));
+    // a linha começa pela borda do painel, então o rótulo não é o primeiro texto
+    const l = out.find((x) => /│\s*(●\s)?\s?[A-Z]+\s/.test(mod.stripAnsi(x)) && mod.stripAnsi(x).includes(lbl));
     assert.ok(l, `o campo ${lbl} existe`);
     assert.ok(l.includes(A.muted), `${lbl} usa a cor de interface`);
+    assert.equal(lbl, lbl.toUpperCase(), `${lbl} é caixa alta`);
   }
 });
 
@@ -205,9 +266,9 @@ test('o estado do git é colorido: clean verde, uncommitted amarelo', async () =
   const mod = await m();
   const limpo = mod.render({ pkg, repo: repoLimpo });
   const sujo = mod.render({ pkg, repo: { ...repoLimpo, changes: 3 } });
-  assert.ok(limpo.includes(A.clean), 'clean em verde');
+  assert.ok(limpo.includes(A.ok), 'clean em verde');
   assert.match(mod.stripAnsi(limpo), /clean/);
-  assert.ok(sujo.includes(A.dirty), 'mudanças pendentes em amarelo, porque pedem atenção');
+  assert.ok(sujo.includes(A.warn), 'mudanças pendentes em amarelo, porque pedem atenção');
   assert.match(mod.stripAnsi(sujo), /3 uncommitted/);
 });
 
@@ -239,7 +300,7 @@ test('sem git, o bloco GIT some e o resto continua', async () => {
 test('campos indefinidos não quebram a renderização', async () => {
   const mod = await m();
   const out = mod.stripAnsi(mod.render({ pkg: { name: 'x', version: '?', description: null, npm: null }, repo: null }));
-  assert.match(out, /X\s+v\?/, 'sem descrição e sem npm, ainda renderiza');
+  assert.match(out, /X\s+.*v\?/, 'sem descricao e sem npm, ainda renderiza');
 });
 
 test('sem console.clear — entra no fluxo, não apaga o anterior', () => {

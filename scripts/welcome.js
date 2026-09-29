@@ -1,45 +1,46 @@
 /**
  * Cabeçalho de identidade do `npm run dev`.
  *
- * ## O princípio
+ * ## O formato, e o teto dele
  *
- * **Cada pedaço de informação recebe um espaço semântico.** Uma régua horizontal
- * separa; um painel dá forma. Isso veio de `.dev/docs/better-tui-critic.md`, e é a
- * diferença entre um cabeçalho e uma lista de texto com linhas em volta.
+ * Isto é um **painel estático**: roda uma vez, antes do `concurrently`, e sai.
+ * Ele tem vocabulário de painel — moldura, badge alinhado à direita, marcadores de
+ * estado, colunas — mas não tem o que o torna um runtime: nada de estado que
+ * atualiza, navegação por tecla, log rolável ou layout que reage ao resize.
  *
- * ## O que este cabeçalho responde
+ * Nada aqui é decoração. Cada elemento carrega informação:
  *
- * *"Em que projeto estou, em que estado ele está, e em que ambiente?"* — o que se
- * responde **antes** de qualquer servidor subir, e que o Vite não diz.
+ * - **Moldura** — diz que o bloco é uma unidade, não texto solto.
+ * - **Badge à direita** — `development` e a versão, o que a pessoa procura
+ *   olhando o canto, e por isso não compete com o nome.
+ * - **Marcador de estado** — só onde algo foi **verificado**, nunca como enfeite.
+ *   `GIT` e `ENV` são checados; `STACK` e os links são declarados, e por isso
+ *   não ganham marcador. A diferença é o que impede a bolinha de virar carnaval.
+ * - **Coluna de rótulo** — cinza, caixa alta; coluna de valor — branco. É a
+ *   distinção interface/dado que faz o bloco varrível num olhar.
  *
  * ## O que ele NÃO faz, e por quê
  *
- * Cada item abaixo já esteve aqui e foi removido porque era falso ruído:
+ * Cada item abaixo já esteve aqui e saiu por ser falso ruído:
  *
- * - **URLs das superfícies.** O Vite imprime `→ Local:` de cada uma segundos depois.
- *   Na primeira versão apareciam **duas vezes em quinze linhas**.
- * - **Etiquetas decorativas** como `[web] [docs]`. Copiadas de uma convenção web; num
- *   terminal não há link, não há clique, e nada as explica.
- * - **A lista de dependências** como "stack". Varrer `node_modules` produz inventário
- *   de implementação, não informação.
+ * - **URLs das superfícies.** O Vite imprime `→ Local:` de cada uma segundos
+ *   depois. Na primeira versão apareciam **duas vezes em quinze linhas**.
+ * - **Etiquetas decorativas** como `[web] [docs]` — convenção web, sem clique
+ *   e sem explicação num terminal.
+ * - **A lista de dependências** como "stack": varrer `node_modules` produz
+ *   inventário de implementação, não informação.
  * - **Log do Vite e do `concurrently`.** "O que está acontecendo agora" é deles.
- *
- * ## O que este cabeçalho não pode fazer
- *
- * Ele é **estático**: roda uma vez, antes do `concurrently`. Não tem estado de serviço,
- * não tem uptime, não acompanha HMR. Um cabeçalho que não pode mudar é um documento, não
- * um runtime — e por isso ele não mostra serviço. service state, eventos e navegação por
- * tecla exigiriam um processo **vivo**, que é o `dev-console` que o documento propõe como
- * ferramenta de frota. Esse é o teto deste formato, e ele não se resolve com mais cor.
  *
  * ## Guardrails
  *
- * - **A guarda de TTY vem antes de qualquer leitura**, inclusive do `package.json`: a
- *   propriedade é "sem TTY → nenhum output", não "saída preparada e descartada".
+ * - **A guarda de TTY vem antes de qualquer coleta**, inclusive do `package.json`
+ *   e do `git`: a propriedade é "sem TTY → nenhum output", não "saída preparada
+ *   e descartada".
  * - **`stderr` não é saída alternativa.**
  * - **Sem `console.clear()`** — convive com terminal integrado, split e IDE.
- * - **A largura conta coluna visível, não `String.length`.** Com ANSI no meio, `.length`
- *   conta os bytes do escape e o alinhamento sai errado **na tela**, não no teste.
+ * - **A largura conta coluna visível, não `String.length`.** Com ANSI no meio,
+ *   `.length` conta os bytes do escape e o alinhamento sai errado **na tela**,
+ *   não no teste.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -53,26 +54,27 @@ const HEADER = {
   stack: 'React · TypeScript · Vite',
   mode: 'development',
   width: 80,
-  labelWidth: 6,
-  // Onde o git é lido. O repo pode estar em submodules, e aí `git` no diretório
-  // de execução não é o mesmo repositório.
+  labelWidth: 8,
   git: { cwd: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..') },
 };
 
 // ── Cor ─────────────────────────────────────────────────────────────────────
 // Semântica, não enumerate-cores. A distinção que carrega o significado é
-// rótulo apagado contra dado aceso; a cor, cada papel tem uma.
+// rótulo apagado contra dado aceso; cada cor tem um papel.
 
 const A = {
   reset: '\x1b[0m',
   bold: '\x1b[1m',
   dim: '\x1b[2m',
-  muted: '\x1b[90m',   // rótulo, régua, metadado
+  muted: '\x1b[90m',   // rótulo, moldura, contexto
   name: '\x1b[36m',    // identidade
   data: '\x1b[37m',    // dado primário
-  clean: '\x1b[32m',   // estado bom
-  dirty: '\x1b[33m',   // estado de atenção
+  ok: '\x1b[32m',      // verificado e bom
+  warn: '\x1b[33m',    // verificado e pede atenção
 };
+
+const BOX = { tl: '╭', tr: '╮', bl: '╰', br: '╯', h: '─', v: '│' };
+const DOT = '●';
 
 const ANSI_RE = /\x1b\[[0-9;]*m/g;
 
@@ -92,8 +94,8 @@ const padTo = (text, width) => text + ' '.repeat(Math.max(0, width - visibleWidt
 const hasTty = () => process.stdout.isTTY === true;
 
 // ── Coleta ─────────────────────────────────────────────────────────────────
-// Tudo aqui é best-effort: um `git` ausente ou um `package.json` ilegível não
-// podem impedir o dev de subir. Falha vira campo omitido, nunca exceção.
+// Best-effort por construção: um `git` ausente ou um `package.json` ilegível
+// omitem um campo e nunca lançam. Cabeçalho não pode impedir o dev de subir.
 
 function git(...args) {
   try {
@@ -111,111 +113,117 @@ function git(...args) {
 function readGit() {
   const branch = git('rev-parse', '--abbrev-ref', 'HEAD');
   if (branch === null) return null; // fora de um repositório
-
   const commit = git('rev-parse', '--short', 'HEAD');
   const changed = git('status', '--porcelain');
-  const changes = changed === null ? null : changed === '' ? 0 : changed.split('\n').length;
-  return { branch, commit, changes };
+  return { branch, commit, changes: changed === null ? null : changed === '' ? 0 : changed.split('\n').length };
 }
 
 async function readPackage() {
   const here = path.dirname(fileURLToPath(import.meta.url));
-  const raw = await readFile(path.join(here, '..', 'package.json'), 'utf-8');
-  const pkg = JSON.parse(raw);
+  const pkg = JSON.parse(await readFile(path.join(here, '..', 'package.json'), 'utf-8'));
   const m = /^npm@(\d+)\.(\d+)\.(\d+)/.exec(pkg.packageManager || '');
   return { name: pkg.name, version: pkg.version, description: pkg.description, npm: m ? m[1] : null };
 }
 
-// ── Renderização ───────────────────────────────────────────────────────────
+// ── Painel ─────────────────────────────────────────────────────────────────
 
-/** Uma linha rótulo/valor, na mesma coluna para todas. */
-function field(label, value, valueColor = A.data) {
-  const L = HEADER.labelWidth;
-  return `  ${A.muted}${padTo(label, L)}${A.reset} ${valueColor}${truncate(value, HEADER.width - L - 2)}${A.reset}`;
+/** Uma linha interna, já com as bordas. `conteudo` nunca é cortado com ANSI solto. */
+function row(conteudo, cor = A.data) {
+  const L = HEADER.width;
+  const interno = L - 4; // │ + espaço + espaço + │
+  if (visibleWidth(conteudo) > interno) {
+    conteudo = truncate(cor + conteudo, interno);
+  }
+  return `${A.muted}${BOX.v}${A.reset} ${conteudo}${' '.repeat(Math.max(0, interno - visibleWidth(conteudo)))} ${A.muted}${BOX.v}${A.reset}`;
 }
 
-const SEP = ' · ';
+/** Régua de topo ou de base, com os cantos certos. */
+const borda = (topo) =>
+  `${A.muted}${topo ? BOX.tl : BOX.bl}${BOX.h.repeat(HEADER.width - 2)}${topo ? BOX.tr : BOX.br}${A.reset}`;
 
 /**
- * Junta peças coloridas respeitando a largura — e sem perder o ANSI nem a ordem.
+ * Uma linha rótulo/valor dentro do painel, com marcador onde houve verificação.
  *
- * Cortar a string já montada mediria certo, mas a reticência ficaria com a cor da
- * última peça e o restante perderia o reset. Então o corte é por peça:
- *
- * 1. se passar, cai primeiro a peça marcada como descartável (o commit);
- * 2. se ainda passar, a peça mais longa é truncada **no lugar** — remover e
- *    reinserir mudaria a ordem, que foi exatamente o bug da primeira versão.
+ * `valor` pode ser texto simples ou **peças com prioridade**. Isso importa: quando
+ * a linha não cabe, o que tem de sobreviver é o estado — `3 uncommitted` é o que
+ * pede ação, e o commit é o que se perde. A versão anterior cortava pela direita e
+ * apagava justamente o pedaço actionable.
  */
-function joinParts(partes, coluna) {
-  const orcamento = HEADER.width - coluna;
-  const sep = visibleWidth(SEP);
+function field(label, valor, { verificado = false, corValor = A.data, corEstado = A.ok } = {}) {
+  const marca = verificado ? `${corEstado}${DOT}${A.reset} ` : '  ';
+  const L = HEADER.labelWidth;
+  const orcamento = HEADER.width - 4 - 2 - L - 2; // bordas, marcador, rótulo
 
-  const medir = (ps) => ps.reduce((t, p) => t + visibleWidth(p.plain), 0) + sep * Math.max(0, ps.length - 1);
-
-  let lista = partes.slice();
-  if (medir(lista) > orcamento) {
-    const semDescartavel = lista.filter((p) => !p.drop);
-    if (semDescartavel.length > 0 && medir(semDescartavel) <= orcamento) {
-      lista = semDescartavel;
-    } else if (lista.some((p) => p.drop)) {
-      lista = lista.filter((p) => !p.drop);
+  let texto;
+  if (typeof valor === 'string') {
+    texto = `${corValor}${truncate(valor, orcamento)}${A.reset}`;
+  } else {
+    const sep = ' · ';
+    const medir = (ps) => ps.reduce((t, p) => t + visibleWidth(p.text), 0) + sep.length * (ps.length - 1);
+    let ps = valor.slice();
+    if (medir(ps) > orcamento) {
+      const semDrop = ps.filter((p) => !p.drop);
+      ps = medir(semDrop) <= orcamento ? semDrop : ps.filter((p) => !p.drop);
     }
+    if (medir(ps) > orcamento) {
+      // o que sobra é descontado da peça MAIOR, em posição — nunca do fim
+      const maior = ps.reduce((a, b) => (visibleWidth(a.text) >= visibleWidth(b.text) ? a : b));
+      const folga = medir(ps) - orcamento;
+      ps = ps.map((p) =>
+        p === maior ? { ...p, text: p.text.slice(0, Math.max(0, p.text.length - folga - 1)) + '…' } : p
+      );
+    }
+    texto = ps
+      .map((p, i) => (i ? A.muted + sep + A.reset : '') + (p.color || corValor) + p.text + A.reset)
+      .join('');
   }
 
-  if (medir(lista) > orcamento) {
-    // A sobra é descontada da peça mais longa, em posição.
-    const maior = lista.reduce((a, b) => (visibleWidth(a.plain) >= visibleWidth(b.plain) ? a : b));
-    const folga = medir(lista) - orcamento;
-    lista = lista.map((p) => (p === maior ? { ...p, plain: p.plain.slice(0, Math.max(0, p.plain.length - folga - 1)) + '…' } : p));
-  }
-
-  return lista.map((p, i) => (i ? A.muted + SEP + A.reset : '') + p.color + p.plain + A.reset).join('');
+  const conteudo = `${marca}${A.muted}${padTo(label, L)}${A.reset} ${texto}`;
+  return row(conteudo);
 }
 
+// ── Renderização ───────────────────────────────────────────────────────────
+
 function render({ pkg, repo }) {
-  const out = [];
+  const out = [borda(true)];
 
-  // ── identidade: a única linha que compete por atenção ──
-  out.push('');
-  out.push(
-    `  ${A.bold}${A.name}${pkg.name.toUpperCase()}${A.reset}` +
-      `  ${A.dim}v${pkg.version}${A.reset}` +
-      `  ${A.muted}${HEADER.mode}${A.reset}`
-  );
-  // A descrição fica apagada de propósito: ela é contexto, e contexto em branco
-  // compete com a única linha que deveria competir — o nome.
-  if (pkg.description) out.push(`  ${A.muted}${truncate(pkg.description, HEADER.width - 2)}${A.reset}`);
+  // Cabeçalho: nome à esquerda, badge à direita. O olho vai para o canto
+  // direito procurando versão, então não compete com a identidade.
+  const esquerda = `${A.bold}${A.name}${pkg.name.toUpperCase()}${A.reset}`;
+  const direita = `${A.muted}${HEADER.mode}${A.reset}  ${A.dim}v${pkg.version}${A.reset}`;
+  const folga = HEADER.width - 4 - visibleWidth(esquerda) - visibleWidth(direita);
+  out.push(row(esquerda + ' '.repeat(Math.max(1, folga)) + direita));
 
-  // ── estado do repositório ──
-  if (repo) {
-    out.push('');
-    const partes = [{ plain: repo.branch, color: A.data, drop: false }];
-    if (repo.commit) partes.push({ plain: repo.commit, color: A.muted, drop: true });
-    if (repo.changes !== null) {
-      partes.push({
-        plain: repo.changes === 0 ? 'clean' : `${repo.changes} uncommitted`,
-        color: repo.changes === 0 ? A.clean : A.dirty,
-        drop: false,
-      });
-    }
-    out.push(`  ${A.muted}${padTo('GIT', HEADER.labelWidth)}${A.reset} ${joinParts(partes, 2 + HEADER.labelWidth + 1)}`);
-  }
+  if (pkg.description) out.push(row(A.muted + pkg.description + A.reset));
 
-  // ── ambiente ──
-  out.push('');
-  out.push(field('STACK', HEADER.stack, A.muted));
+  // Ambiente: verificado, então ganha marcador.
   const env = [];
   if (pkg.npm) env.push('npm ' + pkg.npm);
   env.push('node ' + process.versions.node);
   if (repo) env.push(process.platform);
-  out.push(field('ENV', env.join(' · '), A.muted));
+  out.push(field('ENV', env.join(' · '), { verificado: true }));
 
-  // ── para onde ir ──
-  out.push('');
+  // Git: verificado. A cor do estado é informação, não enfeite — e o estado é a
+  // peça que tem de sobreviver quando a linha não cabe; o commit é o descartável.
+  if (repo) {
+    const partes = [{ text: repo.branch }];
+    if (repo.commit) partes.push({ text: repo.commit, color: A.muted, drop: true });
+    if (repo.changes !== null) {
+      partes.push(
+        repo.changes === 0
+          ? { text: 'clean', color: A.ok }
+          : { text: `${repo.changes} uncommitted`, color: A.warn }
+      );
+    }
+    out.push(field('GIT', partes, { verificado: true }));
+  }
+
+  // Stack e links: declarados, não verificados. Sem marcador.
+  out.push(field('STACK', HEADER.stack));
   out.push(field('REPO', 'github.com/mafhper/aurawall'));
   out.push(field('LIVE', 'mafhper.github.io/aurawall'));
 
-  out.push('');
+  out.push(borda(false));
   return out.join('\n');
 }
 
@@ -239,4 +247,4 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   main();
 }
 
-export { visibleWidth, truncate, stripAnsi, hasTty, render, readGit, HEADER };
+export { visibleWidth, truncate, stripAnsi, hasTty, render, readGit, row, field, BOX, DOT, HEADER };
