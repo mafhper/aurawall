@@ -101,6 +101,38 @@ Both are covered by `scripts/test/organize-dist.test.cjs`, which runs against a 
 - `npm run build:dist`
 - `npm run lint`
 
+### The dev header
+
+`npm run dev` prints an identity header before starting the two servers, from
+`scripts/welcome.js` (wired as `predev`):
+
+```
+ aurawall v1.0.0  [web] [docs]
+ Vector-first wallpaper generator. Static editor and promo site, no backend.
+ React · TypeScript · Vite
+
+ DEV
+ app    editor  http://localhost:3000
+ promo  site    http://localhost:5173
+
+ repo  https://github.com/mafhper/aurawall
+ demo  https://mafhper.github.io/aurawall
+```
+
+It answers *"what is this project and where are its surfaces"* and deliberately does
+**not** repeat what Vite and `concurrently` are about to say. `name`, `version` and
+`description` come from `package.json`; `tags`, `stack`, `surfaces` and `links` are
+declared at the top of the script, because inferring them from `node_modules` produces an
+implementation inventory instead of a useful line.
+
+Two properties are load-bearing and covered by `scripts/test/welcome.test.cjs`:
+
+- **Without a TTY it produces zero bytes** — on `stdout` and on `stderr` — and exits 0.
+  CI runs `npm run build`, which does not trigger `predev`, so the automation is
+  unaffected either way.
+- **The TTY guard runs before anything is read**, including `package.json`. The
+  property is "no output", not "output prepared and discarded".
+
 ### Visual Tooling
 
 - `npm run generate:engine-samples`

@@ -53,6 +53,9 @@ npm ci
 npm run dev
 ```
 
+Starts the editor on **:3000** and the promo site on **:5173**, and prints a short
+identity header first — the two surfaces, the stack, and where the project lives.
+
 ### Main Scripts
 
 ```bash
