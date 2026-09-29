@@ -1,7 +1,8 @@
 {
-    "name": "aurawall",
-    "version": "1.0.0",
-    "private": true,
+        "name": "aurawall",
+        "version": "1.0.0",
+        "description": "Vector-first wallpaper generator. Static editor and promo site, no backend.",
+        "private": true,
     "type": "module",
     "packageManager": "npm@11.6.0",
     "engines": {
@@ -9,6 +10,7 @@
         "npm": ">=11"
     },
     "scripts": {
+        "predev": "node scripts/welcome.js",
         "dev": "concurrently \"npm run app\" \"npm run promo\"",
         "start": "node node_modules/vite/bin/vite.js preview --port 3000",
         "app": "node node_modules/vite/bin/vite.js",
