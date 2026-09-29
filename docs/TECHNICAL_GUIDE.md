@@ -115,9 +115,55 @@ When refining engines or presets:
 - avoid reusing the same fallback motif across engines, especially tiny bright circular particles
 - keep animated SVG cost under control; visual richness cannot come from brute-force shape counts
 
+## Release Art
+
+The release image is resolved **per tag**, from the most specific to the most generic, in
+`docs/images/releases/`. The resolution order is implemented by release-core
+(`IMAGE_CORRECTION_SUFFIX=-new`), not by this repository:
+
+| Order | File | Source | Meaning |
+|---|---|---|---|
+| 1 | `release-v1.0.0-new.webp` | default branch | **correction** for a published tag |
+| 2 | `release-v1.0.0.webp` | the tag | art pinned to that exact version |
+| 3 | `release-v1.0-new.webp` | default branch | correction for the `1.0` line |
+| 4 | `release-v1.0.webp` | the tag | art for the whole `1.0` line |
+| 5 | `release.webp` | the tag | legacy, single-file art |
+
+Two rules that follow from the order, and that are easy to get wrong:
+
+- **The `v` is part of the name.** The art is `release-v1.0.webp`, not `release-1.0.webp`. The
+  editorial notes pattern does *not* carry the `v`; the art does.
+- **A `-new` file is a correction, not a second artwork.** It is the way to fix the image of a tag
+  that is already published. It resolves first, and the asset keeps the canonical name.
+
+### Adding art for a new tag
+
+With `granularity: "minor"`, **entering a new `major.minor` line requires a new image in that tag**,
+and the release workflow fails without it. So `v1.1.0` needs `release-v1.1.0.webp` (or
+`release-v1.1.webp`) committed; `v1.0.1` reuses `release-v1.0.webp` and needs no editorial work.
+
+### Fixing the art of a published tag
+
+1. Commit `<the resolved name>-new.webp` to the default branch.
+2. Re-run that tag's workflow (`gh workflow run release.yml -f tag=<tag>`).
+
+**The tag is not moved and nothing is re-versioned.** Re-running is what makes the correction
+take effect — the workflow reads the `-new` file from the default branch, uploads it, and the
+release body points at the asset.
+
+Replacing `release-v1.0.webp` alone does **not** fix an already published release. That is the whole
+reason the `-new` convention exists: the body of a published release points at the file pinned in
+the tag, so editing the default branch moves the art for *future* tags and leaves the past alone.
+
+### Art sources
+
+Editorial art is produced outside the repository. The current `release-v1.0.webp` is a 1440x900
+WebP generated from the promo hero. Keep the committed file small — the published asset is the WebP,
+not the PNG source.
+
 ## Documentation Contract
 
-When engine behavior, preset flow, or promo asset generation changes, update:
+When engine behavior, preset flow, promo asset generation, or the release process changes, update:
 
 - `README.md`
 - `docs/TECHNICAL_GUIDE.md`
