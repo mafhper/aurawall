@@ -8,7 +8,10 @@
       "required": true,
       "granularity": "minor",
       "upload": true,
-      "title_in_body": false
+      "title_in_body": false,
+      "changes": [
+        { "from": "v1.1.0", "file": "release-v1.1.webp" }
+      ]
     },
     "notes": {
       "granularity": "tag"
