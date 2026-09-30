@@ -39,7 +39,7 @@ jobs:
     # contents: write como teto; o caller precisa ter o mesmo, ou o rebaixamento falha.
     permissions:
       contents: write
-    uses: mafhper/release-core/.github/workflows/release.yml@v1.2.5
+    uses: mafhper/release-core/.github/workflows/release.yml@v1.3.0
     with:
       matrix: '[{"os":"ubuntu-latest"}]'
       tag: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
