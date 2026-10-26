@@ -1,107 +1,77 @@
-# ============================
-# Desenvolvimento Interno
-# ============================
-_dev/
-_template/
-
-
-# ============================
-# Dependências
-# ============================
-node_modules/
-
-# ============================
-# Build / Produção
-# ============================
-dist/
-dist-ssr/
-*.local
-.output/
-.cache/
-
-# ============================
-# Logs
-# ============================
-logs/
-gh-logs/
-#*.log
-npm-debug.log*
-
-# ============================
-# Editor / IDE
-# ============================
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# ============================
-# Sistema Operacional
-# ============================
-.DS_Store
-Thumbs.db
-Desktop.ini
-*.lnk
-
-# ============================
-# Variáveis de Ambiente
-# ============================
-.env
-.env.local
-.env.*.local
-.env.development
-.env.production
-
-# ============================
-# TypeScript
-# ============================
-*.tsbuildinfo
-
-# ============================
-# Vite
-# ============================
-vite.config.ts.timestamp-*
-
-# ============================
-# Testes
-# ============================
-coverage/
-.nyc_output/
-
-# ============================
-# Diversos
-# ============================
-*.bak
-*.tmp
-*.temp
-*.orig
-performance-reports/
-/.gemini
-GEMINI.md
+# Workspace privado
 .dev/
 _dev/
-
-# Codex local private files
 AGENTS.md
-.codex/
-.clawpatch/
-.gemini/
-.claude/
-.qwen/
-.kimi/
-
-# Codex local private files
-.agents/
-.gemini-clipboard/
-.roo/
-.cursor/
-.windsurf/
-.claude-code/
 CLAUDE.md
+GEMINI.md
 QWEN.md
 KIMI.md
+.codex/
+.agents/
+.claude/
+.claude-code/
+.cursor/
+.gemini/
+.gemini-clipboard/
+.kimi/
+.qwen/
+.roo/
+.windsurf/
+
+# Sistema operacional
+desktop.ini
+Thumbs.db
+ehthumbs.db
+.DS_Store
+*.lnk
+
+# Dependencias
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+build/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+*.local
+
+# Temporarios
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Ambiente
+.env
+.env.*
+!*.example
+
+# Editores
+.vscode/
+!/.vscode/
+/.vscode/*
+!/.vscode/extensions.json
+.idea/
+.cache/
+*.sw?
+*.sublime-project
+*.sublime-workspace
+_template/
+.output/
+performance-reports/
+gh-logs/
+vite.config.ts.timestamp-*
+.clawpatch/

@@ -11,6 +11,8 @@
  *     AUDIT_URL=https://mafhper.github.io/aurawall npm run audit
  * e compare com os limites de producao que aparecem no README da camada de auditoria.
  */
+const ports = require('../../ports.json');
+
 module.exports = {
     // Global Settings
     global: {
@@ -24,9 +26,9 @@ module.exports = {
         {
             id: 'promo',
             name: 'Landing Page (Promo)',
-            url: 'http://localhost:5173/', // Vite dev default
+            url: `http://localhost:${ports.website}/`,
             serverCommand: 'npm run promo',
-            serverPort: 5173,
+            serverPort: ports.website,
             type: 'promo', // Folder name in reports
             thresholds: {
                 performance: 20, // Low for dev mode, high for prod
@@ -38,9 +40,9 @@ module.exports = {
         {
             id: 'app',
             name: 'Dashboard App',
-            url: 'http://localhost:3000/', // Main app default
+            url: `http://localhost:${ports.app}/`,
             serverCommand: 'npm run app',
-            serverPort: 3000,
+            serverPort: ports.app,
             type: 'app',
             thresholds: {
                 performance: 35,

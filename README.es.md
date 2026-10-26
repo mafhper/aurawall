@@ -109,7 +109,7 @@ npm run app
 npm run promo
 ```
 
-La aplicacion estara disponible en `http://localhost:5173`.
+La aplicacion estara disponible en `http://localhost:5330` y el sitio promocional en `http://localhost:5340`.
 
 ### Build de Produccion
 
