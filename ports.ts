@@ -24,8 +24,9 @@ export const WEBSITE_PORT = ports.website;
 /**
  * O app usa `host: '0.0.0.0'` de proposito — ele e servido para o celular na
  * rede local durante o desenvolvimento de wallpapers. Isso e exatamente o
- * caso em que bindar `0.0.0.0` tem sucesso mesmo com `127.0.0.1` ocupado (ver
- * `.dev/docs/padroes/colisao-de-porta-dev-server.md` na frota), entao a porta
- * precisa ser nomeada E verificada. Ver `scripts/sonda-porta.ts`.
+ * caso em que bindar `0.0.0.0` tem sucesso mesmo com `127.0.0.1` ocupado, e e
+ * por isso que a sonda VERIFICA antes do bind em vez de realocar: sem isso o
+ * servidor sobe sem erro e serve o projeto errado. A porta precisa ser
+ * nomeada E verificada. Ver `scripts/sonda-porta.ts`.
  */
 export const APP_HOST = ports.host;

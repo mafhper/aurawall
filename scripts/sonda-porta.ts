@@ -32,8 +32,8 @@
 // e o navegador foi servido pelo PROJETO ERRADO (404).
 //
 // Repetido em 2026-10-01 para `::` (IPv6 comescado, usado por push_,
-// mark-lee/apps/site e personalnews/quality-core/dashboard): o mesmo defeito.
-// Ver `.dev/scripts/medir-host-duplo.mjs`.
+// mark-lee/apps/site e personalnews/quality-core/dashboard), medido na frota
+// com o mesmo resultado: bind aceito, cliente servido pelo projeto errado.
 //
 // Conclusao: qualquer host NAO-loopback (`0.0.0.0`, `::`, `true`) precisa de
 // sonda, e `strictPort: true` para que a corrida entre a sonda e o bind falhe
