@@ -16,3 +16,4 @@ tag, em https://github.com/mafhper/aurawall/releases
 - `favicon.ico`: Favicon padrão do site promocional.
 - `header-animation.svg`: SVG utilizado para animações no cabeçalho.
 - `icon-light.svg`: Ícone da aplicação em versão clara, usado no site.
+- `logo.svg`: Marca completa em 1024, fonte dos ícones derivados do site. Ainda não referenciada por nenhuma página.
