@@ -8,8 +8,8 @@ const DEFAULTS = {
   height: 900,
   quality: 92,
   formats: ['svg', 'jpg'],
-  // Ferramenta não escreve no workspace privado: `.dev/` é gitignored, então
-  // uma saída ali quebra em clone limpo (ADR-004). Ver paths.mjs.
+  // Ferramenta não escreve em diretório local gitignored: uma saída ali não
+  // existe em clone limpo e o comando quebra. Ver paths.mjs.
   outputRoot: defaultOutputRoot,
   sheets: true,
   nested: false,

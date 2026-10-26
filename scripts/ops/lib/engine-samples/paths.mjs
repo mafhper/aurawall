@@ -29,8 +29,8 @@ function findRepoRoot(startDir) {
 export const repoRoot = findRepoRoot(__dirname);
 
 /**
- * Ferramenta não escreve no workspace privado: `.dev/` é gitignored, então um
- * cache ou saída ali não existe em clone limpo e o comando quebra (ADR-004).
+ * Ferramenta não escreve em diretório local gitignored: um cache ou saída ali
+ * não existe em clone limpo e o comando quebra.
  * `node_modules/.cache/` é ignorado pelo git e se autossustenta.
  */
 export const cacheDir = path.join(repoRoot, 'node_modules', '.cache', 'aurawall');
