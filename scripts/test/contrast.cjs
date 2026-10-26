@@ -11,7 +11,6 @@
  * teste que comparava uma lista consigo mesma — dava `exit 1` com uma
  * recomendação que não vinha de lugar nenhum do projeto, e nunca abria um
  * arquivo. Ficou anos assim porque ninguém sabia que ele media alguma coisa.
- * Ver a nota AWR-N11.
  *
  * A paleta é lida de `node_modules/tailwindcss/theme.css`: o projeto usa
  * Tailwind v4 com a paleta padrão, em `oklch()`. `tailwind.config.js` existe no

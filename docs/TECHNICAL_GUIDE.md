@@ -69,7 +69,7 @@ Responsible for:
 
 CLI renderer for batch engine sampling. Use it to inspect visual differentiation without opening the app UI. Run with no arguments for the interactive picker, or pass flags (`--engines=`, `--count=`, `--random`, `--formats=`, `--include-presets`, `--quick`); `--help` lists everything.
 
-The logic lives in `scripts/ops/lib/engine-samples/` — one module per concern, so the entry point stays readable. `paths.mjs` resolves the repo root by walking up to the `package.json` rather than counting `../..` levels, and is also the single place that decides the output and cache locations (`node_modules/.cache/aurawall`, per ADR-004: tooling must not write into the private workspace).
+The logic lives in `scripts/ops/lib/engine-samples/` — one module per concern, so the entry point stays readable. `paths.mjs` resolves the repo root by walking up to the `package.json` rather than counting `../..` levels, and is also the single place that decides the output and cache locations (`node_modules/.cache/aurawall`: tooling must not write somewhere a clean clone does not have).
 
 Two behaviours are deliberate and worth keeping:
 
