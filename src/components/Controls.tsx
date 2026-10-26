@@ -3,6 +3,7 @@ import { WallpaperConfig, Shape, BlendMode, CollectionId, AnimationSettings, Vig
 import { EXPORT_SIZES, PRESETS } from '../constants';
 import WallpaperRenderer from './WallpaperRenderer';
 import { FavoriteItem } from '../hooks/useFavorites';
+import { WEBSITE_PORT } from '../../ports';
 import { 
   Settings2, 
   Layers, 
@@ -302,7 +303,7 @@ const ControlsInner: React.FC<ControlsProps> = ({
         />
         <div className="flex items-center justify-between relative z-10">
             <a 
-              href={import.meta.env.DEV ? 'http://localhost:5173' : '/aurawall/'}
+              href={import.meta.env.DEV ? `http://localhost:${WEBSITE_PORT}` : '/aurawall/'}
               className="flex items-center gap-3 hover:opacity-100 transition-all cursor-pointer group/logo relative"
               title={t('back_to_home')}
             >

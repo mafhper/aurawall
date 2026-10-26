@@ -13,7 +13,7 @@
  * - Problemas de seguranca e otimizacoes sugeridas
  *
  * Uso:
- *   npm run audit:promo            # dev server em localhost:5173
+ *   npm run audit:promo            # dev server do site (porta em ports.json)
  *   npm run audit:promo:mobile    # dev server, com emulacao de mobile
  *   npm run audit:promo:prod      # site publicado, via AUDIT_URL
  *
@@ -27,12 +27,13 @@ const path = require('path');
 const http = require('http');
 const { spawn } = require('child_process');
 const { stripHtmlDelimiters } = require('../utils/text-sanitization.cjs');
+const ports = require('../../ports.json');
 
 // Configurações
 const CONFIG = {
-  url: process.env.AUDIT_URL || 'http://localhost:5173',
+  url: process.env.AUDIT_URL || `http://localhost:${ports.website}`,
   outputDir: './performance-reports',
-  serverPort: parseInt(process.env.SERVER_PORT || '5173', 10),
+  serverPort: parseInt(process.env.SERVER_PORT || String(ports.website), 10),
   serverTimeout: parseInt(process.env.SERVER_TIMEOUT || '30000', 10),
   autoStartServer: process.env.AUTO_START_SERVER !== 'false',
   chromeFlags: (process.env.AUDIT_HEADLESS === 'false' || process.argv.includes('--visible'))

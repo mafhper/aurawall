@@ -53,7 +53,7 @@ npm ci
 npm run dev
 ```
 
-Starts the editor on **:3000** and the promo site on **:5173**, and prints a short
+Starts the editor on **:5330** and the promo site on **:5340**, and prints a short
 identity header first — what the project is, its stack, and where the code lives.
 
 ### Main Scripts
