@@ -12,7 +12,7 @@
     "scripts": {
         "predev": "node scripts/welcome.js",
         "dev": "concurrently \"npm run app\" \"npm run promo\"",
-        "start": "node node_modules/vite/bin/vite.js preview --port 3000",
+        "start": "node node_modules/vite/bin/vite.js preview --port 5330",
         "app": "node node_modules/vite/bin/vite.js",
         "promo": "node node_modules/vite/bin/vite.js --config website/vite.config.ts",
         "build": "node scripts/ops/clean-dist.cjs && npm run build:promo && npm run build:app",

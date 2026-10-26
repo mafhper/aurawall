@@ -1,12 +1,22 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { APP_HOST, APP_PORT } from './ports.ts';
+import { assertPortFree } from './scripts/sonda-porta.ts';
 
-export default defineConfig(() => {
+export default defineConfig(async ({ command }) => {
+  // O app usa `host: '0.0.0.0'` de proposito (servido ao celular na rede local).
+  // Esse e o caso em que o bind tem sucesso mesmo com a loopback ocupada, entao
+  // `strictPort` sozinho NAO cobre — a sonda antes do bind e a unica defesa.
+  if (command === 'serve') {
+    await assertPortFree(APP_PORT);
+  }
+
   return {
     server: {
-      port: 3000,
-      host: '0.0.0.0',
+      port: APP_PORT,
+      host: APP_HOST,
+      strictPort: true,
     },
     plugins: [react()],
     resolve: {
